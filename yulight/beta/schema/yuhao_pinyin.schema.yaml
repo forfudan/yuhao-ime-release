@@ -60,7 +60,7 @@ translator:
     - xform/([jqxy])v/$1u/
 
 punctuator:
-  import_preset: yuhao.symbols
+  import_preset: symbols
   half_shape:
     "`": "`"
     "#": "#"

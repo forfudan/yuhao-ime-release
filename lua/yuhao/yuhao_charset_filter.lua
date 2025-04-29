@@ -42,6 +42,9 @@ So a lua filter would be helpful to filter the frequently used
 20240819: 前置常用漢字功能只對 CJK 内的漢字生效.
 20240820: 前置常用漢字功能只在輸入爲四碼時方纔生效.
 20240908: 加入前置極常用繁簡漢字功能.
+20250429: 加入前置簡化漢字或傳統漢字功能.
+    現在,開啟輸入預測時,常用字前置功能會跳過預測候選項,對精確匹配字詞進行排序.
+    因此,前置功能在輸入不足四碼時也能生效,並且不會造成卡頓.
 ------------------------------------------------------------------------
 ]]
 
@@ -56,25 +59,35 @@ local set_of_harmonic_chars = core.set_from_str(yuhao_charsets.harmonic)
 local function yuhao_charset_prioritizer(input, env, option, charset)
     local switch_on = env.engine.context:get_option(option)
     local chars_of_low_priority = {}
-    local length_of_input_is_4 = (string.len(env.engine.context.input) == 4)
-    if not length_of_input_is_4 then
-        for cand in input:iter() do
+    local skip = false
+    for cand in input:iter() do
+        if skip then
             yield(cand)
-        end
-    end
-    if length_of_input_is_4 then
-        for cand in input:iter() do
-            local is_charset_or_not_cjk = core.string_is_in_set(cand.text, charset)
-            -- 二種情況顯示字符: (1) 極常用 (2) 過濾器關閉
-            if is_charset_or_not_cjk or not switch_on then
+        else
+            if cand.type == "completion" then
+                -- 遇到第一個預測的候選項,則彈出已存的後置字詞
+                for _, postponed_cand in ipairs(chars_of_low_priority) do
+                    yield(postponed_cand)
+                end
+                -- 彈出本詞
                 yield(cand)
+                -- 修改狀態器
+                skip = true
             else
-                table.insert(chars_of_low_priority, cand)
+                local is_charset_or_not_cjk = core.string_is_in_set(cand.text, charset)
+                -- 二種情況顯示字符: (1) 極常用 (2) 過濾器關閉
+                if is_charset_or_not_cjk or not switch_on then
+                    yield(cand)
+                else
+                    table.insert(chars_of_low_priority, cand)
+                end
             end
         end
-        -- 非常用字词后置
-        for i, cand in ipairs(chars_of_low_priority) do
-            yield(cand)
+    end
+    if not skip then
+        -- 説明没有遇到預測的候選項,需要在此處彈出已存的後置字詞
+        for _, postponed_cand in ipairs(chars_of_low_priority) do
+            yield(postponed_cand)
         end
     end
 end
@@ -87,6 +100,16 @@ end
 --- 前置常用繁簡漢字
 local function yuhao_charset_prioritizer_common(input, env)
     yuhao_charset_prioritizer(input, env, "yuhao_charset_prioritizer_common", set_of_common_chars)
+end
+
+--- 前置常用簡化漢字
+local function yuhao_charset_prioritizer_tonggui(input, env)
+    yuhao_charset_prioritizer(input, env, "yuhao_charset_prioritizer_tonggui", set_of_tonggui_chars)
+end
+
+--- 前置常用傳統漢字
+local function yuhao_charset_prioritizer_harmonic(input, env)
+    yuhao_charset_prioritizer(input, env, "yuhao_charset_prioritizer_harmonic", set_of_harmonic_chars)
 end
 
 local function yuhao_charset_filter_common(input, env)
@@ -125,6 +148,8 @@ end
 return {
     yuhao_charset_prioritizer_ubiquitous = yuhao_charset_prioritizer_ubiquitous,
     yuhao_charset_prioritizer_common = yuhao_charset_prioritizer_common,
+    yuhao_charset_prioritizer_tonggui = yuhao_charset_prioritizer_tonggui,
+    yuhao_charset_prioritizer_harmonic = yuhao_charset_prioritizer_harmonic,
     yuhao_charset_filter_common = yuhao_charset_filter_common,
     yuhao_charset_filter_tonggui = yuhao_charset_filter_tonggui,
     yuhao_charset_filter_harmonic = yuhao_charset_filter_harmonic,
