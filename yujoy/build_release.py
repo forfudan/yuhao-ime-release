@@ -7,7 +7,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.8.0-beta.20250207"
+version = "v3.9.0-beta.20250601"
 
 # %%
 try:
@@ -33,7 +33,7 @@ shutil.copyfile(
 )
 shutil.copyfile("./beta/readme.md", f"./dist/yujoy/readme.txt")
 shutil.copyfile(
-    "../../../Programs/YuhaoInputMethod/YuhaoRoots/Yuniversus.ttf",
+    "../../assets/fonts/Yuniversus.ttf",
     "./beta/font/Yuniversus.ttf",
 )
 
@@ -47,14 +47,24 @@ copy_tree("./beta/font/", "./dist/yujoy/font/")
 # copy yuhao
 copy_tree("../lua/", "./dist/yujoy/schema/lua/")
 for file_name in [
-    "yuhao.symbols.yaml",
+    # "yuhao.symbols.yaml",
     "yuhao_pinyin.dict.yaml",
     "yuhao_pinyin.schema.yaml",
     "yuhao/yuhao.symbols.dict.yaml",
+    "yuhao/yuhao.symbols_inline.dict.yaml",
     "yuhao/yuhao.extended.dict.yaml",
     "yuhao/yuhao.private.dict.yaml",
 ]:
     copyfile(f"../yulight/beta/schema/{file_name}", f"./dist/yujoy/schema/{file_name}")
+
+copyfile(
+    "../yulight/beta/schema/yuhao/yulight.roots.dict.yaml",
+    "./dist/yujoy/schema/yuhao/yulight.roots.dict.yaml",
+)
+copyfile(
+    "../yustar/beta/schema/yuhao/yustar.roots.dict.yaml",
+    "./dist/yujoy/schema/yuhao/yustar.roots.dict.yaml",
+)
 
 for file_name in [
     # "yujoy_tc.schema.yaml",

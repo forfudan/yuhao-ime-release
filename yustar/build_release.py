@@ -11,7 +11,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.8.0-beta.20250207"
+version = "v3.9.0-beta.20250601"
 
 # %%
 try:
@@ -34,7 +34,7 @@ if re.match(r"^v\d+.\d+.\d+$", version):
 shutil.copyfile("./yustar.png", f"./dist/yustar/yustar_{version}.png")
 shutil.copyfile("./beta/readme.md", f"./dist/yustar/readme.txt")
 shutil.copyfile(
-    "../../../Programs/YuhaoInputMethod/YuhaoRoots/Yuniversus.ttf",
+    "../../assets/fonts/Yuniversus.ttf",
     "./beta/font/Yuniversus.ttf",
 )
 shutil.copyfile(
@@ -51,12 +51,12 @@ copy_tree("./beta/font/", "./dist/yustar/font/")
 # copy yuhao
 copy_tree("../lua/", "./dist/yustar/schema/lua/")
 for file_name in [
-    "yuhao.symbols.yaml",
     "yuhao_pinyin.dict.yaml",
     "yuhao_pinyin.schema.yaml",
     "yuhao/yuhao.extended.dict.yaml",
     "yuhao/yuhao.private.dict.yaml",
     "yuhao/yuhao.symbols.dict.yaml",
+    "yuhao/yuhao.symbols_inline.dict.yaml",
 ]:
     copyfile(f"../yulight/beta/schema/{file_name}", f"./dist/yustar/schema/{file_name}")
 

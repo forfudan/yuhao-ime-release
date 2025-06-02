@@ -1,0 +1,4 @@
+patch:
+  schema_list:
+    - schema: yusm
+    - schema: yusm_sc # 以简化汉字字频设置简码

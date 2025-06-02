@@ -17,6 +17,8 @@
 
 */beta/archived/*.dict.yaml
 
+*.ttf
+
 # Ignore zip files
 *.zip
 
@@ -25,3 +27,4 @@
 yulight/dist/yulight
 yujoy/dist/yujoy
 yustar/dist/yustar
+yusm/dist/yusm

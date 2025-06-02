@@ -203,7 +203,7 @@ yujoy_full:
   initial_quality: 0
 
 punctuator:
-  import_preset: yuhao.symbols
+  import_preset: symbols
   half_shape:
     "`": "`"
     "#": "#"

@@ -292,7 +292,7 @@ yuhao_macro:
         expr: return require("yuhao.yuhao_core").unicode()
 
 punctuator:
-  import_preset: yuhao.symbols
+  import_preset: symbols
   half_shape:
     "`": "`"
     "#": "#"
