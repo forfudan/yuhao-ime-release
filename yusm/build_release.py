@@ -7,7 +7,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.9.0-beta.20250602"
+version = "v3.9.0"
 
 # %%
 try:
@@ -21,7 +21,9 @@ except:
     print("Cannot create dist/yusm folder!")
 
 if re.match(r"^v\d+.\d+.\d+$", version):
-    shutil.copyfile("./beta/schema/yuhao/yusm.dict.yaml", "./dist/yusm.dict.yaml")
+    shutil.copyfile(
+        "./beta/schema/yuhao/yusm.full.dict.yaml", "./dist/yusm.full.dict.yaml"
+    )
 
 # %%
 # shutil.copyfile("./yusm.pdf", f"./dist/yusm/yusm_{version}.pdf")
@@ -35,10 +37,10 @@ shutil.copyfile(
     "./beta/font/Yuniversus.ttf",
 )
 
-# copy_tree("./beta/mabiao/", "./dist/yusm/mabiao/")
+copy_tree("./beta/mabiao/", "./dist/yusm/mabiao/")
 copy_tree("./beta/schema/", "./dist/yusm/schema/")
-# copy_tree("./beta/custom/", "./dist/yusm/custom/")
-# copy_tree("./beta/trime/", "./dist/yusm/trime/")
+copy_tree("./beta/custom/", "./dist/yusm/custom/")
+copy_tree("./beta/trime/", "./dist/yusm/trime/")
 copy_tree("./beta/font/", "./dist/yusm/font/")
 
 # %%

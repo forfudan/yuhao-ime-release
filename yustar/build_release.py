@@ -11,7 +11,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.9.0-beta.20250601"
+version = "v3.9.0"
 
 # %%
 try:
@@ -31,8 +31,13 @@ if re.match(r"^v\d+.\d+.\d+$", version):
 
 # %%
 # Copy yustar
-shutil.copyfile("./yustar.png", f"./dist/yustar/yustar_{version}.png")
-shutil.copyfile("./beta/readme.md", f"./dist/yustar/readme.txt")
+shutil.copyfile("./星陳字根表.pdf", f"./dist/yustar/星陳字根表_{version}.pdf")
+shutil.copyfile("./星陳字根簡表.pdf", f"./dist/yustar/星陳字根簡表_{version}.pdf")
+shutil.copyfile(
+    "./星陳字根按鍵聚類讀音字例表.pdf",
+    f"./dist/yustar/星陳字根按鍵聚類讀音字例表_{version}.pdf",
+)
+shutil.copyfile("./beta/readme.md", "./dist/yustar/readme.txt")
 shutil.copyfile(
     "../../assets/fonts/Yuniversus.ttf",
     "./beta/font/Yuniversus.ttf",

@@ -17,10 +17,11 @@
 
 */beta/archived/*.dict.yaml
 
+# Ignore certin files
 *.ttf
-
-# Ignore zip files
+*.pdf
 *.zip
+*.png
 
 # Ignore distributions
 /dist

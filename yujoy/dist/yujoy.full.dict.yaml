@@ -1,7 +1,7 @@
 # encoding: utf-8
 ---
 name: "yujoy.full"
-version: "20250312"
+version: "20250709"
 sort: original
 columns:
   - text
@@ -10853,6 +10853,7 @@ columns:
 甘	dae
 𦫽	dae
 ⽢	dae
+	dae
 𗛠	daeb
 𗜕	daeb
 𦍟	daec
@@ -12931,9 +12932,9 @@ columns:
 𤏊	dfkm
 𤒿	dfkm
 𤓉	dfkm
-𦰩	dfkm
 𫖆	dfkm
 𱕭	dfkm
+	dfkm
 戁	dfkn
 㽅	dfkn
 𪽧	dfkn
@@ -14626,6 +14627,7 @@ columns:
 䓴	dkmd
 𠫪	dkmd
 𦮥	dkmd
+𦰩	dkmf
 炱	dkmh
 𦷆	dkmj
 𤊜	dkmm
@@ -23601,7 +23603,6 @@ columns:
 𗵋	fduo
 𘚅	fduo
 𘩁	fduo
-𢹕	fdur
 찬	fdut
 찯	fdut
 챈	fdut
@@ -23610,6 +23611,7 @@ columns:
 챧	fdut
 첀	fdut
 첃	fdut
+𢹕	fduu
 찫	fduu
 찭	fduu
 찴	fduu
@@ -27026,6 +27028,7 @@ columns:
 핅	flfo
 𢮼	flfp
 𰓝	flfr
+𢎜	flft
 판	flft
 팓	flft
 팬	flft
@@ -37130,7 +37133,6 @@ columns:
 𧼇	hoes
 𤬗	hoev
 𥃕	hoex
-𫎷	hoey
 𣡆	hofa
 𭐛	hofa
 𣨑	hofb
@@ -40677,10 +40679,12 @@ columns:
 𪅢	ikcq
 𱿟	ike
 𰌺	ikej
+𪡢	ikfc
 宺	ikfe
 𧕂	ikff
 𧍧	ikfk
 蜈	ikfm
+𪡲	ikfm
 蝛	ikfw
 𡫤	ikfw
 㲒	ikgm
@@ -44636,7 +44640,6 @@ columns:
 弓	jg
 丱	jg
 𢎗	jg
-𢎜	jg
 ⼸	jg
 𣈨	jgag
 𪰟	jgak
@@ -46168,6 +46171,7 @@ columns:
 𡷫	jkoi
 𡻷	jkoi
 𩉉	jkoi
+𠚟	jkoj
 𭧫	jkol
 𣇈	jkow
 邵	jkpf
@@ -50612,14 +50616,12 @@ columns:
 㕫	kif
 唢	kifb
 㖄	kifc
-𪡢	kifc
 𭇫	kifc
 𠱶	kife
 喧	kiff
 喩	kiff
 𡁟	kifl
 𠻤	kifm
-𪡲	kifm
 啶	kifn
 唍	kifo
 𠼁	kifs
@@ -50945,7 +50947,6 @@ columns:
 𠯮	kjr
 𢎃	kjr
 𢦣	kjr
-𱒈	kjr
 𠲺	kjri
 𠻂	kjri
 咈	kjrj
@@ -50979,6 +50980,7 @@ columns:
 𰒨	kjur
 𠙼	kjv
 𮙚	kjv
+𱒈	kjv
 𠵚	kjva
 𰈰	kjvd
 嘊	kjvh
@@ -53741,6 +53743,7 @@ columns:
 𠰐	ktkv
 𫻶	ktkv
 𡀿	ktkw
+𮍐	ktle
 𭊌	ktlf
 𡃆	ktlj
 𱔯	ktll
@@ -53763,7 +53766,6 @@ columns:
 𠯯	ktp
 	ktp
 𫑛	ktpf
-𮍐	ktqe
 㖓	ktqf
 𰓵	ktqf
 𰉅	ktqj
@@ -58093,6 +58095,7 @@ columns:
 𤶋	loob
 𨠶	loob
 𨢜	looc
+𮍍	lood
 𮍌	looe
 𰁊	looi
 𘱣	looi
@@ -63650,8 +63653,11 @@ columns:
 𱪹	mrlz
 烄	mrmc
 𩲻	mrmc
+𮘽	mrmd
+𣁧	mrme
 𱬍	mrmh
 𬊼	mrms
+𣀢	mrmt
 𱂮	mrmx
 䯮	mrn
 𤆈	mrn
@@ -71144,6 +71150,7 @@ columns:
 𭂂	oead
 𠄘	oeae
 𠄪	oeae
+𫎷	oeae
 鮡	oeaj
 䑬	oeaj
 𩽥	oeal
@@ -75203,6 +75210,7 @@ columns:
 ᅩ	os
 ㅗ	os
 𘮜	os
+	os
 	os
 槃	osam
 𬵝	osbb
@@ -80982,7 +80990,6 @@ columns:
 𮀺	qodi
 𪿡	qoea
 𭆬	qoed
-𮍍	qoed
 𤜴	qoee
 𥑀	qoee
 𮀚	qoee
@@ -82712,6 +82719,7 @@ columns:
 𩀴	rdlo
 䴅	rdlq
 𗆆	rdlw
+	rdm
 鿁	rdmb
 𢂔	rdmb
 𬮢	rdmb
@@ -84536,8 +84544,6 @@ columns:
 𰃥	rmlw
 燮	rmmd
 𧧡	rmmd
-𮘽	rmmd
-𣁧	rmme
 𧨌	rmmf
 談	rmmh
 𢃔	rmmh
@@ -84557,7 +84563,6 @@ columns:
 𧘳	rmms
 𩙜	rmms
 夑	rmmt
-𣀢	rmmt
 𧪘	rmng
 𢗻	rmnx
 𧮓	rmoc
@@ -90478,7 +90483,7 @@ columns:
 𪛟	syw
 𮨧	syw
 𘯲	syw
-𡢣	sywr
+𡢣	sywi
 𥋮	sywr
 𩆡	sywu
 𡖆	syx
@@ -92780,7 +92785,7 @@ columns:
 鈞	tiae
 䊉	tiam
 憌	tian
-𠤶	tiao
+𠤶	tiat
 鉈	tibb
 𬶍	tibb
 𥹈	tibb
@@ -93014,6 +93019,7 @@ columns:
 䖏	tiwi
 𬖕	tiwi
 𮓮	tiwi
+𮔇	tiwi
 𰽄	tiwi
 𱹆	tiwi
 匫	tiwj
@@ -93041,6 +93047,8 @@ columns:
 𨩠	tiws
 𭄾	tiws
 𰠐	tiws
+𭽂	tiwt
+𮇓	tiwt
 𨰧	tiwu
 𫐽	tiwu
 釥	tix
@@ -97405,7 +97413,6 @@ columns:
 𨬗	twhx
 𩔗	twhx
 𭕫	twhz
-𮔇	twic
 𱿻	twic
 𡢏	twie
 𡱺	twik
@@ -97556,7 +97563,6 @@ columns:
 𡦤	twtl
 𤕽	twtm
 𨰪	twtm
-𮇓	twtm
 鏭	twtn
 䊝	twtn
 𫻍	twtn
@@ -97995,6 +98001,7 @@ columns:
 𫷫	uatp
 𫾯	uatp
 𮣩	uaut
+𠍘	uauu
 𗐟	uawb
 𰏷	uawd
 𬸐	uaxn
@@ -99070,7 +99077,6 @@ columns:
 𦅎	ufum
 𬾽	ufun
 𠌈	ufup
-𠍘	ufur
 𢊎	ufur
 슷	ufur
 ㅾ	ufur
@@ -102787,7 +102793,6 @@ columns:
 𦄼	uwhx
 𩒉	uwhx
 𢉟	uwig
-𭽁	uwil
 𪦍	uwio
 𨈼	uwix
 𫃮	uwiy
@@ -104658,6 +104663,7 @@ columns:
 𠪭	vjjt
 饑	vjju
 飿	vjjv
+𠩀	vjjv
 𠩉	vjjv
 𨱄	vjjv
 𤕀	vjjw
@@ -105047,7 +105053,6 @@ columns:
 𭏪	vljh
 蟨	vlji
 镃	vljj
-𠩀	vljj
 𩝐	vljj
 𲈜	vljj
 𢴺	vljk
@@ -105604,6 +105609,7 @@ columns:
 툍	volv
 퇼	volw
 𡥞	volz
+	vom
 𰾉	voma
 𨱓	vomb
 𩝆	vomd
@@ -107628,6 +107634,7 @@ columns:
 𘧶	wcic
 𘢒	wcid
 𗫇	wcif
+𭽁	wcil
 𘳔	wcil
 𗣫	wcio
 𗫾	wcio
@@ -108189,6 +108196,7 @@ columns:
 𗫳	wcwl
 𘊡	wcwl
 𘧴	wcwl
+𭼾	wcwm
 룱	wcwo
 𗢼	wcwo
 𗢽	wcwo
@@ -109382,7 +109390,6 @@ columns:
 𫱀	wiwf
 姹	wiwg
 𧔗	wiwi
-𭼾	wiwm
 姲	wiwn
 𡝲	wiwn
 𡞉	wiwn
@@ -110280,9 +110287,11 @@ columns:
 𗺔	wloc
 맄	wlof
 𗂷	wlof
+𮨈	wloh
 乥	wloi
 乺	wloi
 릭	wloi
+𤋅	wlom
 릮	wloo
 𨈏	wlor
 릯	wlou
@@ -110869,7 +110878,6 @@ columns:
 록	wooi
 륙	wooi
 𘮣	wooi
-𤋅	woom
 롞	wooo
 륚	wooo
 𭛝	woos
@@ -111237,7 +111245,6 @@ columns:
 鵆	wqoc
 𗹣	wqoc
 𪥾	wqol
-𮨈	wqol
 媥	wqpc
 徧	wqpc
 𪥶	wqpf
@@ -111341,7 +111348,6 @@ columns:
 𠙹	wrjv
 𡡲	wrjy
 𡣳	wrkf
-𠚟	wrkj
 𢖧	wrks
 𡣙	wrla
 𪦖	wrla
@@ -112561,8 +112567,8 @@ columns:
 𧑬	wxei
 𧑸	wxei
 𧕠	wxei
-卹	wxej
 衆	wxej
+卹	wxej
 𧖫	wxeu
 𨖼	wxeu
 𡿻	wxfc
@@ -118717,7 +118723,6 @@ columns:
 𤣱	ywi
 𫞴	ywic
 	ywid
-𭽂	ywit
 玘	ywj
 𪚪	ywjc
 璄	ywje

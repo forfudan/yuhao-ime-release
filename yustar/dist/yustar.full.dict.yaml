@@ -1,7 +1,7 @@
 # encoding: utf-8
 ---
 name: "yustar.full"
-version: "20250312"
+version: "20250709"
 sort: original
 columns:
   - text
@@ -2889,6 +2889,7 @@ columns:
 甆	anar
 玄	anat
 ⽞	anat
+	anat
 𣙄	anay
 𪳪	anbc
 朼	anbm
@@ -7117,7 +7118,6 @@ columns:
 𫍆	bgfr
 弓	bgg
 𢎗	bgg
-𢎜	bgg
 ⼸	bgg
 許	bggi
 𛀺	bggi
@@ -7565,7 +7565,6 @@ columns:
 燮	biib
 𤈫	biib
 𧩮	biib
-𮘽	biib
 㞑	biie
 𩙜	biie
 𤲯	biif
@@ -7586,8 +7585,6 @@ columns:
 䜎	biis
 夑	biit
 𡳉	biit
-𣀢	biit
-𣁧	biit
 𡲶	biiw
 𡲺	biiw
 𡱕	biix
@@ -13038,7 +13035,6 @@ columns:
 嫏	ckby
 霎	ckcn
 𡞘	ckcn
-𭼾	ckco
 𭁮	ckcr
 𡬭	ckcv
 𩖕	ckcy
@@ -15872,7 +15868,6 @@ columns:
 𭒜	cyaj
 娜	cyay
 𭆬	cybb
-𮍍	cybb
 𮗘	cybj
 𰋸	cycp
 𰷟	cycp
@@ -18387,6 +18382,7 @@ columns:
 鼯	dlfl
 𪕀	dlfl
 误	dlfo
+𪡲	dlfo
 𪕣	dlfp
 𪔾	dlfs
 輺	dlfv
@@ -18461,6 +18457,7 @@ columns:
 𬤨	dlla
 𪕚	dllb
 𭮼	dllb
+𪡢	dllc
 輯	dlle
 𪕔	dlle
 闡	dllg
@@ -29057,10 +29054,10 @@ columns:
 𗴾	fsqu
 搽	fsra
 𢴉	fsra
-𢹕	fsrg
 搭	fsrh
 𢰀	fsri
 𱠠	fsri
+𢹕	fsrr
 㧫	fsrs
 𢺊	fsrs
 㼛	fsrw
@@ -29534,6 +29531,7 @@ columns:
 핒	fufb
 핓	fufb
 핕	fufb
+𢎜	fufe
 판	fufe
 팬	fufe
 퍈	fufe
@@ -32903,7 +32901,6 @@ columns:
 𥤢	gcwr
 𫂬	gcxi
 𫖱	gcyg
-𮨈	gcyj
 𱂡	gcyq
 𭐃	gdah
 範	gdaj
@@ -33494,7 +33491,6 @@ columns:
 𪒹	ggkl
 𥯔	gglj
 𪑴	gglj
-𠚟	gglw
 𠂓	ggna
 簙	ggnk
 𬼅	ggnn
@@ -35408,6 +35404,7 @@ columns:
 𘔸	gscn
 𘔺	gscn
 𭑟	gsco
+𭼾	gsco
 𗏎	gscs
 𘔳	gscs
 𘔴	gscs
@@ -35581,6 +35578,7 @@ columns:
 𗏕	gskn
 𗬟	gskn
 𗬠	gskn
+𭽁	gskq
 𗬚	gsks
 𗬛	gsks
 𗬜	gsks
@@ -36115,7 +36113,9 @@ columns:
 𨈏	guya
 䘏	guyf
 𨈐	guyg
+𤋅	guyi
 𘡸	guyi
+𮨈	guyj
 𗢁	guyk
 𨈑	guyl
 𗢂	guyn
@@ -36517,7 +36517,6 @@ columns:
 𘯝	gyy
 	gyy
 	gyy
-𤋅	gyyi
 𘮣	gyyk
 竹	gzz
 𠂉	gzz
@@ -39833,6 +39832,7 @@ columns:
 둒	hjyy
 𤞋	hjzq
 𭎓	hjzt
+𠤶	hkae
 𡊁	hkaj
 𪭛	hkaj
 𤜞	hkaq
@@ -39842,7 +39842,6 @@ columns:
 𘭗	hkat
 	hkat
 𡎭	hkaw
-𠤶	hkay
 𧺍	hkaz
 肈	hkba
 㙟	hkbw
@@ -43136,7 +43135,6 @@ columns:
 𭅞	hylt
 𡍅	hyna
 𡏈	hyni
-𫎷	hynl
 𣝷	hypa
 𣀓	hypb
 魗	hypd
@@ -43408,12 +43406,15 @@ columns:
 𡮲	ibhk
 𤇂	ibht
 煆	ibib
+𮘽	ibib
 𱫂	ibib
 𤊳	ibie
 煅	ibie
 𥥦	ibih
 𫞠	ibih
 𤆾	ibir
+𣀢	ibit
+𣁧	ibit
 賔	ibjb
 𥧨	ibjb
 𮚑	ibjb
@@ -54281,6 +54282,7 @@ columns:
 ᅩ	jvv
 ㅗ	jvv
 𘮜	jvv
+	jvv
 	jvv
 璆	jvvc
 賿	jvvc
@@ -55282,7 +55284,6 @@ columns:
 𩛇	kdbs
 𪾗	kdbu
 𪦺	kdbz
-𮍐	kdcb
 𮝉	kdcm
 𥪞	kdcr
 𰃚	kdcr
@@ -55398,6 +55399,7 @@ columns:
 𰬫	kdtu
 餿	kdub
 𠭦	kdub
+𮍐	kdub
 绵	kduj
 𱷭	kdun
 𫤮	kdus
@@ -59192,7 +59194,6 @@ columns:
 㖃	ldfl
 𫩲	ldfl
 𡅩	ldfo
-𪡲	ldfo
 𡂛	ldfq
 𫫭	ldfs
 𱓻	ldfu
@@ -59247,7 +59248,6 @@ columns:
 𡂮	ldkv
 𱔍	ldkw
 𠲐	ldkx
-𪡢	ldlc
 𡁒	ldle
 𦘁	ldle
 𭌨	ldlp
@@ -61122,7 +61122,6 @@ columns:
 𠯐	ljrv
 𠯭	ljrv
 𠯮	ljrv
-𱒈	ljrv
 𡄗	ljsb
 𦕝	ljse
 嗶	ljsg
@@ -61433,6 +61432,7 @@ columns:
 묷	ljyr
 옧	ljyr
 욳	ljyr
+𱒈	ljyv
 몪	ljyy
 묶	ljyy
 옦	ljyy
@@ -66745,6 +66745,7 @@ columns:
 𱱮	mlxa
 欩	mlxq
 𤶺	mlxq
+𠚟	mlxw
 𬓩	mlxx
 𱶃	mlxx
 邵	mlyf
@@ -86735,7 +86736,6 @@ columns:
 𠌈	rfrc
 슷	rfre
 ㅾ	rfre
-𠍘	rfrg
 𡉡	rfrh
 𢗁	rfri
 슸	rfrr
@@ -86964,7 +86964,6 @@ columns:
 𩨞	rgkd
 懴	rgkf
 𢤝	rgkl
-𭽁	rgkq
 𭟬	rgku
 𢘩	rgkz
 𢥎	rglj
@@ -88272,6 +88271,7 @@ columns:
 𱐏	rnqw
 𰑞	rnri
 𰑯	rnrk
+𠍘	rnrr
 氽	rnse
 𱥯	rnse
 𱦕	rnsh
@@ -89922,8 +89922,8 @@ columns:
 𭜗	rwat
 𲌍	rwbk
 𢝁	rwby
-𡢣	rwcg
 𢝻	rwcj
+𡢣	rwck
 𢗘	rwcp
 𤬱	rwcp
 惚	rwcr
@@ -91724,12 +91724,12 @@ columns:
 㔮	sfln
 𥌵	sfln
 䓕	sflo
-𦰩	sflo
 𦶂	sflo
 𨖑	sflo
 𰱿	sflo
 𱕭	sflo
 𮷣	sflo
+	sflo
 莖	sflp
 𩈡	sflp
 荳	sflq
@@ -92604,6 +92604,7 @@ columns:
 𤮡	siro
 ⽢	siro
 ザ	siro
+	siro
 藌	sirq
 𱻰	sirr
 䔭	sirs
@@ -93546,6 +93547,7 @@ columns:
 㚙	slod
 𦮥	slod
 難	sloe
+𦰩	slof
 㠰	sloj
 𥿃	slos
 𮜈	slpb
@@ -96682,8 +96684,6 @@ columns:
 釤	tcpj
 㣊	tcpu
 𭐝	tcpu
-𮔇	tcqc
-𮇓	tcqm
 𮢪	tcqm
 𨪯	tcqo
 𰶮	tcqo
@@ -97814,6 +97814,9 @@ columns:
 𧱙	tkcn
 𨨧	tkcn
 𢒔	tkcp
+𮇓	tkcq
+𮔇	tkcq
+𭽂	tkct
 𘱓	tkde
 𬫣	tkdf
 𩳥	tkdg
@@ -104791,6 +104794,7 @@ columns:
 𡶮	uxmm
 𬸨	uxmn
 𣧕	uxmy
+	uxmz
 𤔐	uxnb
 𬋪	uxnb
 𭭾	uxnb
@@ -105040,6 +105044,7 @@ columns:
 嶐	uytp
 𡾯	uyur
 𮍌	uyyb
+𮍍	uyyb
 𭾆	uyyu
 𭾋	uyyu
 𭾏	uyyu
@@ -108232,7 +108237,6 @@ columns:
 𩼟	vuwq
 硵	vuws
 磞	vuww
-𠩀	vuww
 𥔺	vuxb
 𩸣	vuxb
 𩽍	vuxf
@@ -108763,6 +108767,7 @@ columns:
 𫩑	vwwh
 础	vwwk
 𠔱	vwwk
+𠩀	vwwk
 𠩉	vwwk
 𤱟	vwwk
 𩶌	vwwk
@@ -112649,7 +112654,6 @@ columns:
 	xckd
 𫞴	xckj
 𡖛	xckl
-𭽂	xckt
 𧟙	xclr
 袽	xclv
 鲗	xcmd
@@ -117301,6 +117305,7 @@ columns:
 𢀾	ynio
 𠄘	ynir
 𠄪	ynir
+𫎷	ynir
 𱀫	yniu
 𨻺	ynje
 𭥟	ynjy
@@ -119093,7 +119098,6 @@ columns:
 ⾪	bd
 弓	bg
 𢎗	bg
-𢎜	bg
 ⼸	bg
 彐	bj
 肀	bj
@@ -119575,6 +119579,7 @@ columns:
 ᅩ	jv
 ㅗ	jv
 𘮜	jv
+	jv
 	jv
 王	jw
 𤣩	jw

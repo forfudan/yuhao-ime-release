@@ -7,7 +7,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.9.0-beta.20250601"
+version = "v3.9.0"
 
 # %%
 try:
@@ -22,16 +22,20 @@ except:
 
 if re.match(r"^v\d+.\d+.\d+$", version):
     shutil.copyfile(
-        "./beta/schema/yuhao/yujoy.full.dict.yaml", f"./dist/yujoy.full.dict.yaml"
+        "./beta/schema/yuhao/yujoy.full.dict.yaml", "./dist/yujoy.full.dict.yaml"
     )
 
 # %%
-shutil.copyfile("./yujoy.pdf", f"./dist/yujoy/yujoy_{version}.pdf")
+shutil.copyfile("./卿雲字根表.pdf", f"./dist/yujoy/卿雲字根表_{version}.pdf")
+shutil.copyfile(
+    "./卿雲字根按鍵讀音字例表.pdf",
+    f"./dist/yujoy/卿雲字根按鍵讀音字例表_{version}.pdf",
+)
 shutil.copyfile(
     "./changelog.md",
     "./dist/yujoy/changelog.md",
 )
-shutil.copyfile("./beta/readme.md", f"./dist/yujoy/readme.txt")
+shutil.copyfile("./beta/readme.md", "./dist/yujoy/readme.txt")
 shutil.copyfile(
     "../../assets/fonts/Yuniversus.ttf",
     "./beta/font/Yuniversus.ttf",

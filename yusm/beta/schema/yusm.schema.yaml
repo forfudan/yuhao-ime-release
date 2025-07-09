@@ -147,7 +147,8 @@ speller:
   delimiter: "`"
   # max_code_length: 0
   auto_select: true
-  algebra:
+  # algebra:
+  #   - xform/^([a-z]{1,5})[a-z]*$/$1/
 
 translator:
   dictionary: yusm
