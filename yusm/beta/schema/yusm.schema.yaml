@@ -21,7 +21,7 @@ switches:
       - yuhao_charset_prioritizer_common
       - yuhao_charset_prioritizer_ubiquitous
     states: [原始排序, 常用字優先, 極常用字優先]
-    reset: 1
+    reset: 0
     # Control+Shift+M
   - options:
       - cjk
@@ -45,9 +45,12 @@ switches:
       - yuhao_chaifen.lv3
     states: [無註解, 二重註解, 多重註解]
     reset: 0
-  - name: yuhao_autocompletion_filter
-    reset: 0
-    states: [輸入預測, 精確匹配]
+  - options:
+      - all_aultocompletion
+      - yuhao_autocompletion_one_code_filter
+      - yuhao_autocompletion_filter
+    states: [輸入預測, 韻碼提示, 精確匹配]
+    reset: 1
     # Control+Shift+Y
   - name: traditionalization
     states: [简保持, 简转繁]
@@ -93,6 +96,7 @@ engine:
     - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro  # 控制臺
   filters:
     - lua_filter@*yuhao.yuhao_autocompletion_filter
+    - lua_filter@*yuhao.yuhao_autocompletion_one_code_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
     - lua_filter@*yuhao.yuhao_charset_filter_common
     - lua_filter@*yuhao.yuhao_charset_filter_tonggui
