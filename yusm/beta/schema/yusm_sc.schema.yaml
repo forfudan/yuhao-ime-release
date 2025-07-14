@@ -46,7 +46,7 @@ switches:
     reset: 0
   - options:
       - all_aultocompletion
-      - yuhao_autocompletion_one_code_filter
+      - yuhao_autocompletion_conditional_filter
       - yuhao_autocompletion_filter
     states: [輸入預測, 韻碼提示, 精確匹配]
     reset: 1
@@ -95,7 +95,7 @@ engine:
     - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro  # 控制臺
   filters:
     - lua_filter@*yuhao.yuhao_autocompletion_filter
-    - lua_filter@*yuhao.yuhao_autocompletion_one_code_filter
+    - lua_filter@*yuhao.yuhao_autocompletion_conditional_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
     - lua_filter@*yuhao.yuhao_charset_filter_common
     - lua_filter@*yuhao.yuhao_charset_filter_tonggui
@@ -145,8 +145,8 @@ yuhao_chaifen:
     phrase: 0
 
 speller:
-  alphabet: zyxwvutsrqponmlkjihgfedcba/
-  initials: zyxwvutsrqponmlkjihgfedcba/
+  alphabet: abcdefghijklmnopqrstuvwxyz/
+  initials: abcdefghijklmnopqrstuvwxyz/
   delimiter: "`"
   # max_code_length: 0
   auto_select: true

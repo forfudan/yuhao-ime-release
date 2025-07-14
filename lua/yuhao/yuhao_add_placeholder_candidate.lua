@@ -35,15 +35,6 @@ local function filter(input, env)
         return
     end
 
-    local input_text = env.engine.context.input
-    local length_of_input = string.len(input_text)
-
-    if length_of_input == 6 then
-        -- Any letter from the 6th position is considered a new character.
-        -- This makes sure that the maxium length of input is 5.
-        return
-    end
-
     -- Count the number of candidates in the input.
     -- If 0, no candidates; if 1, only one candidate; if 2, more than one candidate.
     -- The iteration will consume the candidate, so we store the first and second candidates.
@@ -61,6 +52,8 @@ local function filter(input, env)
         end
     end
 
+    local input_text = env.engine.context.input
+    local length_of_input = string.len(input_text)
     local placeholder_cand = Candidate("placeholder", 1, 5, "", "宇浩·日月")
 
     if number_of_candidates == 0 then
@@ -72,10 +65,11 @@ local function filter(input, env)
             -- `wkku` should return nothing so that RIME will pop out `wkk`
             -- and left `u` in the preedit region
             return
-        elseif length_of_input == 5 then
-            -- If the length of input is 5, we do not add a placeholder candidate.
+        elseif length_of_input >= 5 then
+            -- If the length of input reaches 5, we do not add a placeholder candidate.
             -- Example: `wkkgu` = 個
             -- 可以直接上屏
+            return
         else
             -- If there is no candidates and the input length is less than 5,
             -- we need to prevent auto-selection.

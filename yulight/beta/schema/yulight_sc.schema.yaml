@@ -141,8 +141,8 @@ yuhao_chaifen:
     cycle_key: "Shift+Control+C"
 
 speller:
-  alphabet: zyxwvutsrqponmlkjihgfedcba
-  initials: zyxwvutsrqponmlkjihgfedcba
+  alphabet: abcdefghijklmnopqrstuvwxyz/
+  initials: abcdefghijklmnopqrstuvwxyz/
   delimiter: "`"
   max_code_length: 4
   auto_select: false
