@@ -26,6 +26,9 @@
 20250712: 初版.
 20250713: 修改過濾條件: 當輸入編碼長度等於 3 或 4 時,顯示所有單字候選項,
           且根據剩餘編碼和常用字進行排序.
+20250715: 修復bug:當一個字同時設置了非韻碼簡碼和韻碼簡碼時,如果非韻碼尾碼靠前,
+          則RIME的後選項的備註會提示該非韻碼,導致本過濾器將其過濾.
+          修復後,會強制將此後選項的備註由非韻碼改成韻碼.
 ---------------------------
 --]]
 
@@ -48,18 +51,23 @@ local function is_one_code_and_is_vowel(cand, env)
     local codes_of_character = env.code_rvdb:lookup(character)
     -- env.code_rvdb:lookup() returns space-separated codes.
     -- So we do a loop here to check if any leading n-1 code matches the input.
+    local is_one_code = false
+    local is_vowel = false
+    local vowel = nil
     for code in codes_of_character:gmatch("%S+") do
         if (length_of_input == string.len(code) - 1) and (code:sub(1, length_of_input) == env.engine.context.input) then
             if code:match("[aeiou]$") then
                 -- is one code and is vowel
-                return true, true
+                is_one_code = true
+                is_vowel = true
+                vowel = code:sub(-1)
             else
                 -- is one code but not vowel
-                return true, false
+                is_one_code = true
             end
         end
     end
-    return false, false
+    return is_one_code, is_vowel, vowel
 end
 
 local function filter(input, env)
@@ -97,7 +105,7 @@ local function filter(input, env)
             local table_other_common_chars = {}
             local table_other_uncommon_chars = {}
             for cand in input:iter() do
-                local is_one_code, _ = is_one_code_and_is_vowel(cand, env)
+                local is_one_code, _, _ = is_one_code_and_is_vowel(cand, env)
                 if cand.type ~= "completion" then
                     yield(cand)
                 elseif utf8.len(cand.text) == 1 then
@@ -139,10 +147,11 @@ local function filter(input, env)
                     -- 只顯示剩餘編碼爲韻碼的預測候選項
                     --- 只顯示單字
                     --- 只顯示極常用字
-                    local is_one_code, is_vowel = is_one_code_and_is_vowel(cand, env)
+                    local is_one_code, is_vowel, vowel = is_one_code_and_is_vowel(cand, env)
                     if is_one_code then
                         if is_one_code and is_vowel and (utf8.len(cand.text) == 1) and core.string_is_in_set(cand.text, set_of_ubiquitous_chars) then
-                            yield(cand)
+                            -- 如果預測項的備註是非韻碼,則強制將其改爲韻碼
+                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, vowel))
                         end
                     else
                         -- 如果預測項進入需要再打兩碼及以上的情況
