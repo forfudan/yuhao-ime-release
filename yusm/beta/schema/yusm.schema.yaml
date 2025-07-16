@@ -108,6 +108,8 @@ engine:
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
     - lua_filter@*yuhao.yuhao_charset_prioritizer_ubiquitous
     - uniquifier
+    - lua_filter@*yuhao.yuhao_add_placeholder_candidate
+    - lua_filter@*yuhao.yuhao_unicode_input
 
 traditionalize:
   tags: [abc, reverse_lookup]
@@ -146,8 +148,8 @@ yuhao_chaifen:
     phrase: 0
 
 speller:
-  alphabet: abcdefghijklmnopqrstuvwxyz/
-  initials: abcdefghijklmnopqrstuvwxyz/
+  alphabet: zyxwvutsrqponmlkjihgfedcba/=
+  initials: zyxwvutsrqponmlkjihgfedcba/=
   delimiter: "`"
   # max_code_length: 0
   auto_select: true
@@ -278,6 +280,7 @@ punctuator:
   import_preset: symbols
   half_shape:
     "`": "`"
+    "@": "@"
     "#": "#"
     "%": "%"
     "*": "*"

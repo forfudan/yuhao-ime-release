@@ -21,7 +21,7 @@ switches:
       - yuhao_charset_prioritizer_common
       - yuhao_charset_prioritizer_ubiquitous
     states: [原始排序, 常用字優先, 極常用字優先]
-    reset: 1
+    reset: 0
     # Control+Shift+M
   - options:
       - cjk
@@ -107,6 +107,7 @@ engine:
     - lua_filter@*yuhao.yuhao_charset_prioritizer_ubiquitous
     - uniquifier
     - lua_filter@*yuhao.yuhao_add_placeholder_candidate
+    - lua_filter@*yuhao.yuhao_unicode_input
 
 traditionalize:
   tags: [abc, reverse_lookup]
@@ -145,13 +146,13 @@ yuhao_chaifen:
     phrase: 0
 
 speller:
-  alphabet: abcdefghijklmnopqrstuvwxyz/
-  initials: abcdefghijklmnopqrstuvwxyz/
+  alphabet: zyxwvutsrqponmlkjihgfedcba/=
+  initials: zyxwvutsrqponmlkjihgfedcba/=
   delimiter: "`"
   # max_code_length: 0
   auto_select: true
-  algebra:
-    - xform/^([a-z]{1,5})[a-z]*$/$1/
+  # algebra:
+  #   - xform/^([a-z]{1,5})[a-z]*$/$1/
 
 translator:
   dictionary: yusm_sc
@@ -277,6 +278,7 @@ punctuator:
   import_preset: symbols
   half_shape:
     "`": "`"
+    "@": "@"
     "#": "#"
     "%": "%"
     "*": "*"

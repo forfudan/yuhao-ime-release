@@ -184,6 +184,7 @@ core.cjk_punc_blocks = { -- CJK 核心標點符號區塊
     { 0xFE50, 0xFE6F },  -- 小寫變體形式
     { 0xFE10, 0xFE1F },  -- 豎排形式
     { 0xFF00, 0xFFEF },  -- 半角及全角字符
+    { 0x0000, 0x007f },  -- ASCII 字符
 }
 
 --- 判斷一個字符是不是在一組 Unicode 區位中

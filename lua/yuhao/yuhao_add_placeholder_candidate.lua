@@ -22,6 +22,22 @@
 --]]
 
 local function filter(input, env)
+
+    if (env.engine.schema.config:get_string("schema_name/code") == "yusm") and env.engine.context:get_option("yuhao_autocompletion_filter") then
+        -- Only apply this filter to the yuhao schema.
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
+    end
+
+    if (env.engine.context.input:match("^%L")) then
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
+    end
+
     if env.engine.context.input:match("^[z/`]") then
         -- If the input starts with 'z', '/', or '`', we yield all candidates.
         for cand in input:iter() do
@@ -76,7 +92,7 @@ local function filter(input, env)
             -- Example: `hzlll` = 邊
             -- `hzl` and `hzll` have no candidates, we should add a placeholder
             -- so that `hz` = 自己 will not be auto-selected.
-             yield(placeholder_cand)
+            yield(placeholder_cand)
         end
     elseif number_of_candidates == 1 then
         -- If there is only one candidate, first yield it
