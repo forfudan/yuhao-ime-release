@@ -4,11 +4,13 @@ https://github.com/Ace-Who/rime-xuma/blob/master/schema/lua/ace/xuma_spelling.lu
 用于生成词语拆分
 ------------------------------------------------------------------------
 
+修改者: forFudan 朱宇浩 <dr.yuhao.zhu@outlook.com>
 更新:
 - 20240919: 將詞語拆分中的菱形改爲全角波浪號.
 - 20240921: 更改默認的注解等級.
 - 20250210: 修正了一些顯示錯誤.
 - 20250514: 增加參數,可以選擇是否爲詞語顯示提示.
+- 20250718: 允許用戶在陸標拆分和臺標拆分之間進行切換。
 ---------------------------------------------------------------------------
 ]]
 
@@ -338,10 +340,10 @@ end
     @param env The environment containing the reverse database
     @return The tricomment string
 ]]
-local function get_tricomment(cand, env)
+local function get_tricomment(cand, env, spll_rvdb)
   local text = cand.text
   if utf8.len(text) == 1 then
-    local raw_spelling = env.spll_rvdb:lookup(text)
+    local raw_spelling = spll_rvdb:lookup(text)
     if raw_spelling == '' then return end
     return env.engine.context:get_option('yuhao_chaifen.lv1')
         and xform(raw_spelling:gsub('%[(.-),.*%]', '[%1]'))
@@ -351,13 +353,13 @@ local function get_tricomment(cand, env)
   elseif env.phrase == 0 then
     return ""
   elseif utf8.len(text) > 1 then
-    local spelling = spell_phrase(text, env.spll_rvdb)
+    local spelling = spell_phrase(text, spll_rvdb)
     if not spelling then return end
     spelling = spelling:gsub('{(.-)}', '<%1>')
     if env.engine.context:get_option('yuhao_chaifen.lv1') then
       return ('〔%s〕'):format(spelling)
     end
-    local code = code_phrase(text, env.spll_rvdb)
+    local code = code_phrase(text, spll_rvdb)
     if code ~= '' then
       local codes = {}
       for m in code:gmatch('%S+') do codes[#codes + 1] = m end
@@ -379,15 +381,24 @@ local function filter(input, env)
     for cand in input:iter() do yield(cand) end
     return
   end
+  local spll_rvdb = nil
+  local code_rvdb = nil
+  if env.engine.context:get_option('yuhao_chaifen_source') then
+    spll_rvdb = env.spll_rvdb_tw
+    code_rvdb = env.code_rvdb_tw
+  else
+    spll_rvdb = env.spll_rvdb
+    code_rvdb = env.code_rvdb
+  end
   for cand in input:iter() do
     if cand.type == 'simplified' then
-      local comment = (get_tricomment(cand, env) or '') .. cand.comment
+      local comment = (get_tricomment(cand, env, spll_rvdb) or '') .. cand.comment
       cand = Candidate("simp_rvlk", cand.start, cand._end, cand.text, comment)
     else
       local add_comment = cand.type == 'punct'
-          and env.code_rvdb:lookup(cand.text)
+          and code_rvdb:lookup(cand.text)
           or cand.type ~= 'sentence'
-          and get_tricomment(cand, env)
+          and get_tricomment(cand, env, spll_rvdb)
       if add_comment and add_comment ~= '' then
         cand.comment = cand.type ~= 'completion'
             and env.is_mixtyping
@@ -404,15 +415,18 @@ end
     @param env The environment to initialize
 ]]
 local function init(env)
-  local config = env.engine.schema.config
-  local spll_rvdb = config:get_string('schema_name/spelling')
-  local code_rvdb = config:get_string('schema_name/code')
-  local abc_extags_size = config:get_list_size('abc_segmentor/extra_tags')
+  local spll_rvdb = env.engine.schema.config:get_string('schema_name/spelling')
+  local code_rvdb = env.engine.schema.config:get_string('schema_name/code')
+  local spll_rvdb_tw = env.engine.schema.config:get_string('schema_name/spelling_tw')
+  local code_rvdb_tw = env.engine.schema.config:get_string('schema_name/code_tw')
+  local abc_extags_size = env.engine.schema.config:get_list_size('abc_segmentor/extra_tags')
   env.spll_rvdb = ReverseDb('build/' .. spll_rvdb .. '.reverse.bin')
   env.code_rvdb = ReverseDb('build/' .. code_rvdb .. '.reverse.bin')
+  env.spll_rvdb_tw = ReverseDb('build/' .. spll_rvdb_tw .. '.reverse.bin') or env.spll_rvdb
+  env.code_rvdb_tw = ReverseDb('build/' .. code_rvdb_tw .. '.reverse.bin') or env.code_rvdb
   env.is_mixtyping = abc_extags_size > 0
   rime.init_options(options, env.engine.context)
-  env.phrase = config:get_int('yuhao_chaifen/lua/phrase') or 1
+  env.phrase = env.engine.schema.config:get_int('yuhao_chaifen/lua/phrase') or 1
 end
 
 -- Return the filter and processor

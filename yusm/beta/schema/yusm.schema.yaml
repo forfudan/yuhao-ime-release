@@ -14,6 +14,7 @@ schema:
   dependencies:
     - yuhao_pinyin
     - yusm_chaifen
+    - yusm_chaifen_tw
 
 switches:
   - options:
@@ -69,6 +70,10 @@ switches:
   - name: ascii_punct
     states: [。，, ．，]
     reset: 0
+  - name: yuhao_chaifen_source
+    states: [陸標拆分, 臺標拆分]
+    reset: 0
+    # Control+Shift+L
 
 engine:
   processors:
@@ -139,7 +144,9 @@ yuhao_postpone_full_code:
 
 schema_name:
   code: yusm
+  code_tw: yusm_tw
   spelling: yusm_chaifen
+  spelling_tw: yusm_chaifen_tw
 
 yuhao_chaifen:
   lua:
@@ -310,6 +317,11 @@ key_binder:
       } # 常用詞過濾
     - { when: has_menu, accept: "0", toggle: yuhao_charset_filter_common }
     - { when: has_menu, accept: "/", toggle: yuhao_chaifen.off } # 拆分
+    - {
+        when: always,
+        accept: "Control+Shift+L",
+        toggle: yuhao_chaifen_source,
+      } # 拆分字形
     - {
         when: always,
         accept: "Control+Shift+D",

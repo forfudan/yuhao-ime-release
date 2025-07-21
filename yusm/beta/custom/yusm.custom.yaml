@@ -31,6 +31,7 @@ patch:
   # switches/@8/reset: 1 # [中文, 西文]
   # switches/@9/reset: 1 # [半角, 全角]
   # switches/@10/reset: 1 # [。，, ．，]
+  # switches/@11/reset: 1 # [陸標拆分, 臺標拆分]
   #
   ################
   # 全碼長度設置 #
