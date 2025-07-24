@@ -19,8 +19,7 @@ switches:
   - options:
       - original
       - yuhao_charset_prioritizer_common
-      - yuhao_charset_prioritizer_ubiquitous
-    states: [原始排序, 常用字優先, 極常用字優先]
+    states: [原始排序, 常用字優先]
     reset: 0
     # Control+Shift+M
   - options:
@@ -94,6 +93,7 @@ engine:
     - table_translator
     - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro  # 控制臺
   filters:
+    - lua_filter@*yuhao.yuhao_pop_candidate
     - lua_filter@*yuhao.yuhao_autocompletion_filter
     - lua_filter@*yuhao.yuhao_autocompletion_conditional_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
@@ -104,7 +104,6 @@ engine:
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - lua_filter@*yuhao.yuhao_postpone_full_code
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
-    - lua_filter@*yuhao.yuhao_charset_prioritizer_ubiquitous
     - uniquifier
     - lua_filter@*yuhao.yuhao_add_placeholder_candidate
     - lua_filter@*yuhao.yuhao_unicode_input

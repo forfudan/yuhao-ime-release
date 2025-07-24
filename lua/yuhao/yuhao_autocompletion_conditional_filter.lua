@@ -84,7 +84,7 @@ local function filter(input, env)
             for cand in input:iter() do
                 if cand.type ~= "completion" then
                     yield(cand)
-                elseif utf8.len(cand.text) == 1 then
+                elseif utf8.len(cand.text) <= 2 then
                     if core.string_is_in_set(cand.text, set_of_common_chars) then
                         table.insert(table_common_chars, cand)
                     else
