@@ -7,7 +7,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.9.1-beta.20250723"
+version = "v3.9.1-beta.20250809"
 
 # %%
 try:
@@ -63,17 +63,18 @@ for file_name in [
 #     "./dist/yusm/schema/yuhao/yustar.roots.dict.yaml",
 # )
 
-# for file_name in [
-#     # "yusm_tc.schema.yaml",
-#     # "yusm_tc.dict.yaml",
-#     # "yuhao/yusm_tc.quick.dict.yaml",
-#     # "yuhao/yusm_tc.words_literature.dict.yaml",
-#     # "yuhao/yusm_tc.words.dict.yaml",
-# ]:
-#     try:
-#         os.remove(f"./dist/yusm/schema/{file_name}")
-#     except:
-#         print(f"{file_name} does not exist. It is not deleted.")
+for file_name in [
+    "yuhao/yusm_sc.words_tbtu.dict.yaml"
+    # "yusm_tc.schema.yaml",
+    # "yusm_tc.dict.yaml",
+    # "yuhao/yusm_tc.quick.dict.yaml",
+    # "yuhao/yusm_tc.words_literature.dict.yaml",
+    # "yuhao/yusm_tc.words.dict.yaml",
+]:
+    try:
+        os.remove(f"./dist/yusm/schema/{file_name}")
+    except:
+        print(f"{file_name} does not exist. It is not deleted.")
 
 # for file_name in [
 #     "yusm_tc.schema.yaml",

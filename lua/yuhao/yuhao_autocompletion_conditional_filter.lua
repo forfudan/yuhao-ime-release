@@ -29,6 +29,7 @@
 20250715: 修復bug:當一個字同時設置了非韻碼簡碼和韻碼簡碼時,如果非韻碼尾碼靠前,
           則RIME的後選項的備註會提示該非韻碼,導致本過濾器將其過濾.
           修復後,會強制將此後選項的備註由非韻碼改成韻碼.
+20250809: 爲空格上屏的候選項添加備註,以便用户及時區分空格上屏簡碼和韻碼上屏簡碼.
 ---------------------------
 --]]
 
@@ -81,9 +82,17 @@ local function filter(input, env)
             -- 如果輸入長度等於 4,則顯示全部單字候選項
             local table_common_chars = {}
             local table_uncommon_chars = {}
+            local index_of_cand = 0
             for cand in input:iter() do
                 if cand.type ~= "completion" then
-                    yield(cand)
+                    -- 非預測候選項,直接顯示
+                    if index_of_cand == 0 then
+                        -- 如果是第一個候選項,則顯示空格
+                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                    else
+                        yield(cand)
+                    end
+                    index_of_cand = index_of_cand + 1
                 elseif utf8.len(cand.text) <= 2 then
                     if core.string_is_in_set(cand.text, set_of_common_chars) then
                         table.insert(table_common_chars, cand)
@@ -104,10 +113,18 @@ local function filter(input, env)
             local table_one_code_uncommon_chars = {}
             local table_other_common_chars = {}
             local table_other_uncommon_chars = {}
+            local index_of_cand = 0
             for cand in input:iter() do
                 local is_one_code, _, _ = is_one_code_and_is_vowel(cand, env)
                 if cand.type ~= "completion" then
-                    yield(cand)
+                    -- 非預測候選項,直接顯示
+                    if index_of_cand == 0 then
+                        -- 如果是第一個候選項,則顯示空格
+                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                    else
+                        yield(cand)
+                    end
+                    index_of_cand = index_of_cand + 1
                 elseif utf8.len(cand.text) == 1 then
                     if is_one_code then
                         if core.string_is_in_set(cand.text, set_of_common_chars) then
@@ -138,10 +155,17 @@ local function filter(input, env)
             end
         else
             -- 如果輸入長度小於 3
+            local index_of_cand = 0
             for cand in input:iter() do
                 if cand.type ~= "completion" then
                     -- 非預測候選項,直接顯示
-                    yield(cand)
+                    if index_of_cand == 0 then
+                        -- 如果是第一個候選項,則顯示空格
+                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                    else
+                        yield(cand)
+                    end
+                    index_of_cand = index_of_cand + 1
                 else
                     -- 只顯示剩餘編碼爲一的預測候選項
                     -- 只顯示剩餘編碼爲韻碼的預測候選項

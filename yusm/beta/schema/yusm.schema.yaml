@@ -10,7 +10,9 @@ schema:
     - Rime方案 <https://shurufa.app>
     - 官方QQ群 735728797
   description: |
-    宇浩·日月
+    宇浩·日月輸入法，又稱大明輸入法、明碼。
+    基於宇浩拆分設計製作，是世上第一款純形前綴碼方案，可完全離開空格鍵進行輸入。
+    其名源自尚書大傳之「日月有常，星辰有行」。
   dependencies:
     - yuhao_pinyin
     - yusm_chaifen

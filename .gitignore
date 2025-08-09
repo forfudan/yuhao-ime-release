@@ -7,7 +7,7 @@
 */beta/mabiao
 !*/beta/mabiao/baidu/fcitx*
 !*/beta/mabiao/baidu/小小*
-!*/beta/mabiao/baidu/*.conf
+!*/beta/mabiao/baidu/小小配置.txt
 
 */beta/schema/yuhao
 !*/beta/schema/yuhao/yuhao.extended.dict.yaml

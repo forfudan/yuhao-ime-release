@@ -10,7 +10,7 @@ schema:
     - Rime方案 <https://shurufa.app>
     - 官方QQ群 735728797
   description: |
-    宇浩·日月
+    宇浩·日月·以大陆简化字字频设置简码，全码和通用方案相同。
   dependencies:
     - yuhao_pinyin
     - yusm_chaifen
