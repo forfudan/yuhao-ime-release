@@ -77,6 +77,10 @@ local function filter(input, env)
         for cand in input:iter() do
             yield(cand)
         end
+    elseif env.engine.context.input:match("^[z/`]") then
+        for cand in input:iter() do
+            yield(cand)
+        end
     else
         if string.len(env.engine.context.input) == 4 then
             -- 如果輸入長度等於 4,則顯示全部單字候選項
