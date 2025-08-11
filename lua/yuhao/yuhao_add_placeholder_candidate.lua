@@ -18,13 +18,14 @@
 
 版本:
 20250712: 初版.
+20250810: 如果沒有空格上屏的簡碼字,則不需要添加佔位符候選項.
 ---------------------------
 --]]
 
 local function filter(input, env)
 
-    if (env.engine.schema.config:get_string("schema_name/code") == "yusm") and env.engine.context:get_option("yuhao_autocompletion_filter") then
-        -- Only apply this filter to the yuhao schema.
+    if env.engine.context:get_option("yuhao_hide_space_candidates") and env.engine.context:get_option("yuhao_autocompletion_filter") then
+        -- If there is no space candidates and no autocompletion.
         for cand in input:iter() do
             yield(cand)
         end

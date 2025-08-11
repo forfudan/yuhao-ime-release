@@ -3,7 +3,7 @@
 
 schema:
   schema_id: yusm_essence
-  name: 宇浩·日月·簡約
+  name: 宇浩·日月·整句
   version: 乙巳立夏
   author:
     - 作者 朱宇浩
@@ -17,6 +17,9 @@ schema:
     - yuhao_pinyin
 
 switches:
+  - options: [ gb2312, gbk, utf8 ]
+    states: [ gb2312, GBK, UTF-8 ]
+    reset: 1
   - name: ascii_mode
     states: [中文, 西文]
     reset: 0
@@ -50,6 +53,8 @@ engine:
     - script_translator
     - script_translator@pinyin
   filters:
+    - charset_filter@gb2312
+    - charset_filter@gbk
     - uniquifier
 
 speller:
@@ -120,6 +125,7 @@ key_binder:
   bindings:
     - { when: always, accept: "Control+period", toggle: ascii_punct }
     - { when: always, accept: "Control+Shift+period", toggle: ascii_punct }
+    - { when: has_menu, accept: "0", toggle: utf8 }
     - { when: has_menu, accept: semicolon, send: 2 } # 分号次选
     - { when: has_menu, accept: apostrophe, send: 3 } # 引号三选
     - { when: has_menu, accept: minus, send: Page_Up } # 減號上翻頁

@@ -3,7 +3,7 @@
 
 schema:
   schema_id: yusm
-  name: 宇浩·日月
+  name: 宇浩·日月·大明
   version: 乙巳立夏
   author:
     - 作者 朱宇浩
@@ -54,6 +54,13 @@ switches:
     states: [輸入預測, 韻碼提示, 精確匹配]
     reset: 1
     # Control+Shift+Y
+  - name: yuhao_hide_space_candidates
+    states: [有空格簡, 無空格簡]
+    reset: 0
+  - name: yuhao_chaifen_source
+    states: [陸標拆分, 臺標拆分]
+    reset: 0
+    # Control+Shift+L
   - name: traditionalization
     states: [简保持, 简转繁]
     reset: 0
@@ -71,10 +78,6 @@ switches:
   - name: ascii_punct
     states: [。，, ．，]
     reset: 0
-  - name: yuhao_chaifen_source
-    states: [陸標拆分, 臺標拆分]
-    reset: 0
-    # Control+Shift+L
 
 engine:
   processors:
@@ -102,6 +105,7 @@ engine:
     - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro  # 控制臺
   filters:
     - lua_filter@*yuhao.yuhao_pop_candidate
+    - lua_filter@*yuhao.yuhao_hide_space_candidates
     - lua_filter@*yuhao.yuhao_autocompletion_filter
     - lua_filter@*yuhao.yuhao_autocompletion_conditional_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
@@ -333,6 +337,11 @@ key_binder:
         accept: "Control+Shift+H",
         toggle: yuhao_postpone_full_code,
       } # 全碼後置
+    - {
+        when: always,
+        accept: "Control+Shift+K",
+        toggle: yuhao_hide_space_candidates,
+      } # 隱藏空格上屏字
     - {
         when: always,
         accept: "Control+Shift+Y",

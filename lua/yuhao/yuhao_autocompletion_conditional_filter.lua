@@ -30,6 +30,10 @@
           則RIME的後選項的備註會提示該非韻碼,導致本過濾器將其過濾.
           修復後,會強制將此後選項的備註由非韻碼改成韻碼.
 20250809: 爲空格上屏的候選項添加備註,以便用户及時區分空格上屏簡碼和韻碼上屏簡碼.
+20250810: 爲候選項添加備註,以便用户及時區分頂字上屏編碼.
+          當編碼小於4時,也提示韻碼上屏簡詞.
+          當編碼小於3時,也提示韻碼上屏的生僻字,但置於常用字之後.
+20250811: 五碼首選項備註改作「頂屏」。
 ---------------------------
 --]]
 
@@ -82,7 +86,19 @@ local function filter(input, env)
             yield(cand)
         end
     else
-        if string.len(env.engine.context.input) == 4 then
+        if string.len(env.engine.context.input) == 5 then
+            -- 如果輸入長度等於 4,則顯示全部單字候選項
+            local index_of_cand = 0
+            for cand in input:iter() do
+                if index_of_cand == 0 then
+                    -- 如果是第一個候選項,則顯示"頂屏"
+                    yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                else
+                    yield(cand)
+                end
+                index_of_cand = index_of_cand + 1
+            end
+        elseif string.len(env.engine.context.input) == 4 then
             -- 如果輸入長度等於 4,則顯示全部單字候選項
             local table_common_chars = {}
             local table_uncommon_chars = {}
@@ -91,13 +107,19 @@ local function filter(input, env)
                 if cand.type ~= "completion" then
                     -- 非預測候選項,直接顯示
                     if index_of_cand == 0 then
-                        -- 如果是第一個候選項,則顯示空格
-                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                        if env.engine.context.input:match("[aeiou]$") then
+                            -- 如果輸入末碼是韻碼,則顯示"頂屏"
+                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                        else
+                            -- 如果是第一個候選項,則顯示"空格"
+                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                        end
                     else
                         yield(cand)
                     end
                     index_of_cand = index_of_cand + 1
-                elseif utf8.len(cand.text) <= 2 then
+                else
+                    -- elseif utf8.len(cand.text) <= 2 then
                     if core.string_is_in_set(cand.text, set_of_common_chars) then
                         table.insert(table_common_chars, cand)
                     else
@@ -117,14 +139,20 @@ local function filter(input, env)
             local table_one_code_uncommon_chars = {}
             local table_other_common_chars = {}
             local table_other_uncommon_chars = {}
+            local table_one_code_words = {}
             local index_of_cand = 0
             for cand in input:iter() do
                 local is_one_code, _, _ = is_one_code_and_is_vowel(cand, env)
                 if cand.type ~= "completion" then
                     -- 非預測候選項,直接顯示
                     if index_of_cand == 0 then
-                        -- 如果是第一個候選項,則顯示空格
-                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                        if env.engine.context.input:match("[aeiou]$") then
+                            -- 如果輸入末碼是韻碼,則顯示"頂屏"
+                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                        else
+                            -- 如果是第一個候選項,則顯示"空格"
+                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                        end
                     else
                         yield(cand)
                     end
@@ -143,9 +171,17 @@ local function filter(input, env)
                             table.insert(table_other_uncommon_chars, cand)
                         end
                     end
+                else
+                    if is_one_code then
+                        -- 還需要輸入一碼的詞
+                        table.insert(table_one_code_words, cand)
+                    end
                 end
             end
             for _, cand in ipairs(table_one_code_common_chars) do
+                yield(cand)
+            end
+            for _, cand in ipairs(table_one_code_words) do
                 yield(cand)
             end
             for _, cand in ipairs(table_one_code_uncommon_chars) do
@@ -160,12 +196,18 @@ local function filter(input, env)
         else
             -- 如果輸入長度小於 3
             local index_of_cand = 0
+            local table_one_code_uncommon_chars = {}
             for cand in input:iter() do
                 if cand.type ~= "completion" then
                     -- 非預測候選項,直接顯示
                     if index_of_cand == 0 then
-                        -- 如果是第一個候選項,則顯示空格
-                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                        if env.engine.context.input:match("[aeiou]$") then
+                            -- 如果輸入末碼是韻碼,則顯示"頂屏"
+                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                        else
+                            -- 如果是第一個候選項,則顯示"空格"
+                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                        end
                     else
                         yield(cand)
                     end
@@ -177,16 +219,29 @@ local function filter(input, env)
                     --- 只顯示極常用字
                     local is_one_code, is_vowel, vowel = is_one_code_and_is_vowel(cand, env)
                     if is_one_code then
-                        if is_one_code and is_vowel and (utf8.len(cand.text) == 1) and core.string_is_in_set(cand.text, set_of_ubiquitous_chars) then
-                            -- 如果預測項的備註是非韻碼,則強制將其改爲韻碼
-                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, vowel))
+                        if is_vowel then
+                            if (utf8.len(cand.text) == 1) then
+                                if core.string_is_in_set(cand.text, set_of_ubiquitous_chars) then
+                                    -- 如果預測項的備註是非韻碼,則強制將其改爲韻碼
+                                    yield(Candidate(cand.type, cand.start, cand._end, cand.text, vowel))
+                                else
+                                    table.insert(table_one_code_uncommon_chars, cand)
+                                end
+                            end
+                            if (utf8.len(cand.text) > 1) then
+                                -- 簡碼詞
+                                yield(Candidate(cand.type, cand.start, cand._end, cand.text, vowel))
+                            end
                         end
                     else
                         -- 如果預測項進入需要再打兩碼及以上的情況
                         -- 直接跳過剩下所有的預測候選項
-                        return
+                        break
                     end
                 end
+            end
+            for _, cand in ipairs(table_one_code_uncommon_chars) do
+                yield(cand)
             end
         end
     end

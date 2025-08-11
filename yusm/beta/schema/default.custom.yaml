@@ -1,5 +1,4 @@
 patch:
   schema_list:
-    - schema: yusm    # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
-    - schema: yusm_sc # 以简化汉字字频设置简码，全码同上
-    - schema: yusm_essence # 简约版
+    - schema: yusm          # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
+    - schema: yusm_essence  # 無 lua 整句輸入
