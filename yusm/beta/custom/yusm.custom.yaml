@@ -23,25 +23,15 @@ patch:
   # switches/@0/reset: 1 # [原始排序, 常用字優先]
   # switches/@1/reset: 1 # [全漢字, 常用字, 通规字, 陸繁字]
   # switches/@2/reset: 1 # [字詞同出, 全碼出單]
-  # switches/@3/reset: 1 # [原始排序, 全碼後置]
-  # switches/@4/reset: 2 # [無註解, 二重註解, 多重註解]
-  # switches/@5/reset: 2 # [輸入預測, 韻碼提示, 精確匹配]
-  # switches/@6/reset: 1 # [有空格簡, 無空格簡]
-  # switches/@7/reset: 1 # [陸標拆分, 臺標拆分]
-  # switches/@8/reset: 1 # [简保持, 简转繁]
-  # switches/@9/reset: 1 # [繁保持, 繁轉簡]
-  # switches/@10/reset: 1 # [中文, 西文]
-  # switches/@11/reset: 1 # [半角, 全角]
-  # switches/@12/reset: 1 # [。，, ．，]
-  #
-  ################
-  # 全碼後置設定 #
-  ################
-  ## 以下列出之漢字,出簡後,於全碼後置之.用户可自定義.
-  ## 需要全碼後置的漢字列表,缺省時默認後置所有.
-  # yuhao_postpone_full_code/+:
-  #   selected_chars: ""  # 後置漢字
-  #   max_index: 3  # 最大後置位置
+  # switches/@3/reset: 2 # [無註解, 二重註解, 多重註解]
+  # switches/@4/reset: 1 # [韻碼提示, 精確匹配, 輸入預測]
+  # switches/@5/reset: 1 # [有空格簡, 無空格簡]
+  # switches/@6/reset: 1 # [陸標拆分, 臺標拆分]
+  # switches/@7/reset: 1 # [简保持, 简转繁]
+  # switches/@8/reset: 1 # [繁保持, 繁轉簡]
+  # switches/@9/reset: 1 # [中文, 西文]
+  # switches/@10/reset: 1 # [半角, 全角]
+  # switches/@11/reset: 1 # [。，, ．，]
   #
   ################
   # 全碼長度設置 #

@@ -11,7 +11,6 @@ schema:
     - 官方QQ群 735728797
   description: |
     宇浩輸入法日月方案之簡約版,不使用任何腳本,无字詞過濾,无拆分提示,不自動上屏.
-    支持繁簡全拼混輸.
     適用於終端編輯器配合 rime-ls 使用.
   dependencies:
     - yuhao_pinyin
@@ -51,7 +50,7 @@ engine:
     - history_translator@history
     - reverse_lookup_translator
     - script_translator
-    - script_translator@pinyin
+    # - script_translator@pinyin
   filters:
     - charset_filter@gb2312
     - charset_filter@gbk

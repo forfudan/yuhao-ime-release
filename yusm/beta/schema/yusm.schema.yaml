@@ -7,7 +7,7 @@ schema:
   version: 乙巳立夏
   author:
     - 作者 朱宇浩
-    - Rime方案 <https://shurufa.app>
+    - 官方網站 <https://shurufa.app>
     - 官方QQ群 735728797
   description: |
     宇浩·日月輸入法，又稱大明輸入法、明碼。
@@ -37,10 +37,6 @@ switches:
     states: [字詞同出, 全碼出單]
     reset: 0
     # Control+Shift+D
-  - name: yuhao_postpone_full_code
-    reset: 0
-    states: [原始排序, 全碼後置]
-    # Control+Shift+H
   - options:
       - yuhao_chaifen.off
       - yuhao_chaifen.lv2
@@ -48,11 +44,11 @@ switches:
     states: [無註解, 二重註解, 多重註解]
     reset: 0
   - options:
-      - all_aultocompletion
       - yuhao_autocompletion_conditional_filter
       - yuhao_autocompletion_filter
-    states: [輸入預測, 韻碼提示, 精確匹配]
-    reset: 1
+      - all_aultocompletion
+    states: [韻碼提示, 精確匹配, 輸入預測]
+    reset: 0
     # Control+Shift+Y
   - name: yuhao_hide_space_candidates
     states: [有空格簡, 無空格簡]
@@ -115,7 +111,6 @@ engine:
     - simplifier@traditionalize
     - simplifier@simplify
     - lua_filter@*yuhao.yuhao_chaifen_filter
-    - lua_filter@*yuhao.yuhao_postpone_full_code
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
     - uniquifier
     - lua_filter@*yuhao.yuhao_add_placeholder_candidate
@@ -138,14 +133,6 @@ simplify:
   comment_format:
     - xform/^/〔/
     - xform/$/〕/
-
-yuhao_postpone_full_code:
-  ## 以下列出之漢字,出簡後,於全碼後置之.用户可自定義.
-  ## 需要全碼後置的漢字列表,缺省時默認後置所有.
-  # selected_chars: "束員员冻凍准"
-  tags: [abc]
-  lua:
-    max_index: 3 # 最大後置位置，默認爲 3
 
 schema_name:
   code: yusm
@@ -205,13 +192,9 @@ yuhao_macro:
     macro: [0x2f] # 當輸入串以 "/" 開頭時, 認爲是宏調用
   macros:
     help:
-      # - { type: tip, name: ❖配置中心 }
-      - { type: switch, name: traditionalization, states: [☐简保持, ☑简转繁] }
-      - { type: switch, name: simplification, states: [☐繁保持, ☑繁轉簡] }
-      - { type: switch, name: full_shape, states: [☐半角, ☑全角] }
-      - { type: switch, name: ascii_punct, states: [☐中文標點, ☑西文標點] }
-    set:
-      # - { type: tip, name: ❖配置中心 }
+      - { type: switch, name: yuhao_single_char_only_for_full_code, states: [☐字詞同出, ☑全碼出單] }
+      - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }
+      - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
       - { type: switch, name: traditionalization, states: [☐简保持, ☑简转繁] }
       - { type: switch, name: simplification, states: [☐繁保持, ☑繁轉簡] }
       - { type: switch, name: full_shape, states: [☐半角, ☑全角] }
@@ -225,21 +208,15 @@ yuhao_macro:
       - { type: eval, name: Ⓢ時間戳, expr: return tostring(os.time()) }
     char:
       - {
-          type: switch,
-          name: yuhao_single_char_only_for_full_code,
-          states: [☐字詞, ☑純單],
-        }
-    div:
-      - {
           type: radio,
           names:
             [
-              yuhao_chaifen.off,
-              yuhao_chaifen.lv1,
-              yuhao_chaifen.lv2,
-              yuhao_chaifen.lv3,
+              cjk,
+              yuhao_charset_filter_common,
+              yuhao_charset_filter_tonggui,
+              yuhao_charset_filter_harmonic,
             ],
-          states: [☐☐☐註解, ☑☐☐註解, ☐☑☐註解, ☐☐☑註解],
+          states: [☐☐全漢字, ☐☑常用字, ☑☐通規字, ☑☑陸標繁],
         }
     cjk:
       - {
@@ -247,12 +224,30 @@ yuhao_macro:
           names:
             [
               cjk,
-              yuhao_charset_prioritizer,
               yuhao_charset_filter_common,
               yuhao_charset_filter_tonggui,
+              yuhao_charset_filter_harmonic,
             ],
-          states: [☐☐全漢字, ☐☑常用字前置, ☑☐常用字, ☑☑通規字],
+          states: [☐☐全漢字, ☐☑常用字, ☑☐通規字, ☑☑陸標繁],
         }
+    word:
+      - {
+          type: switch,
+          name: yuhao_single_char_only_for_full_code,
+          states: [☐字詞, ☑純單],
+        }
+    auto:
+      - {
+      type: radio,
+      names: [yuhao_autocompletion_conditional_filter, yuhao_autocompletion_filter, all_aultocompletion],
+      states: [☐☐韻碼提示, ☐☑精確匹配, ☑☐輸入預測],
+      }
+    space:
+      - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }
+    chaifen:
+      - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
+    div:
+      - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
     trad:
       - { type: switch, name: traditionalization, states: [☐不轉換, ☑簡轉繁] }
     simp:
@@ -332,11 +327,6 @@ key_binder:
         accept: "Control+Shift+D",
         toggle: yuhao_single_char_only_for_full_code,
       } # 全码出单
-    - {
-        when: always,
-        accept: "Control+Shift+H",
-        toggle: yuhao_postpone_full_code,
-      } # 全碼後置
     - {
         when: always,
         accept: "Control+Shift+K",
