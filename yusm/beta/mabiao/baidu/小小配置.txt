@@ -5,6 +5,7 @@ key=abcdefghijklmnopqrstuvwxyz/
 len=5
 match=0
 commit=0 0 0
+push=aoeiu
 auto_clear=5
 simple=0
 assist=z mb/pinyin.txt

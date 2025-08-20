@@ -38,14 +38,14 @@ shutil.copyfile(
 shutil.copyfile("./beta/readme.md", "./dist/yujoy/readme.txt")
 shutil.copyfile(
     "../../assets/fonts/Yuniversus.ttf",
-    "./beta/font/Yuniversus.ttf",
+    "./beta/fonts/Yuniversus.ttf",
 )
 
 copy_tree("./beta/mabiao/", "./dist/yujoy/mabiao/")
 copy_tree("./beta/schema/", "./dist/yujoy/schema/")
 copy_tree("./beta/custom/", "./dist/yujoy/custom/")
 copy_tree("./beta/trime/", "./dist/yujoy/trime/")
-copy_tree("./beta/font/", "./dist/yujoy/font/")
+copy_tree("./beta/fonts/", "./dist/yujoy/fonts/")
 
 # %%
 # copy yuhao

@@ -40,7 +40,7 @@ shutil.copyfile(
 shutil.copyfile("./beta/readme.md", "./dist/yustar/readme.txt")
 shutil.copyfile(
     "../../assets/fonts/Yuniversus.ttf",
-    "./beta/font/Yuniversus.ttf",
+    "./beta/fonts/Yuniversus.ttf",
 )
 shutil.copyfile(
     "../yujoy/beta/schema/yuhao.essay.txt", f"./beta/schema/yuhao.essay.txt"
@@ -50,7 +50,7 @@ copy_tree("./beta/mabiao/", "./dist/yustar/mabiao/")
 copy_tree("./beta/schema/", "./dist/yustar/schema/")
 copy_tree("./beta/custom/", "./dist/yustar/custom/")
 copy_tree("./beta/trime/", "./dist/yustar/trime/")
-copy_tree("./beta/font/", "./dist/yustar/font/")
+copy_tree("./beta/fonts/", "./dist/yustar/fonts/")
 
 # %%
 # copy yuhao

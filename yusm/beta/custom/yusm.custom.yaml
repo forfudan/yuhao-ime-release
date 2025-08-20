@@ -8,12 +8,14 @@ patch:
   # menu/page_size: 6  # 每頁候選數量
   # style/horizontal: true  # Windows 橫排候選欄
   # style/candidate_list_layout: linear  # MacOS 橫排候選欄
-  # style/inline_preedit: false  # 候選欄内置於輸入界面
-  # style/preedit_type: composition  # 候選顯示字母(composition)还是候選(preview)
-  # style/inline_candidate: false  # MacOS 候選顯示字母(false)还是候選(true)
+  # style/inline_preedit: false  # 候選欄内置於輸入界面(true)还是独立界面(false)
+  # style/preedit_type: preview  # 候選顯示字母(composition)还是候選(preview)
+  # style/inline_candidate: true  # MacOS 候選顯示字母(false)还是候選(true)
   # style/layout/margin_x: -1 # Windows 關閉候選欄 
   # style/alpha: 0.01  #  MacOS 隱藏候選欄
   # font_face: Yuniversus, Arial, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2  # 字體
+  #
+  # speller/auto_select: false  # 自動選擇唯一候選項(true)或否(false)
   #
   ####################
   # 控制開關默認設置 #

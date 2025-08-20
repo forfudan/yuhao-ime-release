@@ -19,10 +19,26 @@
 版本:
 20250712: 初版.
 20250810: 如果沒有空格上屏的簡碼字,則不需要添加佔位符候選項.
+20250820: 如果auto_select爲false,即不自動選擇候選項,則不需要添加佔位符候選項.
 ---------------------------
 --]]
 
-local function filter(input, env)
+local this = {}
+
+function this.init(env)
+    local config = env.engine.schema.config
+    env.auto_select = config:get_string('speller/auto_select')
+end
+
+function this.func(input, env)
+
+    if env.auto_select == "false" then
+        -- 如果不自動選擇候選項,則不需要添加佔位符候選項.
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
+    end
 
     if env.engine.context:get_option("yuhao_hide_space_candidates") and env.engine.context:get_option("yuhao_autocompletion_filter") then
         -- If there is no space candidates and no autocompletion.
@@ -114,6 +130,4 @@ local function filter(input, env)
     end
 end
 
-return {
-    func = filter
-}
+return this

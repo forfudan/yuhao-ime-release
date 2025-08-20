@@ -7,7 +7,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.9.1-beta.20250812"
+version = "v3.9.1-beta.20250820"
 
 # %%
 try:
@@ -34,14 +34,14 @@ if re.match(r"^v\d+.\d+.\d+$", version):
 # shutil.copyfile("./beta/readme.md", f"./dist/yusm/readme.txt")
 shutil.copyfile(
     "../../assets/fonts/Yuniversus.ttf",
-    "./beta/font/Yuniversus.ttf",
+    "./beta/fonts/Yuniversus.ttf",
 )
 
 copy_tree("./beta/mabiao/", "./dist/yusm/mabiao/")
 copy_tree("./beta/schema/", "./dist/yusm/schema/")
 copy_tree("./beta/custom/", "./dist/yusm/custom/")
 copy_tree("./beta/trime/", "./dist/yusm/trime/")
-copy_tree("./beta/font/", "./dist/yusm/font/")
+copy_tree("./beta/fonts/", "./dist/yusm/fonts/")
 
 # %%
 # copy yuhao

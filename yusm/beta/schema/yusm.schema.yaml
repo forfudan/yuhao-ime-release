@@ -82,6 +82,7 @@ engine:
     - recognizer
     - lua_processor@*yuhao.yuhao_chaifen_processor
     - key_binder
+    - lua_processor@*yuhao.yuhao_auto_select_postponed
     - speller
     - punctuator
     - selector
@@ -352,4 +353,7 @@ recognizer:
     number: "^[-+]?[0-9][,.:0-9]*[%]?$"
 
 style:
-    font_face: Yuniversus
+    inline_preedit: true  # 候選欄内置於輸入界面
+    preedit_type: composition  # 候選顯示字母(composition)还是候選(preview)
+    inline_candidate: false  # MacOS 候選顯示字母(false)还是候選(true)
+    font_face: Yuniversus  # 字體
