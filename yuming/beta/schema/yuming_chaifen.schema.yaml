@@ -2,8 +2,8 @@
 # encoding: utf-8
 
 schema:
-  schema_id: yusm_chaifen_tw
-  name: 宇浩·日月·全漢字拆分表·臺灣字形
+  schema_id: yuming_chaifen
+  name: 宇浩·日月·全漢字拆分表·大陸字形
   version: 20250504
   author:
     - 發明人 朱宇浩
@@ -12,5 +12,5 @@ schema:
     配合 lua_filter 實現三重註解功能。
 
 translator:
-  dictionary: yusm_chaifen_tw
+  dictionary: yuming_chaifen
   enable_user_dict: false

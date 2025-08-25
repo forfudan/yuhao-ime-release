@@ -2,15 +2,15 @@
 # encoding: utf-8
 
 schema:
-  schema_id: yusm_essence
-  name: 宇浩·日月·整句
+  schema_id: yuming_essence
+  name: 日月·整句
   version: 乙巳立夏
   author:
     - 作者 朱宇浩
     - Rime方案 <https://shurufa.app>
     - 官方QQ群 735728797
   description: |
-    宇浩輸入法日月方案之簡約版,不使用任何腳本,无字詞過濾,无拆分提示,不自動上屏.
+    日月輸入法之簡約版,不使用任何腳本,无字詞過濾,无拆分提示,不自動上屏.
     適用於終端編輯器配合 rime-ls 使用.
   dependencies:
     - yuhao_pinyin
@@ -63,8 +63,8 @@ speller:
   auto_select: true
 
 translator:
-  dictionary: yusm
-  prism: yusm
+  dictionary: yuming
+  prism: yuming
   db_class: tabledb
   enable_completion: true
   enable_sentence: false

@@ -7,7 +7,7 @@ python build_release.py
 cd ../yujoy
 python build_release.py
 
-cd ../yusm
+cd ../yuming
 python build_release.py
 
 cd ..
