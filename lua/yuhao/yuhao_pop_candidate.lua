@@ -24,7 +24,7 @@ local function filter(input, env)
         end
         return
 
-    elseif env.engine.context.input:match("^[z/`]") then
+    elseif env.engine.context.input:match("^[z/`^_-]") then
         -- If the input starts with 'z', '/', or '`', we yield all candidates.
         for cand in input:iter() do
             yield(cand)

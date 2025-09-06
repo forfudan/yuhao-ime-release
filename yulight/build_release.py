@@ -11,7 +11,7 @@ from distutils.dir_util import copy_tree
 from distutils.dir_util import remove_tree
 import re
 
-version = "v3.9.1-beta.20250714"
+version = "v3.10.0"
 
 # %%
 try:
@@ -44,11 +44,11 @@ copy_tree("../lua/", "./dist/yulight/schema/lua/")
 
 # %%
 # Hamster IME
-make_archive(f"../dist/hamster/yuhao_light_{version}", "zip", "./dist/yulight/schema")
+make_archive(f"../dist/hamster/光華輸入法_{version}", "zip", "./dist/yulight/schema")
 
 # %%
 # Make zip
-make_archive(f"../dist/宇浩光華_{version}", "zip", "./dist/yulight")
+make_archive(f"../dist/光華輸入法_{version}", "zip", "./dist/yulight")
 # copyfile(f"../dist/宇浩光華_{version}.zip", f"../dist/yuhao_light_{version}.zip")
 
 # %%

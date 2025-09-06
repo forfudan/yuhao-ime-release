@@ -11,7 +11,7 @@ schema:
     - Rime方案 <https://shurufa.app>
     - 官方QQ群 374630778
   description: |
-    卿雲爛兮，繁簡通打，以臺灣標準字形爲主設置簡碼。
+    卿雲輸入法，繁簡通打，以臺灣標準字形爲主設置簡碼。
   dependencies:
     - yuhao_pinyin
     - yujoy_chaifen_tw

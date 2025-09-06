@@ -7,7 +7,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.9.1-beta.20250724"
+version = "v3.10.0"
 
 # %%
 try:
@@ -88,8 +88,10 @@ for file_name in [
 #     os.remove(f"./dist/yujoy/hotfix/{file_name}")
 
 # %%
-shutil.make_archive(f"../dist/卿雲爛兮_{version}", "zip", "./dist/yujoy")
-shutil.make_archive(f"../dist/hamster/卿雲爛兮_{version}", "zip", "./dist/yujoy/schema")
+shutil.make_archive(f"../dist/卿雲輸入法_{version}", "zip", "./dist/yujoy")
+shutil.make_archive(
+    f"../dist/hamster/卿雲輸入法_{version}", "zip", "./dist/yujoy/schema"
+)
 
 # %%
 print(f"成功發佈卿雲 {version}！")

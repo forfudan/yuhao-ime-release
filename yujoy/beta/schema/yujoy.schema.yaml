@@ -11,7 +11,7 @@ schema:
     - Rime方案 <https://shurufa.app>
     - 官方QQ群 374630778
   description: |
-    卿雲爛兮·繁簡平衡，簡碼設置適合主單副詞的繁簡通打派.
+    卿雲輸入法·繁簡平衡，簡碼設置適合主單副詞的繁簡通打派.
     可以在 yujoy.dict.yaml 文件中手動開啓詞庫.
   dependencies:
     - yuhao_pinyin

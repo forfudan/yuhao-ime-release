@@ -10,7 +10,7 @@ schema:
     - Rime方案 <https://shurufa.app/zht>
     - 官方QQ群 735728797
   description: |
-    宇浩·星陳，繁簡通打，以臺灣標準字形爲主設置簡碼。
+    星陳輸入法，繁簡通打，以臺灣標準字形爲主設置簡碼。
   dependencies:
     - yuhao_pinyin
     - yustar_chaifen_tw

@@ -11,7 +11,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.9.1-beta.20250714"
+version = "v3.10.0"
 
 # %%
 try:
@@ -66,11 +66,11 @@ for file_name in [
     copyfile(f"../yulight/beta/schema/{file_name}", f"./dist/yustar/schema/{file_name}")
 
 # %%
-shutil.make_archive(f"../dist/宇浩星陳_{version}", "zip", "./dist/yustar")
+shutil.make_archive(f"../dist/星陳輸入法_{version}", "zip", "./dist/yustar")
 # copyfile(f"../dist/宇浩星陳_{version}.zip", f"../dist/yuhao_star_{version}.zip")
 
 shutil.make_archive(
-    f"../dist/hamster/yuhao_star_{version}", "zip", "./dist/yustar/schema"
+    f"../dist/hamster/星陳輸入法_{version}", "zip", "./dist/yustar/schema"
 )
 
 # %%

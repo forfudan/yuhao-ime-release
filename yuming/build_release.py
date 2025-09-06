@@ -1,13 +1,11 @@
 # %%
-
-import shutil
 import os
-from distutils.dir_util import copy_tree
-from distutils.dir_util import remove_tree
-from shutil import copyfile
 import re
+import shutil
+from distutils.dir_util import copy_tree, remove_tree
+from shutil import copyfile
 
-version = "v3.9.1-beta.20250828"
+version = "v3.10.0"
 
 # %%
 try:
@@ -82,12 +80,12 @@ for file_name in [
 #     os.remove(f"./dist/yuming/hotfix/{file_name}")
 
 # %%
-shutil.make_archive(f"../dist/宇浩日月_{version}", "zip", "./dist/yuming")
+shutil.make_archive(f"../dist/日月輸入法_{version}", "zip", "./dist/yuming")
 shutil.make_archive(
-    f"../dist/hamster/宇浩日月_{version}", "zip", "./dist/yuming/schema"
+    f"../dist/hamster/日月輸入法_{version}", "zip", "./dist/yuming/schema"
 )
 
 # %%
-print(f"成功發佈宇浩日月 {version}！")
+print(f"成功發佈日月輸入法 {version}！")
 
 # %%

@@ -48,6 +48,7 @@ So a lua filter would be helpful to filter the frequently used
 20250712: 當輸入前綴是'z`, '/', 或 '`' 時,不過濾候選項.因爲它们分别引導了
           反查,特殊符號輸入,精確造詞等功能.
           過濾通規字和通規繁體字時,進行更嚴格的判斷.
+20250906: 常用字過濾時使用泛 CJK 區塊的定義, 過濾更加嚴格.
 ------------------------------------------------------------------------
 ]]
 
@@ -125,7 +126,7 @@ local function yuhao_charset_filter_common(input, env)
     end
     local switch_on = env.engine.context:get_option("yuhao_charset_filter_common")
     for cand in input:iter() do
-        local is_charset_or_not_cjk = core.string_is_in_charset_or_not_in_cjk(cand.text, set_of_common_chars)
+        local is_charset_or_not_cjk = core.string_is_in_charset_or_not_in_pan_cjk(cand.text, set_of_common_chars)
         -- 三種情況顯示字符: (1) 常用 (2) 非 CJK (3) 過濾器關閉
         if is_charset_or_not_cjk or not switch_on then
             yield(cand)

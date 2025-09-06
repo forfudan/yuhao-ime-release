@@ -10,7 +10,7 @@ schema:
     - Rime方案 <https://shurufa.app>
     - 官方QQ群 735728797
   description: |
-    宇浩输入法，繁简通打，以简化汉字为主设置简码，故名为「开来学」。
+    光華輸入法，繁简通打，以简化汉字为主设置简码，故名为「开来学」。
   dependencies:
     - yuhao_pinyin
     - yulight_chaifen
