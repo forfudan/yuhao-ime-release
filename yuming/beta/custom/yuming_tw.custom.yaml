@@ -1,0 +1,43 @@
+# 功能開關一鍵配置
+
+patch:
+  ################
+  # 外觀默認設置 #
+  ################
+  # schema/name: 日月·傳統  # 方案名
+  # menu/page_size: 6  # 每頁候選數量
+  # style/horizontal: true  # Windows 橫排候選欄
+  # style/candidate_list_layout: linear  # MacOS 橫排候選欄
+  # style/inline_preedit: false  # 候選欄内置於輸入界面(true)还是独立界面(false)
+  # style/preedit_type: preview  # 候選顯示字母(composition)还是候選(preview)
+  # style/inline_candidate: true  # MacOS 候選顯示字母(false)还是候選(true)
+  # style/layout/margin_x: -1 # Windows 關閉候選欄 
+  # style/alpha: 0.01  #  MacOS 隱藏候選欄
+  # font_face: Yuniversus, Arial, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2  # 字體
+  #
+  # speller/auto_select: false  # 自動選擇唯一候選項(true)或否(false)
+  #
+  ####################
+  # 控制開關默認設置 #
+  ####################
+  # 以下開關，0爲第一個，1爲第二個，2爲第三個
+  #
+  # switches/@0/reset: 1 # [原始排序, 常用字優先]
+  # switches/@1/reset: 1 # [全漢字, 常用字, 傳統字]
+  # switches/@2/reset: 1 # [字詞同出, 全碼出單]
+  # switches/@3/reset: 2 # [無註解, 二重註解, 多重註解]
+  # switches/@4/reset: 1 # [韻碼提示, 精確匹配, 輸入預測]
+  # switches/@5/reset: 1 # [有空格簡, 無空格簡]
+  # switches/@6/reset: 1 # [陸標拆分, 臺標拆分]
+  # switches/@7/reset: 1 # [简保持, 简转繁]
+  # switches/@8/reset: 1 # [繁保持, 繁轉簡]
+  # switches/@9/reset: 1 # [中文, 西文]
+  # switches/@10/reset: 1 # [半角, 全角]
+  # switches/@11/reset: 1 # [。，, ．，]
+  #
+  ################
+  # 全碼長度設置 #
+  ################
+  ## 改成全碼六碼, 提高全局精確度
+  # speller/algebra:
+  #   - xform/^([a-z]{1,6})[a-z]*$/$1/

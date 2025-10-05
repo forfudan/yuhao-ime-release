@@ -11,10 +11,13 @@
 *注意*
 如果你不想拷貝 default.custom.yaml 文件，請在其中手動添加本方案名如下：
 
+```yaml
 patch:
   schema_list:
     - schema: yuming          # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
+    - schema: yuming_tw       # 臺灣傳統字、大陸繁體字、香港傳統字、大陸簡化字通打
     - schema: yuming_essence  # 無 lua 整句輸入
+```
 
 ## trime
 

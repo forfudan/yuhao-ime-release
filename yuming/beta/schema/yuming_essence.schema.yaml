@@ -74,6 +74,7 @@ translator:
   max_phrase_length: 4 # 自动成词的最大词长
   preedit_format:
     - "xlit|abcdefghijklmnopqrstuvwxyz|ㄚ卜女金ㄜ一目田〡日戈小耳月ㄛ大几文木火ㄨ土人羊竹ㄗ|"
+    - "xlit|`|·|"
   comment_format:
     - "xform/^~/ /"
   disable_user_dict_for_patterns:

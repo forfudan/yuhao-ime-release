@@ -11,7 +11,7 @@ from distutils.dir_util import copy_tree
 from distutils.dir_util import remove_tree
 import re
 
-version = "v3.10.0"
+version = "v3.10.1"
 
 # %%
 try:
@@ -31,9 +31,9 @@ if re.match(r"^v\d+.\d+.\d+$", version):
 
 # %%
 os.makedirs("./dist/yulight/schema/yuhao")
-copyfile("./yulight.png", f"./dist/yulight/yulight_{version}.png")
-copyfile("./beta/readme.md", f"./dist/yulight/readme.txt")
-copyfile("../yujoy/beta/schema/yuhao.essay.txt", f"./beta/schema/yuhao.essay.txt")
+# copyfile("./yulight.png", f"./dist/yulight/yulight_{version}.png")
+copyfile("./beta/readme.md", "./dist/yulight/readme.txt")
+copyfile("../yujoy/beta/schema/yuhao.essay.txt", "./beta/schema/yuhao.essay.txt")
 
 copy_tree("./beta/mabiao", "./dist/yulight/mabiao")
 copy_tree("./beta/schema", "./dist/yulight/schema")

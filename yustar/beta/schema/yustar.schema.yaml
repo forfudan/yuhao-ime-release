@@ -24,8 +24,9 @@ switches:
   - options:
       - original
       - yuhao_charset_prioritizer_common
-      - yuhao_charset_prioritizer_ubiquitous
-    states: [原始排序, 常用字優先, 極常用字優先]
+      - yuhao_charset_prioritizer_tonggui
+      - yuhao_charset_prioritizer_harmonic
+    states: [原始排序, 常用字先, 簡化字先，傳統字先]
     reset: 1
     # Control+Shift+M
   - options:
@@ -33,7 +34,7 @@ switches:
       - yuhao_charset_filter_common
       - yuhao_charset_filter_tonggui
       - yuhao_charset_filter_harmonic
-    states: [全漢字, 常用字, 通规字, 陸繁字]
+    states: [全漢字, 常用字, 簡化字, 傳統字]
     reset: 0
     # Control+Shift+O
   - name: yuhao_single_char_only_for_full_code
@@ -98,8 +99,8 @@ engine:
     - reverse_lookup_translator
     - table_translator@fixed # 固定字頻
     - table_translator
-    - table_translator@zaoci  # 用户造詞
-    - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro  # 控制臺
+    - table_translator@zaoci # 用户造詞
+    - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro # 控制臺
   filters:
     - lua_filter@*yuhao.yuhao_autocompletion_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
@@ -111,7 +112,8 @@ engine:
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - lua_filter@*yuhao.yuhao_postpone_full_code
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
-    - lua_filter@*yuhao.yuhao_charset_prioritizer_ubiquitous
+    - lua_filter@*yuhao.yuhao_charset_prioritizer_tonggui
+    - lua_filter@*yuhao.yuhao_charset_prioritizer_harmonic
     - uniquifier
 
 traditionalize:
@@ -353,9 +355,3 @@ recognizer:
     zaoci: "^[a-y]*`[a-y`]*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
     number: "^[-+]?[0-9][,.:0-9]*[%]?$"
-
-# style:
-#   horizontal: false
-#   inline_preedit: true
-#   preedit_type: composition
-#   inline_candidate: true

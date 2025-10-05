@@ -11,7 +11,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.10.0"
+version = "v3.10.1"
 
 # %%
 try:
@@ -31,20 +31,18 @@ if re.match(r"^v\d+.\d+.\d+$", version):
 
 # %%
 # Copy yustar
-shutil.copyfile("./星陳字根表.pdf", f"./dist/yustar/星陳字根表_{version}.pdf")
-shutil.copyfile("./星陳字根簡表.pdf", f"./dist/yustar/星陳字根簡表_{version}.pdf")
-shutil.copyfile(
-    "./星陳字根按鍵聚類讀音字例表.pdf",
-    f"./dist/yustar/星陳字根按鍵聚類讀音字例表_{version}.pdf",
-)
+# shutil.copyfile("./星陳字根表.pdf", f"./dist/yustar/星陳字根表_{version}.pdf")
+# shutil.copyfile("./星陳字根簡表.pdf", f"./dist/yustar/星陳字根簡表_{version}.pdf")
+# shutil.copyfile(
+# "./星陳字根按鍵聚類讀音字例表.pdf",
+# f"./dist/yustar/星陳字根按鍵聚類讀音字例表_{version}.pdf",
+# )
 shutil.copyfile("./beta/readme.md", "./dist/yustar/readme.txt")
 shutil.copyfile(
     "../../assets/fonts/Yuniversus.ttf",
     "./beta/fonts/Yuniversus.ttf",
 )
-shutil.copyfile(
-    "../yujoy/beta/schema/yuhao.essay.txt", f"./beta/schema/yuhao.essay.txt"
-)
+shutil.copyfile("../yujoy/beta/schema/yuhao.essay.txt", "./beta/schema/yuhao.essay.txt")
 
 copy_tree("./beta/mabiao/", "./dist/yustar/mabiao/")
 copy_tree("./beta/schema/", "./dist/yustar/schema/")

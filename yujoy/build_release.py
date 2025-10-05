@@ -7,7 +7,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.10.0"
+version = "v3.10.1"
 
 # %%
 try:
@@ -26,15 +26,11 @@ if re.match(r"^v\d+.\d+.\d+$", version):
     )
 
 # %%
-shutil.copyfile("./卿雲字根表.pdf", f"./dist/yujoy/卿雲字根表_{version}.pdf")
-shutil.copyfile(
-    "./卿雲字根按鍵讀音字例表.pdf",
-    f"./dist/yujoy/卿雲字根按鍵讀音字例表_{version}.pdf",
-)
-shutil.copyfile(
-    "./changelog.md",
-    "./dist/yujoy/changelog.md",
-)
+# shutil.copyfile("./卿雲字根表.pdf", f"./dist/yujoy/卿雲字根表_{version}.pdf")
+# shutil.copyfile(
+#     "./卿雲字根按鍵讀音字例表.pdf",
+#     f"./dist/yujoy/卿雲字根按鍵讀音字例表_{version}.pdf",
+# )
 shutil.copyfile("./beta/readme.md", "./dist/yujoy/readme.txt")
 shutil.copyfile(
     "../../assets/fonts/Yuniversus.ttf",

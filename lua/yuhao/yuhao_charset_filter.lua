@@ -49,6 +49,7 @@ So a lua filter would be helpful to filter the frequently used
           反查,特殊符號輸入,精確造詞等功能.
           過濾通規字和通規繁體字時,進行更嚴格的判斷.
 20250906: 常用字過濾時使用泛 CJK 區塊的定義, 過濾更加嚴格.
+20250921: 前置各個字集時,保證其他繁簡常用字處於第二優先狀態.
 ------------------------------------------------------------------------
 ]]
 
@@ -63,6 +64,7 @@ local set_of_harmonic_chars = core.set_from_str(yuhao_charsets.harmonic)
 local function yuhao_charset_prioritizer(input, env, option, charset)
     local switch_on = env.engine.context:get_option(option)
     local chars_of_low_priority = {}
+    local chars_of_middle_priority = {}
     local skip = false
     for cand in input:iter() do
         if skip then
@@ -79,9 +81,14 @@ local function yuhao_charset_prioritizer(input, env, option, charset)
                 skip = true
             else
                 local is_charset_or_not_cjk = core.string_is_in_set(cand.text, charset)
-                -- 二種情況顯示字符: (1) 極常用 (2) 過濾器關閉
+                local is_common_or_not_cjk = core.string_is_in_set(cand.text, set_of_common_chars)
+                -- 兩種情況直接顯示字符: (1) 在字符集中 (2) 過濾器關閉
                 if is_charset_or_not_cjk or not switch_on then
                     yield(cand)
+                -- 將其他常用字儲存起來
+                elseif is_common_or_not_cjk or not switch_on then
+                    table.insert(chars_of_middle_priority, cand)
+                -- 將低優先級字儲存起來
                 else
                     table.insert(chars_of_low_priority, cand)
                 end
@@ -90,6 +97,9 @@ local function yuhao_charset_prioritizer(input, env, option, charset)
     end
     if not skip then
         -- 説明没有遇到預測的候選項,需要在此處彈出已存的後置字詞
+        for _, postponed_cand in ipairs(chars_of_middle_priority) do
+            yield(postponed_cand)
+        end
         for _, postponed_cand in ipairs(chars_of_low_priority) do
             yield(postponed_cand)
         end

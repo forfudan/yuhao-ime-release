@@ -5,7 +5,7 @@ import shutil
 from distutils.dir_util import copy_tree, remove_tree
 from shutil import copyfile
 
-version = "v3.10.0"
+version = "v3.10.1"
 
 # %%
 try:
@@ -19,9 +19,7 @@ except:
     print("Cannot create dist/yuming folder!")
 
 if re.match(r"^v\d+.\d+.\d+$", version):
-    shutil.copyfile(
-        "./beta/schema/yuhao/yuming.full.dict.yaml", "./dist/yuming.full.dict.yaml"
-    )
+    shutil.copyfile("./dist/宇浩日月單字全碼.txt", "./dist/yuming.full.dict.yaml")
 
 # %%
 # shutil.copyfile("./yuming.pdf", f"./dist/yuming/yuming_{version}.pdf")
