@@ -5,7 +5,7 @@ import shutil
 from distutils.dir_util import copy_tree, remove_tree
 from shutil import copyfile
 
-version = "v3.10.1"
+version = "v3.10.2"
 
 # %%
 try:
@@ -45,6 +45,8 @@ copy_tree("../lua/", "./dist/yuming/schema/lua/")
 for file_name in [
     "yuhao_pinyin.dict.yaml",
     "yuhao_pinyin.schema.yaml",
+    "yuhao/yuhao.extended.dict.yaml",
+    "yuhao/yuhao.private.dict.yaml",
     "yuhao/yuhao.symbols.dict.yaml",
     "yuhao/yuhao.symbols_inline.dict.yaml",
 ]:

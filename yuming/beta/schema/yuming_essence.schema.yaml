@@ -63,8 +63,8 @@ speller:
   auto_select: true
 
 translator:
-  dictionary: yuming
-  prism: yuming
+  dictionary: yuming_essence
+  prism: yuming_essence
   db_class: tabledb
   enable_completion: true
   enable_sentence: false
@@ -73,7 +73,7 @@ translator:
   encode_commit_history: false # 对连续上屏的词自动成词
   max_phrase_length: 4 # 自动成词的最大词长
   preedit_format:
-    - "xlit|abcdefghijklmnopqrstuvwxyz|ㄚ卜女金ㄜ一目田〡日戈小耳月ㄛ大几文木火ㄨ土人羊竹ㄗ|"
+    # - "xlit|abcdefghijklmnopqrstuvwxyz|ㄚ卜女金ㄜ一目田〡日戈小耳月ㄛ大几文木火ㄨ土人羊竹ㄗ|"
     - "xlit|`|·|"
   comment_format:
     - "xform/^~/ /"
@@ -98,8 +98,6 @@ history:
 reverse_lookup:
   dictionary: yuhao_pinyin
   prefix: "z"
-  # tips: 〔全拼簡拼反查〕
-  # closing_tips: 〔反查关闭〕
   preedit_format:
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
@@ -139,7 +137,7 @@ recognizer:
     uppercase: "^(?![`;]).*[A-Z][-_+.'0-9A-Za-z]*$"
     reverse_lookup: "^z([a-z]+?)*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
-    number: "^[-+]?[0-9][,.:0-9]*[%]?$"
+    # number: "^[-+]?[0-9][,.:0-9]*[%]?$"
 
 style:
   inline_preedit: true

@@ -153,6 +153,7 @@ speller:
   delimiter: "`"
   # max_code_length: 0
   auto_select: true
+  auto_select_pattern: "[qwrtypsdfghjklzxcvbnm]{0,4}[aeiou]|[qwrtypsdfghjklzxcvbnm]{5}"
   # algebra:
   #   - xform/^([a-z]{1,5})[a-z]*$/$1/
 
@@ -180,8 +181,8 @@ history:
 reverse_lookup:
   dictionary: yuhao_pinyin
   prefix: "z"
-  tips: 〔全拼簡拼反查〕
-  closing_tips: 〔反查关闭〕
+  tips: 〔全拼簡拼輸入〕
+  closing_tips: 〔全拼簡拼輸入關閉〕
   preedit_format:
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
@@ -350,7 +351,7 @@ recognizer:
     uppercase: "^(?![`;]).*[A-Z][-_+.'0-9A-Za-z]*$"
     reverse_lookup: "^z([a-z]+?)*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
-    number: "^[-+]?[0-9][,.:0-9]*[%]?$"
+    # number: "^[-+]?[0-9][,.:0-9]*[%]?$"
 
 style:
     inline_preedit: true  # 候選欄内置於輸入界面

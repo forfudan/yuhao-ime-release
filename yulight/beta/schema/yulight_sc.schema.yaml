@@ -19,8 +19,8 @@ switches:
   - options:
       - original
       - yuhao_charset_prioritizer_common
-      - yuhao_charset_prioritizer_ubiquitous
-    states: [原始排序, 常用字優先, 極常用字優先]
+      - yuhao_charset_prioritizer_tonggui
+    states: [原始排序, 常用字先, 簡化字先]
     reset: 1
     # Control+Shift+M
   - options:
@@ -104,7 +104,7 @@ engine:
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - lua_filter@*yuhao.yuhao_postpone_full_code
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
-    - lua_filter@*yuhao.yuhao_charset_prioritizer_ubiquitous
+    - lua_filter@*yuhao.yuhao_charset_prioritizer_tonggui
     - uniquifier
 
 traditionalize:
@@ -345,7 +345,7 @@ recognizer:
     reverse_lookup: "^z([a-z]+?)*$"
     zaoci: "^[a-y]*`[a-y`]*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
-    number: "^[-+]?[0-9][,.:0-9]*[%]?$"
+    # number: "^[-+]?[0-9][,.:0-9]*[%]?$"
 
 # style:
 #   horizontal: false

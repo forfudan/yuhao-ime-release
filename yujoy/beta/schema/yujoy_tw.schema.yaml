@@ -188,8 +188,8 @@ history:
 reverse_lookup:
   dictionary: yuhao_pinyin
   prefix: "z"
-  tips: 〔全拼反查〕
-  closing_tips: 〔反查关闭〕
+  tips: 〔全拼簡拼輸入〕
+  closing_tips: 〔全拼簡拼輸入關閉〕
   preedit_format:
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
@@ -346,7 +346,7 @@ recognizer:
     reverse_lookup: "^z([a-z]+?)*$"
     zaoci: "^[a-z]*`[a-z`]*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
-    number: "^[-+]?[0-9][,.:0-9]*[%]?$"
+    # number: "^[-+]?[0-9][,.:0-9]*[%]?$"
 
 style:
     font_face: Yuniversus

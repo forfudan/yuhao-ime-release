@@ -11,7 +11,7 @@ from distutils.dir_util import copy_tree
 from distutils.dir_util import remove_tree
 import re
 
-version = "v3.10.1"
+version = "v3.10.2"
 
 # %%
 try:
