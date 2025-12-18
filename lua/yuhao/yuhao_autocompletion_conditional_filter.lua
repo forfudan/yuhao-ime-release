@@ -33,7 +33,8 @@
 20250810: 爲候選項添加備註,以便用户及時區分頂字上屏編碼.
           當編碼小於4時,也提示韻碼上屏簡詞.
           當編碼小於3時,也提示韻碼上屏的生僻字,但置於常用字之後.
-20250811: 五碼首選項備註改作「頂屏」。
+20250811: 五碼首選項備註改作「頂屏」.
+20251213: 爲第二個候選項備註「分號」.
 ---------------------------
 --]]
 
@@ -93,6 +94,9 @@ local function filter(input, env)
                 if index_of_cand == 0 then
                     -- 如果是第一個候選項,則顯示"頂屏"
                     yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                elseif index_of_cand == 1 then
+                    -- 如果是第二個候選項,則顯示"分號"
+                    yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
                 else
                     yield(cand)
                 end
@@ -114,6 +118,9 @@ local function filter(input, env)
                             -- 如果是第一個候選項,則顯示"空格"
                             yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
                         end
+                    elseif index_of_cand == 1 then
+                        -- 如果是第二個候選項,則顯示"分號"
+                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
                     else
                         yield(cand)
                     end
@@ -153,6 +160,9 @@ local function filter(input, env)
                             -- 如果是第一個候選項,則顯示"空格"
                             yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
                         end
+                    elseif index_of_cand == 1 then
+                        -- 如果是第二個候選項,則顯示"分號"
+                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
                     else
                         yield(cand)
                     end
@@ -208,6 +218,9 @@ local function filter(input, env)
                             -- 如果是第一個候選項,則顯示"空格"
                             yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
                         end
+                    elseif index_of_cand == 1 then
+                        -- 如果是第二個候選項,則顯示"分號"
+                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
                     else
                         yield(cand)
                     end

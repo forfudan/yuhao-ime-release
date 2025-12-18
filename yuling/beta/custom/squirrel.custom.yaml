@@ -1,0 +1,104 @@
+patch:
+  style:
+    color_scheme: mac_light
+    color_scheme_dark: mac_dark
+    candidate_list_layout: stacked
+    alpha: 0.88  # 候选窗口透明度：符点型数据，小数点形式，不然出错无法正常显示皮肤
+    font_face: Yuniversus, WenJinMinchoP0-Regular, WenJinMinchoP2-Regular, WenJinMinchoP3-Regular, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2
+    label_font_face: Inconsolata  # 字体 - 候选数字
+    font_point: 20  # 字体大小 - 候选
+    label_font_point: 16  # 字体大小 - 候选序号
+    comment_font_point: 12
+    candidate_format: "%c %@ "   # 用 1/6 em 空格 U+2005 来控制编号 %c 和候选词 %@ 前后的空间
+    inline_preedit: true
+    preedit_style: preview
+
+  preset_color_schemes:
+    cosmic:
+      name: 宇宙Cosmic
+      author: ZHU Yuhao 朱宇浩 <dr.yuhao.zhu@outlook.com>
+      corner_radius: 5                            # 窗口圆角
+      hilited_corner_radius: 5                    # 高亮圆角
+      line_spacing: 10                            # 行间距(适用于竖排)
+      border_height: 4                            # 窗口上下高度，大于圆角半径才生效
+      border_width: 4                             # 窗口左右宽度，大于圆角半径才生效
+      text_color: 0x0c200d                        # preedit字符颜色 拼音行文字颜色 0x0c200d 瓷器绿
+      back_color: 0xe7f8ff                        # 背景颜色 候选条背景色 0xfff8e7 cosmic latte
+      border_color: 0xc5c8cc                      # 边框色
+      label_color: 0x919183                       # 预选栏编号颜色
+      candidate_text_color: 0x0c200d              # 预选项文字颜色 候选字颜色 0x0c200d 瓷器緑
+      comment_text_color: 0x1029de                # 拼音等提示文字颜色 候选字注释颜色 0xde2910 国旗紅
+      hilited_text_color: 0x0c200d                # 高亮拼音 (需要开启内嵌编码) 输入码颜色 0x0c200d 瓷器緑
+      hilited_back_color: 0xe7f8ff                # 第一候选项背景背景色
+      hilited_candidate_text_color: 0xe7f8ff      # 第一候选项文字颜色 高亮候选字颜色 0xfff8e7 cosmic latte
+      hilited_candidate_label_color: 0xe7f8ff     # 第一候选项编号颜色
+      hilited_candidate_back_color: 0x4f4f2f      # 高亮候选字背景颜色
+      hilited_comment_text_color: 0xe7f8ff        # 注解文字高亮 高亮候选字注释颜色 0xfff8e7 cosmic latte
+      
+    cosmic_dark:
+      name: 宇宙深邃CosmicDark
+      author: ZHU Yuhao 朱宇浩 <dr.yuhao.zhu@outlook.com>
+      corner_radius: 5                            # 窗口圆角
+      hilited_corner_radius: 5                    # 高亮圆角
+      line_spacing: 10                            # 行间距(适用于竖排)
+      border_height: 4                            # 窗口上下高度，大于圆角半径才生效
+      border_width: 4                             # 窗口左右宽度，大于圆角半径才生效
+      text_color: 0xe7f8ff                        # preedit字符颜色 拼音行文字颜色 0x0c200d 瓷器绿
+      back_color: 0x0c200d                        # 背景颜色 候选条背景色 0xfff8e7 cosmic latte
+      border_color: 0x0c200d                      # 边框色
+      label_color: 0x919183                       # 预选栏编号颜色
+      candidate_text_color: 0xe7f8ff              # 预选项文字颜色 候选字颜色 0x0c200d 瓷器緑
+      comment_text_color: 0x1029de                # 拼音等提示文字颜色 候选字注释颜色 0xde2910 国旗紅
+      hilited_text_color: 0xe7f8ff                # 高亮拼音 (需要开启内嵌编码) 输入码颜色 0x0c200d 瓷器緑
+      hilited_back_color: 0x0c200d                # 第一候选项背景背景色
+      hilited_candidate_text_color: 0x0c200d      # 第一候选项文字颜色 高亮候选字颜色 0xfff8e7 cosmic latte
+      hilited_candidate_label_color: 0x0c200d     # 第一候选项编号颜色
+      hilited_candidate_back_color: 0xe7f8ff      # 高亮候选字背景颜色
+      hilited_comment_text_color: 0x0c200d        # 注解文字高亮 高亮候选字注释颜色 0xfff8e7 cosmic latte
+
+    mac_light:
+      name: Mac浅色
+      corner_radius: 5                             # 窗口圆角
+      hilited_corner_radius: 5                     # 高亮圆角
+      line_spacing: 10                             # 行间距(适用于竖排)
+      border_height: 4                             # 窗口上下高度，大于圆角半径才生效
+      border_width: 4                              # 窗口左右宽度，大于圆角半径才生效
+      text_color: 0x424242                    # 拼音行文字颜色
+      back_color: 0xFFFFFF                    # 候选条背景色
+      border_color: 0xFFFFFF                  # 边框色
+      label_color: 0x999999                   # 预选栏编号颜色
+      candidate_text_color: 0x3c3c3c          # 预选项文字颜色
+      comment_text_color: 0x999999            # 拼音等提示文字颜色
+      hilited_text_color: 0x999999            # 高亮拼音 (需要开启内嵌编码)
+      hilited_back_color: 0xD75A00            # 第一候选项背景背景色
+      hilited_candidate_text_color: 0xFFFFFF  # 第一候选项文字颜色
+      hilited_candidate_label_color: 0xFFFFFF # 第一候选项编号颜色
+      hilited_comment_text_color: 0x999999    # 注解文字高亮
+
+    mac_dark:
+      name: Mac深色
+      corner_radius: 5                             # 窗口圆角
+      hilited_corner_radius: 5                     # 高亮圆角
+      line_spacing: 10                             # 行间距(适用于竖排)
+      border_height: 4                             # 窗口上下高度，大于圆角半径才生效
+      border_width: 4                              # 窗口左右宽度，大于圆角半径才生效 
+      text_color: 0x424242                    # 拼音行文字颜色
+      back_color: 0x252a2e                    # 候选条背景色
+      border_color: 0x050505                  # 边框色
+      label_color: 0x999999                   # 预选栏编号颜色
+      candidate_text_color: 0xe9e9ea          # 预选项文字颜色
+      comment_text_color: 0x999999            # 拼音等提示文字颜色
+      hilited_text_color: 0x999999            # 高亮拼音 (需要开启内嵌编码)
+      hilited_back_color: 0xD75A00            # 第一候选项背景背景色
+      hilited_candidate_text_color: 0xFFFFFF  # 第一候选项文字颜色
+      hilited_candidate_label_color: 0xFFFFFF # 第一候选项编号颜色
+      hilited_comment_text_color: 0x999999    # 注解文字高亮
+
+
+  app_options/+:
+    net.kovidgoyal.kitty:
+      ascii_mode: true
+      vim_mode: true
+    com.microsoft.VSCode:
+      ascii_mode: true
+      vim_mode: true

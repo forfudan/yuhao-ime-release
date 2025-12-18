@@ -4,7 +4,7 @@ patch:
   ################
   # 外觀默認設置 #
   ################
-  # schema/name: 大明輸入法  # 方案名
+  # schema/name: 靈明輸入法  # 方案名
   # menu/page_size: 6  # 每頁候選數量
   # style/horizontal: true  # Windows 橫排候選欄
   # style/candidate_list_layout: linear  # MacOS 橫排候選欄
@@ -13,7 +13,7 @@ patch:
   # style/inline_candidate: true  # MacOS 候選顯示字母(false)还是候選(true)
   # style/layout/margin_x: -1 # Windows 關閉候選欄 
   # style/alpha: 0.01  #  MacOS 隱藏候選欄
-  # font_face: Yuniversus, WenJinMinchoP0-Regular, WenJinMinchoP2-Regular, WenJinMinchoP3-Regular, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2  # 字體
+  # font_face: Yuniversus, Arial, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2  # 字體
   #
   # speller/auto_select: false  # 自動選擇唯一候選項(true)或否(false)
   #
@@ -34,10 +34,3 @@ patch:
   # switches/@9/reset: 1 # [中文, 西文]
   # switches/@10/reset: 1 # [半角, 全角]
   # switches/@11/reset: 1 # [。，, ．，]
-  #
-  ################
-  # 全碼長度設置 #
-  ################
-  ## 改成全碼六碼, 提高全局精確度
-  # speller/algebra:
-  #   - xform/^([a-z]{1,6})[a-z]*$/$1/

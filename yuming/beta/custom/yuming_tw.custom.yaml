@@ -13,7 +13,7 @@ patch:
   # style/inline_candidate: true  # MacOS 候選顯示字母(false)还是候選(true)
   # style/layout/margin_x: -1 # Windows 關閉候選欄 
   # style/alpha: 0.01  #  MacOS 隱藏候選欄
-  # font_face: Yuniversus, Arial, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2  # 字體
+  # font_face: Yuniversus, WenJinMinchoP0-Regular, WenJinMinchoP2-Regular, WenJinMinchoP3-Regular, TH-Tshyn-P0, TH-Tshyn-P1, TH-Tshyn-P2  # 字體
   #
   # speller/auto_select: false  # 自動選擇唯一候選項(true)或否(false)
   #

@@ -4,13 +4,14 @@ https://github.com/Ace-Who/rime-xuma/blob/master/schema/lua/ace/xuma_spelling.lu
 用于生成词语拆分
 ------------------------------------------------------------------------
 
-修改者: forFudan 朱宇浩 <dr.yuhao.zhu@outlook.com>
+修改者: 朱宇浩 (forFudan) <dr.yuhao.zhu@outlook.com>
 更新:
 - 20240919: 將詞語拆分中的菱形改爲全角波浪號.
 - 20240921: 更改默認的注解等級.
 - 20250210: 修正了一些顯示錯誤.
 - 20250514: 增加參數,可以選擇是否爲詞語顯示提示.
-- 20250718: 允許用戶在陸標拆分和臺標拆分之間進行切換。
+- 20250718: 允許用戶在陸標拆分和臺標拆分之間進行切換.
+- 20251213: 修正變體選擇器導致的文本長度錯誤判斷問題.
 ---------------------------------------------------------------------------
 ]]
 
@@ -334,6 +335,26 @@ local function code_phrase(s, spll_rvdb)
 end
 
 --[[
+    檢查文本是否爲單個漢字
+    @param text 要檢查的文本
+    @return Boolean 表示是否爲單個漢字(可能帶有變體選擇器 0xE0100 - 0xE01EF)
+]]
+local function is_single_char(text)
+  local text_len = utf8.len(text)
+  if text_len == 1 then
+    return true
+  elseif text_len == 2 then
+    -- Check if the second character is a Variation Selector (U+E0100 - U+E01EF)
+    local chars = utf8chars(text)
+    if chars[2] then
+      local codepoint = utf8.codepoint(chars[2])
+      return codepoint >= 0xE0100 and codepoint <= 0xE01EF
+    end
+  end
+  return false
+end
+
+--[[
     Get the tricomment for a candidate.
     Edited by Yuhao Zhu.
     @param cand The candidate object
@@ -342,7 +363,7 @@ end
 ]]
 local function get_tricomment(cand, env, spll_rvdb)
   local text = cand.text
-  if utf8.len(text) == 1 then
+  if is_single_char(text) then
     local raw_spelling = spll_rvdb:lookup(text)
     if raw_spelling == '' then return end
     return env.engine.context:get_option('yuhao_chaifen.lv1')

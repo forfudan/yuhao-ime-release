@@ -101,7 +101,7 @@ engine:
     - table_translator
     - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro  # 控制臺
   filters:
-    - lua_filter@*yuhao.yuhao_pop_candidate
+    # - lua_filter@*yuhao.yuhao_pop_candidate
     - lua_filter@*yuhao.yuhao_hide_space_candidates
     - lua_filter@*yuhao.yuhao_autocompletion_filter
     - lua_filter@*yuhao.yuhao_autocompletion_conditional_filter
@@ -114,7 +114,7 @@ engine:
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
     - uniquifier
-    - lua_filter@*yuhao.yuhao_add_placeholder_candidate
+    # - lua_filter@*yuhao.yuhao_add_placeholder_candidate
     - lua_filter@*yuhao.yuhao_unicode_input
 
 traditionalize:
@@ -357,4 +357,3 @@ style:
     inline_preedit: true  # 候選欄内置於輸入界面
     preedit_type: composition  # 候選顯示字母(composition)还是候選(preview)
     inline_candidate: false  # MacOS 候選顯示字母(false)还是候選(true)
-    font_face: Yuniversus  # 字體

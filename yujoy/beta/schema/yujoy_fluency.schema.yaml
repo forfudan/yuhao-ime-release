@@ -73,7 +73,7 @@ engine:
     - recognizer
     - lua_processor@*yuhao.yuhao_chaifen_processor
     - key_binder
-    - lua_processor@*yuhao.yuhao_auto_select
+    - lua_processor@*yuhao.yuhao_auto_select_in_fluency_mode
     - speller
     - punctuator
     - selector
@@ -120,7 +120,7 @@ engine:
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - uniquifier
 
-yuhao_auto_select:
+yuhao_auto_select_in_fluency_mode:
   max_chars: 8
 
 traditionalize:
@@ -340,6 +340,3 @@ yuhao_macro:
       - type: eval
         hijack: true
         expr: return require("yuhao.yuhao_core").unicode()
-
-style:
-    font_face: Yuniversus

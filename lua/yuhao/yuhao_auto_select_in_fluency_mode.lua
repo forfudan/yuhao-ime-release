@@ -1,5 +1,5 @@
 --[[
-Name: yuhao_auto_select.lua
+Name: yuhao_auto_select_in_fluency_mode.lua
 名稱: 自動選擇候選項
 Version: 20240510
 Author: 譚淞宸 <https://github.com/tansongchen>
@@ -24,7 +24,7 @@ local this = {}
 
 function this.init(env)
     local config = env.engine.schema.config
-    env.max_chars = config:get_int('yuhao_auto_select/max_chars') or 8
+    env.max_chars = config:get_int('yuhao_auto_select_in_fluency_mode/max_chars') or 8
 end
 
 local kNoop = 2

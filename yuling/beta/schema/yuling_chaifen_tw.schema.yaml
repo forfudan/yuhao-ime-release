@@ -1,0 +1,16 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: yuling_chaifen_tw
+  name: 宇浩·靈明·全漢字拆分表·臺灣字形
+  version: 20250504
+  author:
+    - 發明人 朱宇浩
+  description: |
+    輔助方案，不能打字。
+    配合 lua_filter 實現三重註解功能。
+
+translator:
+  dictionary: yuling_chaifen_tw
+  enable_user_dict: false

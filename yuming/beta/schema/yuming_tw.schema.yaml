@@ -353,4 +353,3 @@ style:
     inline_preedit: true  # 候選欄内置於輸入界面
     preedit_type: composition  # 候選顯示字母(composition)还是候選(preview)
     inline_candidate: false  # MacOS 候選顯示字母(false)还是候選(true)
-    font_face: Yuniversus  # 字體

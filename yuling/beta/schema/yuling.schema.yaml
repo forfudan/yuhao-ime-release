@@ -2,53 +2,61 @@
 # encoding: utf-8
 
 schema:
-  schema_id: yujoy_sc
-  name: 卿雲·陆标简码
-  version: 20240808
+  schema_id: yuling
+  name: 靈明
+  version: 乙巳冬至
   author:
-    - 項目策劃 錢多多
-    - 技术支持 forFudan
-    - Rime方案 <https://shurufa.app/docs/joy.html>
-    - 官方QQ群 374630778
+    - 作者 朱宇浩
+    - 官方網站 <https://shurufa.app>
+    - 官方QQ群 735728797
   description: |
-    卿雲輸入法，繁简通打，以简化汉字为主设置简码。
+    靈明輸入法，又稱靈碼。
+    基於宇浩拆分設計製作，是一款四碼定長純形前綴碼方案，可完全離開空格鍵進行輸入。
+    其名源自尚書大傳之「明明上天」「配天之靈」。
   dependencies:
     - yuhao_pinyin
-    - yujoy_chaifen
+    - yuling_chaifen
+    - yuling_chaifen_tw
 
 switches:
   - options:
       - original
       - yuhao_charset_prioritizer_common
-      - yuhao_charset_prioritizer_ubiquitous
-    states: [原始排序, 常用字優先, 極常用字優先]
-    reset: 2
+    states: [原始排序, 常用字優先]
+    reset: 0
     # Control+Shift+M
   - options:
       - cjk
       - yuhao_charset_filter_common
       - yuhao_charset_filter_tonggui
-    states: [全漢字, 常用字, 通规字]
+      - yuhao_charset_filter_harmonic
+    states: [全漢字, 常用字, 簡化字, 傳統字]
     reset: 0
     # Control+Shift+O
   - name: yuhao_single_char_only_for_full_code
-    states: ["字詞同出", "全碼出單"]
+    states: [字詞同出, 全碼出單]
     reset: 0
     # Control+Shift+D
-  - name: yuhao_postpone_full_code
-    reset: 0
-    states: [原始排序, 全碼後置]
-    # Control+Shift+H
   - options:
       - yuhao_chaifen.off
       - yuhao_chaifen.lv2
       - yuhao_chaifen.lv3
     states: [無註解, 二重註解, 多重註解]
     reset: 0
-  - name: yuhao_autocompletion_filter
+  - options:
+      - yuhao_autocompletion_conditional_filter
+      - yuhao_autocompletion_filter
+      - all_aultocompletion
+    states: [韻碼提示, 精確匹配, 輸入預測]
     reset: 0
-    states: [輸入預測, 精確匹配]
     # Control+Shift+Y
+  - name: yuhao_hide_space_candidates
+    states: [有空格簡, 無空格簡]
+    reset: 0
+  - name: yuhao_chaifen_source
+    states: [陸標拆分, 臺標拆分]
+    reset: 0
+    # Control+Shift+L
   - name: traditionalization
     states: [简保持, 简转繁]
     reset: 0
@@ -74,6 +82,7 @@ engine:
     - recognizer
     - lua_processor@*yuhao.yuhao_chaifen_processor
     - key_binder
+    - lua_processor@*yuhao.yuhao_auto_select_postponed  # 最大碼長或以韻碼結尾時，下一碼頂出首選.
     - speller
     - punctuator
     - selector
@@ -82,7 +91,6 @@ engine:
   segmentors:
     - ascii_segmentor
     - matcher
-    - affix_segmentor@zaoci # 用户造詞
     - abc_segmentor
     - punct_segmentor
     - fallback_segmentor
@@ -90,12 +98,12 @@ engine:
     - punct_translator
     - history_translator@history
     - reverse_lookup_translator
-    - table_translator@fixed # 固定字頻
     - table_translator
-    - table_translator@zaoci # 用户造詞
-    - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro # 控制臺
+    - lua_translator@*yuhao.yuhao_switch_tr@yuhao_macro  # 控制臺
   filters:
+    - lua_filter@*yuhao.yuhao_hide_space_candidates
     - lua_filter@*yuhao.yuhao_autocompletion_filter
+    - lua_filter@*yuhao.yuhao_autocompletion_conditional_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
     - lua_filter@*yuhao.yuhao_charset_filter_common
     - lua_filter@*yuhao.yuhao_charset_filter_tonggui
@@ -103,9 +111,7 @@ engine:
     - simplifier@traditionalize
     - simplifier@simplify
     - lua_filter@*yuhao.yuhao_chaifen_filter
-    - lua_filter@*yuhao.yuhao_postpone_full_code
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
-    - lua_filter@*yuhao.yuhao_charset_prioritizer_ubiquitous
     - uniquifier
 
 traditionalize:
@@ -126,39 +132,34 @@ simplify:
     - xform/^/〔/
     - xform/$/〕/
 
-yuhao_postpone_full_code:
-  ## 以下列出之漢字,出簡後,於全碼後置之.用户可自定義.
-  ## 需要全碼後置的漢字列表,缺省時默認後置所有.
-  # selected_chars: "束員员冻近寒凍准"
-  tags: [abc]
-  lua:
-    max_index: 3 # 最大後置位置，默認爲 3
-
 schema_name:
-  code: yujoy_sc
-  spelling: yujoy_chaifen
+  code: yuling
+  code_tw: yuling_tw
+  spelling: yuling_chaifen
+  spelling_tw: yuling_chaifen_tw
+  max_code_length: 4
 
 yuhao_chaifen:
   lua:
     switch_key: "Control+c"
     cycle_key: "Shift+Control+C"
+    phrase: 0
 
 speller:
-  alphabet: abcdefghijklmnopqrstuvwxyz/
-  initials: abcdefghijklmnopqrstuvwxyz/
+  alphabet: zyxwvutsrqponmlkjihgfedcba/
+  initials: zyxwvutsrqponmlkjihgfedcba/
   delimiter: "`"
-  max_code_length: 4
-  auto_select: false
-  algebra:
+  auto_select: true
+  auto_select_pattern: "[qwrtypsdfghjklxcvbnm]{0,3}[aeiou]|[qwrtypsdfghjklxcvbnm]{4}"
 
 translator:
-  dictionary: yujoy_sc
-  prism: yujoy_sc
+  dictionary: yuling
+  prism: yuling
   db_class: tabledb
   enable_completion: true
   enable_sentence: false
-  enable_user_dict: true
-  enable_encoder: true
+  enable_user_dict: false
+  enable_encoder: false
   encode_commit_history: false # 对连续上屏的词自动成词
   max_phrase_length: 4 # 自动成词的最大词长
   preedit_format: []
@@ -167,25 +168,9 @@ translator:
   disable_user_dict_for_patterns:
     - "^z.*$"
 
-zaoci:
-  __include: translator
-  initial_quality: 0
-  enable_sentence: true
-  enable_user_dict: true
-  prefix: "`"
-  tips: "〔用户造詞〕"
-  tag: zaoci
-
-# 固定词库词的权重，防止自动调频
-fixed:
-  __include: translator
-  enable_sentence: false
-  enable_user_dict: false
-  initial_quality: 1000000
-
 history:
   input: z
-  size: 1
+  size: 9
   initial_quality: 1
 
 reverse_lookup:
@@ -204,13 +189,9 @@ yuhao_macro:
     macro: [0x2f] # 當輸入串以 "/" 開頭時, 認爲是宏調用
   macros:
     help:
-      # - { type: tip, name: ❖配置中心 }
-      - { type: switch, name: traditionalization, states: [☐简保持, ☑简转繁] }
-      - { type: switch, name: simplification, states: [☐繁保持, ☑繁轉簡] }
-      - { type: switch, name: full_shape, states: [☐半角, ☑全角] }
-      - { type: switch, name: ascii_punct, states: [☐中文標點, ☑西文標點] }
-    set:
-      # - { type: tip, name: ❖配置中心 }
+      - { type: switch, name: yuhao_single_char_only_for_full_code, states: [☐字詞同出, ☑全碼出單] }
+      - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }
+      - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
       - { type: switch, name: traditionalization, states: [☐简保持, ☑简转繁] }
       - { type: switch, name: simplification, states: [☐繁保持, ☑繁轉簡] }
       - { type: switch, name: full_shape, states: [☐半角, ☑全角] }
@@ -224,21 +205,15 @@ yuhao_macro:
       - { type: eval, name: Ⓢ時間戳, expr: return tostring(os.time()) }
     char:
       - {
-          type: switch,
-          name: yuhao_single_char_only_for_full_code,
-          states: [☐字詞, ☑純單],
-        }
-    div:
-      - {
           type: radio,
           names:
             [
-              yuhao_chaifen.off,
-              yuhao_chaifen.lv1,
-              yuhao_chaifen.lv2,
-              yuhao_chaifen.lv3,
+              cjk,
+              yuhao_charset_filter_common,
+              yuhao_charset_filter_tonggui,
+              yuhao_charset_filter_harmonic,
             ],
-          states: [☐☐☐註解, ☑☐☐註解, ☐☑☐註解, ☐☐☑註解],
+          states: [☐☐全漢字, ☐☑常用字, ☑☐通規字, ☑☑陸標繁],
         }
     cjk:
       - {
@@ -246,13 +221,30 @@ yuhao_macro:
           names:
             [
               cjk,
-              yuhao_charset_prioritizer,
               yuhao_charset_filter_common,
               yuhao_charset_filter_tonggui,
               yuhao_charset_filter_harmonic,
             ],
-          states: [☐☐☐全漢字, ☐☐☑常用字前置, ☐☑☐常用字, ☐☑☑通规字, ☑☐☐陸標繁],
+          states: [☐☐全漢字, ☐☑常用字, ☑☐通規字, ☑☑陸標繁],
         }
+    word:
+      - {
+          type: switch,
+          name: yuhao_single_char_only_for_full_code,
+          states: [☐字詞, ☑純單],
+        }
+    auto:
+      - {
+      type: radio,
+      names: [yuhao_autocompletion_conditional_filter, yuhao_autocompletion_filter, all_aultocompletion],
+      states: [☐☐韻碼提示, ☐☑精確匹配, ☑☐輸入預測],
+      }
+    space:
+      - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }
+    chaifen:
+      - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
+    div:
+      - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
     trad:
       - { type: switch, name: traditionalization, states: [☐不轉換, ☑簡轉繁] }
     simp:
@@ -292,6 +284,7 @@ punctuator:
   import_preset: symbols
   half_shape:
     "`": "`"
+    "@": "@"
     "#": "#"
     "%": "%"
     "*": "*"
@@ -319,8 +312,13 @@ key_binder:
         accept: "Control+Shift+O",
         toggle: yuhao_charset_filter_common,
       } # 常用詞過濾
-    - { when: has_menu, accept: "0", toggle: yuhao_charset_filter_common } # 常用詞過濾
+    - { when: has_menu, accept: "0", toggle: yuhao_charset_filter_common }
     - { when: has_menu, accept: "/", toggle: yuhao_chaifen.off } # 拆分
+    - {
+        when: always,
+        accept: "Control+Shift+L",
+        toggle: yuhao_chaifen_source,
+      } # 拆分字形
     - {
         when: always,
         accept: "Control+Shift+D",
@@ -328,9 +326,9 @@ key_binder:
       } # 全码出单
     - {
         when: always,
-        accept: "Control+Shift+H",
-        toggle: yuhao_postpone_full_code,
-      } # 全碼後置
+        accept: "Control+Shift+K",
+        toggle: yuhao_hide_space_candidates,
+      } # 隱藏空格上屏字
     - {
         when: always,
         accept: "Control+Shift+Y",
@@ -339,14 +337,18 @@ key_binder:
     - { when: has_menu, accept: semicolon, send: 2 } # 分号次选
     - { when: has_menu, accept: apostrophe, send: 3 } # 引号三选
     - { when: has_menu, accept: Tab, send: 2 } # 製表符次选
-    - { when: has_menu, accept: minus, send: Page_Up } #減號上翻頁
-    - { when: has_menu, accept: equal, send: Page_Down } #等號下翻頁
+    - { when: has_menu, accept: minus, send: Page_Up } # 減號上翻頁
+    - { when: has_menu, accept: equal, send: Page_Down } # 等號下翻頁
 
 recognizer:
   import_preset: default
   patterns:
     uppercase: "^(?![`;]).*[A-Z][-_+.'0-9A-Za-z]*$"
     reverse_lookup: "^z([a-z]+?)*$"
-    zaoci: "^[a-z]*`[a-z`]*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
     # number: "^[-+]?[0-9][,.:0-9]*[%]?$"
+
+style:
+    inline_preedit: true  # 候選欄内置於輸入界面
+    preedit_type: composition  # 候選顯示字母(composition)还是候選(preview)
+    inline_candidate: false  # MacOS 候選顯示字母(false)还是候選(true)
