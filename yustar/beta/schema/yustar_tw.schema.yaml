@@ -133,7 +133,7 @@ yuhao_postpone_full_code:
 
 schema_name:
   code: yustar_tw
-  spelling: yustar_chaifen_tw
+  chaifen: yustar_chaifen_tw
 
 yuhao_chaifen:
   lua:

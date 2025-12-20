@@ -136,7 +136,7 @@ yuhao_postpone_full_code:
 
 schema_name:
   code: yujoy_sc
-  spelling: yujoy_chaifen
+  chaifen: yujoy_chaifen
 
 yuhao_chaifen:
   lua:

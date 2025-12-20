@@ -134,7 +134,7 @@ yuhao_postpone_full_code:
 
 schema_name:
   code: yulight_tw
-  spelling: yulight_chaifen_tw
+  chaifen: yulight_chaifen_tw
 
 yuhao_chaifen:
   lua:

@@ -135,7 +135,7 @@ simplify:
 schema_name:
   code: yuling
   code_tw: yuling_tw
-  spelling: yuling_chaifen
+  chaifen: yuling_chaifen
   spelling_tw: yuling_chaifen_tw
   max_code_length: 4
 

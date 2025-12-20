@@ -93,7 +93,7 @@ simplify:
 
 schema_name:
   code: yujoy_full
-  spelling: yujoy_chaifen
+  chaifen: yujoy_chaifen
 
 yuhao_chaifen:
   lua:

@@ -136,7 +136,7 @@ simplify:
 schema_name:
   code: yuming
   code_tw: yuming_tw
-  spelling: yuming_chaifen
+  chaifen: yuming_chaifen
   spelling_tw: yuming_chaifen_tw
 
 yuhao_chaifen:
