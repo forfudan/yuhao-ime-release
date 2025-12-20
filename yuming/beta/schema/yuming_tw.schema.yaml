@@ -22,31 +22,32 @@ switches:
   - options:
       - original
       - yuhao_charset_prioritizer_common
-    states: [原始排序, 常用字優先]
+    states: [原始排序, 常用字先]
     reset: 0
     # Control+Shift+M
   - options:
       - cjk
       - yuhao_charset_filter_common
       - yuhao_charset_filter_harmonic
-    states: [全漢字, 常用字, 傳統字]
+    states: [全部漢字, 僅常用字, 僅傳統字]
     reset: 0
     # Control+Shift+O
   - name: yuhao_single_char_only_for_full_code
     states: [字詞同出, 全碼出單]
     reset: 0
     # Control+Shift+D
+    # Tab
   - options:
       - yuhao_chaifen.off
       - yuhao_chaifen.lv2
       - yuhao_chaifen.lv3
     states: [隱藏注解, 二重注解, 多重註解]
     reset: 0
+    # /
   - options:
-      - yuhao_autocompletion_conditional_filter
+      - yuhao_popper_hints
       - yuhao_autocompletion_filter
-      - all_aultocompletion
-    states: [韻碼提示, 精確匹配, 輸入預測]
+    states: [預測提示, 精確匹配]
     reset: 0
     # Control+Shift+Y
   - name: yuhao_hide_space_candidates
@@ -80,7 +81,7 @@ engine:
     - ascii_composer
     - recognizer
     - key_binder
-    - lua_processor@*yuhao.yuhao_auto_select_postponed
+    - lua_processor@*yuhao.yuhao_auto_select_postponed  # 最大碼長或以韻碼結尾時，下一碼頂出首選.
     - speller
     - punctuator
     - selector
@@ -101,7 +102,7 @@ engine:
   filters:
     - lua_filter@*yuhao.yuhao_hide_space_candidates
     - lua_filter@*yuhao.yuhao_autocompletion_filter
-    - lua_filter@*yuhao.yuhao_autocompletion_conditional_filter
+    - lua_filter@*yuhao.yuhao_popper_hints
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
     - lua_filter@*yuhao.yuhao_charset_filter_common
     - lua_filter@*yuhao.yuhao_charset_filter_harmonic
@@ -143,8 +144,7 @@ speller:
   delimiter: "`"
   # max_code_length: 0
   auto_select: true
-  # algebra:
-  #   - xform/^([a-z]{1,5})[a-z]*$/$1/
+  auto_select_pattern: "[qwrtypsdfghjklzxcvbnm]{0,4}[aeiou]|[qwrtypsdfghjklzxcvbnm]{5}"
 
 translator:
   dictionary: yuming_tw
@@ -170,8 +170,8 @@ history:
 reverse_lookup:
   dictionary: yuhao_pinyin
   prefix: "z"
-  tips: 〔全拼簡拼反查〕
-  closing_tips: 〔反查关闭〕
+  tips: 〔全拼簡拼輸入〕
+  closing_tips: 〔全拼簡拼輸入關閉〕
   preedit_format:
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
@@ -228,8 +228,8 @@ yuhao_macro:
     auto:
       - {
       type: radio,
-      names: [yuhao_autocompletion_conditional_filter, yuhao_autocompletion_filter, all_aultocompletion],
-      states: [☐☐韻碼提示, ☐☑精確匹配, ☑☐輸入預測],
+      names: [yuhao_popper_hints, yuhao_autocompletion_filter],
+      states: [☐☐預測提示, ☐☑精確匹配],
       }
     space:
       - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }
@@ -316,6 +316,7 @@ key_binder:
         accept: "Control+Shift+D",
         toggle: yuhao_single_char_only_for_full_code,
       } # 全码出单
+    - { when: has_menu, accept: Tab, toggle: yuhao_single_char_only_for_full_code }
     - {
         when: always,
         accept: "Control+Shift+K",
@@ -328,7 +329,6 @@ key_binder:
       } # 輸入預測
     - { when: has_menu, accept: semicolon, send: 2 } # 分号次选
     - { when: has_menu, accept: apostrophe, send: 3 } # 引号三选
-    - { when: has_menu, accept: Tab, send: 2 } # 製表符次选
     - { when: has_menu, accept: minus, send: Page_Up } # 減號上翻頁
     - { when: has_menu, accept: equal, send: Page_Down } # 等號下翻頁
 
@@ -338,4 +338,4 @@ recognizer:
     uppercase: "^(?![`;]).*[A-Z][-_+.'0-9A-Za-z]*$"
     reverse_lookup: "^z([a-z]+?)*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
-    number: "^[-+]?[0-9][,.:0-9]*[%]?$"
+    # number: "^[-+]?[0-9][,.:0-9]*[%]?$"

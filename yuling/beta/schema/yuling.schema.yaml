@@ -48,10 +48,9 @@ switches:
     reset: 0
     # /
   - options:
-      - yuhao_autocompletion_conditional_filter
+      - yuhao_popper_hints
       - yuhao_autocompletion_filter
-      - all_aultocompletion
-    states: [韻碼提示, 精確匹配, 輸入預測]
+    states: [預測提示, 精確匹配]
     reset: 0
     # Control+Shift+Y
   - name: yuhao_hide_space_candidates
@@ -106,17 +105,17 @@ engine:
   filters:
     - lua_filter@*yuhao.yuhao_hide_space_candidates
     - lua_filter@*yuhao.yuhao_autocompletion_filter
-    - lua_filter@*yuhao.yuhao_autocompletion_conditional_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
     - lua_filter@*yuhao.yuhao_charset_filter_common
     - lua_filter@*yuhao.yuhao_charset_filter_tonggui
     - lua_filter@*yuhao.yuhao_charset_filter_harmonic
     - simplifier@traditionalize
     - simplifier@simplify
-    - lua_filter@*yuhao.yuhao_chaifen_filter
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
     - lua_filter@*yuhao.yuhao_charset_prioritizer_tonggui
     - lua_filter@*yuhao.yuhao_charset_prioritizer_harmonic
+    - lua_filter@*yuhao.yuhao_popper_hints
+    - lua_filter@*yuhao.yuhao_chaifen_filter
     - uniquifier
 
 traditionalize:
@@ -235,8 +234,8 @@ yuhao_macro:
     auto:
       - {
       type: radio,
-      names: [yuhao_autocompletion_conditional_filter, yuhao_autocompletion_filter, all_aultocompletion],
-      states: [☐☐韻碼提示, ☐☑精確匹配, ☑☐輸入預測],
+      names: [yuhao_popper_hints, yuhao_autocompletion_filter],
+      states: [☐☐預測提示, ☐☑精確匹配],
       }
     space:
       - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }
