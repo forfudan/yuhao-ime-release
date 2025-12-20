@@ -30,8 +30,11 @@ states: [字词同出, 全码出单]
 20221108: 初版.
 20250602: 將四碼改爲四碼及以上.
 20250819: 重構代碼.用户每次輸入編碼時,都會搜索碼表,確認是否是簡碼詞.
+20251220: 使用 core.is_single_char 函數處理單字判斷,正確支持變體選擇器.
 ---------------------------
 ]]
+
+local core = require("yuhao.yuhao_core")
 
 local function init(env)
     local config = env.engine.schema.config
@@ -71,12 +74,12 @@ local function filter(input, env)
             local cand_genuine = cand:get_genuine()
             if cand_genuine.type == 'completion' then
                 -- 預測候選項不顯示詞語
-                if utf8.len(cand.text) == 1 then
+                if core.is_single_char(cand.text) then
                     yield(cand)
                 end
             else
                 -- 精確匹配顯示簡詞
-                if (utf8.len(cand.text) == 1) or is_short_code(cand, env) then
+                if core.is_single_char(cand.text) or is_short_code(cand, env) then
                     yield(cand)
                 end
             end
