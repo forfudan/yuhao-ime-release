@@ -32,10 +32,10 @@ showing the breakdown, encoding, pinyin, and other information.
 - off:  關閉拆分功能
 - lv1:  一重註解 - 僅顯示拆分（僅單字）
         例：〔口尸匕〕
-- lv2:  二重註解 - 顯示拆分 + 編碼
+- lv2:  二重注解 - 顯示拆分 + 編碼
         單字例：〔口尸匕 · DMTi〕
         詞語例：〔Fi · Rje · Hsa · NwPe〕
-- lv3:  三重註解 - 顯示完整信息
+- lv3:  三重注解 - 顯示完整信息
         單字例：〔口尸匕 · DMTi · ne ní nǐ nī · CJK · 5462〕
         詞語例：〔Fi · Rje · Hsa · NwPe〕
 
@@ -58,6 +58,8 @@ showing the breakdown, encoding, pinyin, and other information.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ]]
 
+local core = require("yuhao.yuhao_core")
+
 --[[
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 輔助函數
@@ -75,29 +77,6 @@ local function utf8chars(str)
     chars[#chars + 1] = utf8.char(code)
   end
   return chars
-end
-
---[[
-檢查文本是否為單個漢字（考慮變體選擇器）
-  變體選擇器（Variation Selector）是特殊的 Unicode 字符（U+E0100-U+E01EF），
-  用於選擇同一字符的不同變體形式。此函數將帶有變體選擇器的字符視為單字符。
-  
-  @param text: 要檢查的文本
-  @return: boolean，表示是否為單個漢字
-]]
-local function is_single_char(text)
-  local text_len = utf8.len(text)
-  if text_len == 1 then
-    return true
-  elseif text_len == 2 then
-    -- 檢查第 2 個字符是否為變體選擇器（U+E0100 - U+E01EF）
-    local chars = utf8chars(text)
-    if chars[2] then
-      local codepoint = utf8.codepoint(chars[2])
-      return codepoint >= 0xE0100 and codepoint <= 0xE01EF
-    end
-  end
-  return false
 end
 
 --[[
@@ -188,7 +167,7 @@ local function get_single_char_comment(cand, env, rvdb)
   local text = cand.text
   
   -- 只處理單個字符
-  if not is_single_char(text) then
+  if not core.is_single_char(text) then
     return nil
   end
   
@@ -212,14 +191,14 @@ local function get_single_char_comment(cand, env, rvdb)
     return format_string('〔' .. data.chaifen .. '〕')
     
   elseif context:get_option('yuhao_chaifen.lv2') then
-    -- 二重註解：拆分 + 編碼
+    -- 二重注解：拆分 + 編碼
     local parts = {}
     if data.chaifen ~= '' then table.insert(parts, data.chaifen) end
     if data.code ~= '' then table.insert(parts, data.code) end
     return format_string('〔' .. table.concat(parts, ' · ') .. '〕')
     
   elseif context:get_option('yuhao_chaifen.lv3') then
-    -- 三重註解：完整信息
+    -- 三重注解：完整信息
     local parts = {}
     if data.chaifen ~= '' then table.insert(parts, data.chaifen) end
     if data.code ~= '' then table.insert(parts, data.code) end
@@ -379,7 +358,7 @@ local function filter(input, env)
     local chaifen_comment = nil
     
     -- 先嘗試作為單字處理
-    if is_single_char(cand.text) then
+    if core.is_single_char(cand.text) then
       chaifen_comment = get_single_char_comment(cand, env, rvdb)
     else
       -- 否則作為詞語處理

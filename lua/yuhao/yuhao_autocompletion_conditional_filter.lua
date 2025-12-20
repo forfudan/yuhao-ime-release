@@ -88,7 +88,7 @@ local function filter(input, env)
         end
     else
         if string.len(env.engine.context.input) == 5 then
-            -- 如果輸入長度等於 4,則顯示全部單字候選項
+            -- 如果輸入長度等於 5,則顯示全部單字候選項
             local index_of_cand = 0
             for cand in input:iter() do
                 if index_of_cand == 0 then

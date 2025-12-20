@@ -11,7 +11,7 @@ from distutils.dir_util import copy_tree
 from distutils.dir_util import remove_tree
 import re
 
-version = "v3.10.2"
+version = "v3.10.3-beta.20251218"
 
 # %%
 try:
@@ -51,4 +51,5 @@ make_archive(f"../dist/hamster/光華輸入法_{version}", "zip", "./dist/yuligh
 make_archive(f"../dist/光華輸入法_{version}", "zip", "./dist/yulight")
 # copyfile(f"../dist/宇浩光華_{version}.zip", f"../dist/yuhao_light_{version}.zip")
 
+print(f"成功發佈光華輸入法 {version}！")
 # %%

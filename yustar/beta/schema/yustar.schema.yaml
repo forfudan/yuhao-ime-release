@@ -49,7 +49,7 @@ switches:
       - yuhao_chaifen.off
       - yuhao_chaifen.lv2
       - yuhao_chaifen.lv3
-    states: [無註解, 二重註解, 多重註解]
+    states: [隱藏注解, 二重注解, 多重註解]
     reset: 0
   - name: yuhao_autocompletion_filter
     reset: 0
@@ -79,7 +79,6 @@ engine:
     - lua_processor@*yuhao.yuhao_switch_proc@yuhao_macro
     - ascii_composer
     - recognizer
-    - lua_processor@*yuhao.yuhao_chaifen_processor
     - key_binder
     - speller
     - punctuator
@@ -143,11 +142,6 @@ yuhao_postpone_full_code:
 schema_name:
   code: yustar
   chaifen: yustar_chaifen
-
-yuhao_chaifen:
-  lua:
-    switch_key: "Control+c"
-    cycle_key: "Shift+Control+C"
 
 speller:
   alphabet: abcdefghijklmnopqrstuvwxyz/

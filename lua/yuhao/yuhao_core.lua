@@ -21,6 +21,7 @@ Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
 20250711: 增加泛 CJK 區塊的定義.
 20250712: 增加 CJK 核心標點符號區塊的定義.
 20250906: 增加 CJK 擴展 J 區的定義.
+20251220: 增加 `is_single_char` 函數, 檢查文本是否為單個字符 (考慮變體選擇器).
 --------------------------------------------------------------------------------
 ]]
 
@@ -241,6 +242,29 @@ end
 ---@return boolean
 function core.string_starts_with(text, start)
     return text:sub(1, #start) == start
+end
+
+---檢查文本是否為單個字符 (考慮變體選擇器)
+---變體選擇器 (Variation Selector) 是特殊的 Unicode 字符 (U+E0100-U+E01EF),
+---用於選擇同一字符的不同變體形式. 此函數將帶有變體選擇器的字符視為單字符.
+---@param text string
+---@return boolean
+function core.is_single_char(text)
+    local text_len = utf8.len(text)
+    if text_len == 1 then
+        return true
+    elseif text_len == 2 then
+        -- 檢查第 2 個字符是否為變體選擇器（U+E0100 - U+E01EF）
+        local chars = {}
+        for pos, code in utf8.codes(text) do
+            chars[#chars + 1] = utf8.char(code)
+        end
+        if chars[2] then
+            local codepoint = utf8.codepoint(chars[2])
+            return codepoint >= 0xE0100 and codepoint <= 0xE01EF
+        end
+    end
+    return false
 end
 
 ---通過 unicode 編碼輸入字符 @lost-melody

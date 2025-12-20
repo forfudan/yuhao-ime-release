@@ -11,7 +11,7 @@ from distutils.dir_util import remove_tree
 from shutil import copyfile
 import re
 
-version = "v3.10.2"
+version = "v3.10.3-beta.20251218"
 
 # %%
 try:
@@ -71,4 +71,5 @@ shutil.make_archive(
     f"../dist/hamster/星陳輸入法_{version}", "zip", "./dist/yustar/schema"
 )
 
+print(f"成功發佈星陳輸入法 {version}！")
 # %%

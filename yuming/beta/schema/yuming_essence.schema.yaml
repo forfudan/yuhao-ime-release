@@ -138,8 +138,3 @@ recognizer:
     reverse_lookup: "^z([a-z]+?)*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
     # number: "^[-+]?[0-9][,.:0-9]*[%]?$"
-
-style:
-  inline_preedit: true
-  preedit_type: composition
-  inline_candidate: false

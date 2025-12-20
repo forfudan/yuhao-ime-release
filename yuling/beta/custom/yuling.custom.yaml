@@ -22,10 +22,10 @@ patch:
   ####################
   # 以下開關，0爲第一個，1爲第二個，2爲第三個
   #
-  # switches/@0/reset: 1 # [原始排序, 常用字優先]
-  # switches/@1/reset: 1 # [全漢字, 常用字, 簡化字, 傳統字]
+  # switches/@0/reset: 0 # [原始排序, 常用字先, 簡化字先, 傳統字先]
+  # switches/@1/reset: 1 # [全部漢字, 僅常用字, 僅簡化字, 僅傳統字]
   # switches/@2/reset: 1 # [字詞同出, 全碼出單]
-  # switches/@3/reset: 2 # [無註解, 二重註解, 多重註解]
+  # switches/@3/reset: 2 # [隱藏注解, 二重注解, 多重註解]
   # switches/@4/reset: 1 # [韻碼提示, 精確匹配, 輸入預測]
   # switches/@5/reset: 1 # [有空格簡, 無空格簡]
   # switches/@6/reset: 1 # [陸標拆分, 臺標拆分]

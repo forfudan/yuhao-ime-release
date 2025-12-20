@@ -24,7 +24,7 @@ patch:
   # switches/@1/reset: 1 # [全漢字, 常用字, 通规字]
   # switches/@2/reset: 1 # [字詞同出, 全碼出單]
   # switches/@3/reset: 1 # [原始排序, 全碼後置]
-  # switches/@4/reset: 1 # [無註解, 二重註解, 多重註解]
+  # switches/@4/reset: 1 # [隱藏注解, 二重注解, 多重註解]
   # switches/@5/reset: 1 # [輸入預測, 精確匹配]
   # switches/@6/reset: 1 # [简保持, 简转繁]
   # switches/@7/reset: 1 # [繁保持, 繁轉簡]

@@ -1,4 +1,4 @@
-# 宇浩·日月
+# 宇浩·靈明
 
 ## schema
 
@@ -14,9 +14,7 @@
 ```yaml
 patch:
   schema_list:
-    - schema: yuming          # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
-    - schema: yuming_tw       # 臺灣傳統字、大陸繁體字、香港傳統字、大陸簡化字通打
-    - schema: yuming_essence  # 無 lua 整句輸入
+    - schema: yuling          # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
 ```
 
 ## trime

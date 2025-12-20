@@ -10,4 +10,7 @@ python build_release.py
 cd ../yuming
 python build_release.py
 
+cd ../yuling
+python build_release.py
+
 cd ..

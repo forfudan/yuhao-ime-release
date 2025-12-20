@@ -35,7 +35,7 @@ switches:
       - yuhao_chaifen.off
       - yuhao_chaifen.lv2
       - yuhao_chaifen.lv3
-    states: [無註解, 二重註解, 多重註解]
+    states: [隱藏注解, 二重注解, 多重註解]
     reset: 0
   - options:
       - cjk

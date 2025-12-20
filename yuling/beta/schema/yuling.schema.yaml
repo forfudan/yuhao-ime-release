@@ -22,27 +22,31 @@ switches:
   - options:
       - original
       - yuhao_charset_prioritizer_common
-    states: [原始排序, 常用字優先]
-    reset: 0
+      - yuhao_charset_prioritizer_tonggui
+      - yuhao_charset_prioritizer_harmonic
+    states: [原始排序, 常用字先, 簡化字先, 傳統字先]
+    reset: 1
     # Control+Shift+M
   - options:
       - cjk
       - yuhao_charset_filter_common
       - yuhao_charset_filter_tonggui
       - yuhao_charset_filter_harmonic
-    states: [全漢字, 常用字, 簡化字, 傳統字]
+    states: [全部漢字, 僅常用字, 僅簡化字, 僅傳統字]
     reset: 0
     # Control+Shift+O
   - name: yuhao_single_char_only_for_full_code
     states: [字詞同出, 全碼出單]
     reset: 0
     # Control+Shift+D
+    # Tab
   - options:
       - yuhao_chaifen.off
       - yuhao_chaifen.lv2
       - yuhao_chaifen.lv3
-    states: [無註解, 二重註解, 多重註解]
+    states: [隱藏注解, 二重注解, 多重註解]
     reset: 0
+    # /
   - options:
       - yuhao_autocompletion_conditional_filter
       - yuhao_autocompletion_filter
@@ -80,7 +84,6 @@ engine:
     - lua_processor@*yuhao.yuhao_switch_proc@yuhao_macro
     - ascii_composer
     - recognizer
-    - lua_processor@*yuhao.yuhao_chaifen_processor
     - key_binder
     - lua_processor@*yuhao.yuhao_auto_select_postponed  # 最大碼長或以韻碼結尾時，下一碼頂出首選.
     - speller
@@ -112,6 +115,8 @@ engine:
     - simplifier@simplify
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
+    - lua_filter@*yuhao.yuhao_charset_prioritizer_tonggui
+    - lua_filter@*yuhao.yuhao_charset_prioritizer_harmonic
     - uniquifier
 
 traditionalize:
@@ -136,14 +141,8 @@ schema_name:
   code: yuling
   code_tw: yuling_tw
   chaifen: yuling_chaifen
-  spelling_tw: yuling_chaifen_tw
+  chaifen_tw: yuling_chaifen_tw
   max_code_length: 4
-
-yuhao_chaifen:
-  lua:
-    switch_key: "Control+c"
-    cycle_key: "Shift+Control+C"
-    phrase: 0
 
 speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba/
@@ -324,6 +323,7 @@ key_binder:
         accept: "Control+Shift+D",
         toggle: yuhao_single_char_only_for_full_code,
       } # 全码出单
+    - { when: has_menu, accept: Tab, toggle: yuhao_single_char_only_for_full_code }
     - {
         when: always,
         accept: "Control+Shift+K",
@@ -336,7 +336,6 @@ key_binder:
       } # 輸入預測
     - { when: has_menu, accept: semicolon, send: 2 } # 分号次选
     - { when: has_menu, accept: apostrophe, send: 3 } # 引号三选
-    - { when: has_menu, accept: Tab, send: 2 } # 製表符次选
     - { when: has_menu, accept: minus, send: Page_Up } # 減號上翻頁
     - { when: has_menu, accept: equal, send: Page_Down } # 等號下翻頁
 
@@ -347,8 +346,3 @@ recognizer:
     reverse_lookup: "^z([a-z]+?)*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
     # number: "^[-+]?[0-9][,.:0-9]*[%]?$"
-
-style:
-    inline_preedit: true  # 候選欄内置於輸入界面
-    preedit_type: composition  # 候選顯示字母(composition)还是候選(preview)
-    inline_candidate: false  # MacOS 候選顯示字母(false)还是候選(true)
