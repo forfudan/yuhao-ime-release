@@ -43,8 +43,9 @@ switches:
   - options:
       - yuhao_chaifen.off
       - yuhao_chaifen.lv2
+      - yuhao_chaifen.lv2d
       - yuhao_chaifen.lv3
-    states: [隱藏注解, 二重注解, 多重註解]
+    states: [隱藏注解, 二重注解, 二重詳解, 多重註解]
     reset: 0
     # /
   - options:
@@ -141,6 +142,7 @@ schema_name:
   code_tw: yuling_tw
   chaifen: yuling_chaifen
   chaifen_tw: yuling_chaifen_tw
+  chaifen_code_all_roots: true
   max_code_length: 4
 
 speller:
