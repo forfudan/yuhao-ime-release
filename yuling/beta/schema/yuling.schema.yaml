@@ -203,46 +203,47 @@ yuhao_macro:
       - { type: eval, name: ⌚時間, expr: return os.date("%H:%M:%S") }
       - { type: eval, name: Ⓣ時間, expr: return os.date("%Y%m%d%H%M") }
       - { type: eval, name: Ⓢ時間戳, expr: return tostring(os.time()) }
-    char:
+    chaifen:
+      - { 
+          type: selector,
+          names: 
+            [
+              yuhao_chaifen.lv2,
+              yuhao_chaifen.lv2d,
+              yuhao_chaifen.lv3,
+              yuhao_chaifen.off,
+            ],
+          numbering: [1, 2, 3, 0],
+          states: [二重注解, 二重詳解, 多重注解, 隱藏注解] 
+        }
+    zifu:
       - {
-          type: radio,
+          type: selector,
           names:
             [
-              cjk,
               yuhao_charset_filter_common,
               yuhao_charset_filter_tonggui,
               yuhao_charset_filter_harmonic,
-            ],
-          states: [☐☐全漢字, ☐☑常用字, ☑☐通規字, ☑☑陸標繁],
-        }
-    cjk:
-      - {
-          type: radio,
-          names:
-            [
               cjk,
-              yuhao_charset_filter_common,
-              yuhao_charset_filter_tonggui,
-              yuhao_charset_filter_harmonic,
             ],
-          states: [☐☐全漢字, ☐☑常用字, ☑☐通規字, ☑☑陸標繁],
+          numbering: [1, 2, 3, 0],
+          states: [常用字, 通規字, 陸標繁, 全漢字],
         }
+    yuce:
+      - {
+          type: selector,
+          names: [yuhao_popper_hints, yuhao_autocompletion_filter],
+          numbering: [1, 2],
+          states: [預測提示, 精確匹配],
+      }
     word:
       - {
           type: switch,
           name: yuhao_single_char_only_for_full_code,
           states: [☐字詞, ☑純單],
         }
-    auto:
-      - {
-      type: radio,
-      names: [yuhao_popper_hints, yuhao_autocompletion_filter],
-      states: [☐☐預測提示, ☐☑精確匹配],
-      }
     space:
       - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }
-    chaifen:
-      - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
     div:
       - { type: switch, name: yuhao_chaifen_source, states: [☐陸標拆分, ☑臺標拆分] }
     trad:

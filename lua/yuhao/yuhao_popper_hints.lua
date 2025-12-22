@@ -310,7 +310,7 @@ local function filter(input, env)
                             return (order[a.vowel] or 0) < (order[b.vowel] or 0)
                         end)
                         for _, item in ipairs(table_vowel_poppers) do
-                            yield(Candidate(item.cand.type, item.cand.start, item.cand._end, item.cand.text, "韻碼 " .. item.vowel))
+                            yield(Candidate(item.cand.type, item.cand.start, item.cand._end, item.cand.text, item.vowel))
                         end
                         -- 再輸出其他收集的候選項
                         for _, _cand in ipairs(table_one_code_other_chars) do
@@ -332,7 +332,7 @@ local function filter(input, env)
                     return (order[a.vowel] or 0) < (order[b.vowel] or 0)
                 end)
                 for _, item in ipairs(table_vowel_poppers) do
-                    yield(Candidate(item.cand.type, item.cand.start, item.cand._end, item.cand.text, "韻碼 " .. item.vowel))
+                    yield(Candidate(item.cand.type, item.cand.start, item.cand._end, item.cand.text, item.vowel))
                 end
                 -- 再輸出其他收集的候選項
                 for _, _cand in ipairs(table_one_code_other_chars) do

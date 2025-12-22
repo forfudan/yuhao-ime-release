@@ -15,7 +15,13 @@ switches:
     reset: 1
 engine:
   filters:
-    - lua_filter@*smyh.embeded_cands
+    - lua_filter@*smyh.embeded_cands@embeded_cands
+embeded_cands:
+  option_name: embeded_cands                         # 開關
+  index_indicators: [ ¹, ², ³, ⁴, ⁵, ⁶, ⁷, ⁸, ⁹, ⁰ ] # 嵌入候選的序號顯示格式
+  first_format: "[${候選}]${Code}${Comment}"         # 首選的渲染格式
+  next_format: "${候選}${Seq}${Comment}"             # 非首選的渲染格式
+  separator: " "                                     # 候選之間的分隔符
 key_binder:
   bindings:
     - { when: always, accept: "Control+Shift+E", toggle: embeded_cands }
@@ -173,6 +179,8 @@ local function render_comment(comment)
         -- 丟棄以空格和"~"開頭的提示串, 這通常是補全提示
         comment = ""
     elseif string.len(comment) ~= 0 then
+        -- 自定義提示串格式
+        comment=comment:gsub("^[([〔]+", ""):gsub("[)%]〕]+$", ""):gsub(" · ", "·")
         comment = "["..comment.."]"
     end
     return comment
@@ -186,8 +194,6 @@ local function render_cand(env, seq, code, text, comment)
     else
         formatter = namespaces:config(env).formatter.next
     end
-    -- 渲染提示串
-    comment = render_comment(comment)
     -- 渲染提示串
     comment = render_comment(comment)
     local cand = formatter:build({
@@ -279,6 +285,7 @@ function embeded_cands_filter.func(input, env)
 end
 
 function embeded_cands_filter.fini(env)
+    env.option = nil
 end
 
 return embeded_cands_filter

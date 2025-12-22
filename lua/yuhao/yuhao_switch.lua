@@ -1,8 +1,17 @@
+--[[
 -- 作者：王牌餅乾
 -- https://github.com/lost-melody/
 -- 转载请保留作者名
 -- Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
----------------------------------------
+
+
+版本：
+20240810, 王牌餅乾:
+    初始版本.
+20251222, 朱宇浩:
+    添加 selector 宏類型, 支持直接選擇特定選項.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--]]
 
 local yuhao_switch_proc = {} -- 開關管理-processor
 local yuhao_switch_tr   = {} -- 開關管理-translator
@@ -15,11 +24,12 @@ local kNoop     = 2 -- 無: 請下一個processor繼續看
 
 -- 宏類型枚舉
 local macro_types = {
-    tip    = "tip",
-    switch = "switch",
-    radio  = "radio",
-    shell  = "shell",
-    eval   = "eval",
+    tip      = "tip",
+    switch   = "switch",
+    radio    = "radio",
+    selector = "selector",
+    shell    = "shell",
+    eval     = "eval",
 }
 
 -- 候選序號標記
@@ -175,6 +185,63 @@ local function new_radio(states)
     end
 
     return radio
+end
+
+---選擇器
+---直接選擇特定選項，而不是循環切換
+---顯示所有選項及序號
+---@param states table
+---@param numbering table 自定義的數字標注（可選）
+local function new_selector(states, numbering)
+    local selector = {
+        type      = macro_types.selector,
+        states    = states,
+        numbering = numbering or {},
+    }
+    
+    function selector:display(ctx)
+        local state_displays = {}
+        -- 顯示所有選項
+        for i, op in ipairs(self.states) do
+            local value = ctx:get_option(op.name)
+            local prefix = value and "▸" or ""
+            -- 使用自定義數字或默認數字
+            local num = self.numbering[i] or i
+            local num_indicator = index_indicators[num] or tostring(num)
+            table.insert(state_displays, prefix .. op.display .. num_indicator)
+        end
+        return table.concat(state_displays, " ")
+    end
+
+    function selector:trigger(env, ctx, pressed_digit)
+        if pressed_digit ~= nil then
+            -- 根據按下的數字找到對應的選項索引
+            local target_index = nil
+            for i, num in ipairs(self.numbering) do
+                if num == pressed_digit then
+                    target_index = i
+                    break
+                end
+            end
+            
+            -- 如果沒有自定義 numbering，使用默認映射
+            if #self.numbering == 0 then
+                target_index = pressed_digit
+            end
+            
+            -- 關閉所有選項
+            for _, op in ipairs(self.states) do
+                set_option(env, ctx, op.name, false)
+            end
+            
+            -- 開啟對應選項
+            if target_index and target_index >= 1 and target_index <= #self.states then
+                set_option(env, ctx, self.states[target_index].name, true)
+            end
+        end
+    end
+
+    return selector
 end
 
 ---Shell 命令, 僅支持 Linux/Mac 系統, 其他平臺可通過下文提供的 eval 宏自行擴展
@@ -358,6 +425,35 @@ local function parse_conf_macro_list(env)
                         table.insert(cands, new_radio(radio))
                     end
                 end
+            elseif type == macro_types.selector then
+                -- {type: selector, names: [], states: [], numbering: []}
+                if key_map:has_key("names") and key_map:has_key("states") then
+                    local names, states, numbering = {}, {}, {}
+                    local name_list = key_map:get("names"):get_list() or { size = 0 }
+                    for idx = 0, name_list.size - 1 do
+                        table.insert(names, name_list:get_value_at(idx):get_string())
+                    end
+                    local state_list = key_map:get("states"):get_list() or { size = 0 }
+                    for idx = 0, state_list.size - 1 do
+                        table.insert(states, state_list:get_value_at(idx):get_string())
+                    end
+                    -- 讀取自定義數字標注（可選）
+                    if key_map:has_key("numbering") then
+                        local numbering_list = key_map:get("numbering"):get_list() or { size = 0 }
+                        for idx = 0, numbering_list.size - 1 do
+                            table.insert(numbering, numbering_list:get_value_at(idx):get_int())
+                        end
+                    end
+                    if #names > 0 and #names == #states then
+                        local selector = {}
+                        for idx, name in ipairs(names) do
+                            if #name ~= 0 and #states[idx] ~= 0 then
+                                table.insert(selector, { name = name, display = states[idx] })
+                            end
+                        end
+                        table.insert(cands, new_selector(selector, numbering))
+                    end
+                end
             elseif type == macro_types.shell then
                 -- {type: shell, name: foo, cmd: "echo hello"}
                 if key_map:has_key("cmd") and (key_map:has_key("name") or key_map:has_key("text")) then
@@ -428,10 +524,15 @@ end
 
 -- ######## PROCESSOR ########
 
-local function proc_handle_macros(env, ctx, macro, args, idx)
+local function proc_handle_macros(env, ctx, macro, args, idx, selected_index)
     if macro then
         if macro[idx] then
-            macro[idx]:trigger(env, ctx, args)
+            -- 對於 selector 類型，傳遞 selected_index 以支持直接選擇
+            if macro[idx].type == macro_types.selector and selected_index ~= nil then
+                macro[idx]:trigger(env, ctx, selected_index)
+            else
+                macro[idx]:trigger(env, ctx, args)
+            end
         end
         return kAccepted
     end
@@ -471,9 +572,25 @@ function yuhao_switch_proc.func(key_event, env)
                 ctx:push_input(string.char(ch))
                 return kAccepted
             else
-                local idx = select_index(key_event, env)
-                if idx >= 0 then
-                    return proc_handle_macros(env, ctx, macro, args, idx + 1)
+                -- 檢查第一個宏是否為 selector 類型
+                if macro[1] and macro[1].type == macro_types.selector then
+                    -- 如果是 selector，檢查是否按下數字鍵
+                    local digit_pressed = nil
+                    if (ch >= 0x30 and ch <= 0x39) then
+                        digit_pressed = ch - 0x30  -- 0x30='0', 0x31='1', ..., 0x39='9'
+                    elseif (ch >= 0xffb0 and ch <= 0xffb9) then
+                        digit_pressed = ch - 0xffb0  -- 小鍵盤數字
+                    end
+                    if digit_pressed ~= nil then
+                        -- 按下數字鍵，觸發 selector
+                        return proc_handle_macros(env, ctx, macro, args, 1, digit_pressed)
+                    end
+                else
+                    -- 非 selector 類型，使用原有邏輯
+                    local idx = select_index(key_event, env)
+                    if idx >= 0 then
+                        return proc_handle_macros(env, ctx, macro, args, idx + 1)
+                    end
                 end
             end
             return kNoop
