@@ -188,6 +188,24 @@ yuhao_macro:
   funckeys:
     macro: [0x2f] # 當輸入串以 "/" 開頭時, 認爲是宏調用
   macros:
+    "":
+      - type: menu
+        items:
+          - type: radio
+            names: [original, yuhao_charset_prioritizer_common, yuhao_charset_prioritizer_tonggui, yuhao_charset_prioritizer_harmonic]
+            states: [原始排序, 常用字先, 簡化字先, 傳統字先]
+          - type: radio
+            names: [cjk, yuhao_charset_filter_common, yuhao_charset_filter_tonggui, yuhao_charset_filter_harmonic]
+            states: [全部漢字, 僅常用字, 僅簡化字, 僅傳統字]
+          - type: switch
+            name: yuhao_single_char_only_for_full_code
+            states: [字詞同出, 全碼出單]
+          - type: radio
+            names: [yuhao_popper_hints, yuhao_autocompletion_filter]
+            states: [預測提示, 精確匹配]
+          - type: switch
+            name: yuhao_hide_space_candidates
+            states: [有空格簡, 無空格簡]
     help:
       - { type: switch, name: yuhao_single_char_only_for_full_code, states: [☐字詞同出, ☑全碼出單] }
       - { type: switch, name: yuhao_hide_space_candidates, states: [☐有空格簡, ☑無空格簡] }

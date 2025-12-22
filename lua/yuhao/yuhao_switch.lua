@@ -9,6 +9,7 @@
 20240810, 王牌餅乾:
     初始版本.
 20251222, 朱宇浩:
+    增加 menu 宏類型, 支持多行顯示多個開關項.
     添加 selector 宏類型, 支持直接選擇特定選項.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --]]
@@ -28,6 +29,7 @@ local macro_types = {
     switch   = "switch",
     radio    = "radio",
     selector = "selector",
+    menu     = "menu",
     shell    = "shell",
     eval     = "eval",
 }
@@ -129,14 +131,16 @@ local function new_switch(name, states)
         states = states,
     }
     function switch:display(ctx)
-        local state = ""
         local current_value = ctx:get_option(self.name)
-        if current_value then
-            state = self.states[2]
-        else
-            state = self.states[1]
+        local result = {}
+        for i, state in ipairs(self.states) do
+            if (i == 2 and current_value) or (i == 1 and not current_value) then
+                table.insert(result, "▸" .. state)
+            else
+                table.insert(result, state)
+            end
         end
-        return state
+        return table.concat(result, " · ")
     end
 
     function switch:trigger(env, ctx)
@@ -159,15 +163,16 @@ local function new_radio(states)
         states = states,
     }
     function radio:display(ctx)
-        local state = ""
+        local result = {}
         for _, op in ipairs(self.states) do
             local value = ctx:get_option(op.name)
             if value then
-                state = op.display
-                break
+                table.insert(result, "▸" .. op.display)
+            else
+                table.insert(result, op.display)
             end
         end
-        return state
+        return table.concat(result, " · ")
     end
 
     function radio:trigger(env, ctx)
@@ -210,7 +215,7 @@ local function new_selector(states, numbering)
             local num_indicator = index_indicators[num] or tostring(num)
             table.insert(state_displays, prefix .. op.display .. num_indicator)
         end
-        return table.concat(state_displays, " ")
+        return table.concat(state_displays, " · ")
     end
 
     function selector:trigger(env, ctx, pressed_digit)
@@ -242,6 +247,31 @@ local function new_selector(states, numbering)
     end
 
     return selector
+end
+
+---菜單
+---顯示多個開關項，每個項佔一行，可通過數字鍵切換
+---items 是一個數組，每個元素包含 type（switch/radio/selector）和對應的配置
+---@param items table
+local function new_menu(items)
+    local menu = {
+        type = macro_types.menu,
+        items = items,
+    }
+    
+    function menu:display(ctx)
+        -- menu 類型不需要 display，因為會生成多個候選
+        return ""
+    end
+    
+    function menu:trigger(env, ctx, index)
+        -- 觸發指定索引的項
+        if index >= 1 and index <= #self.items then
+            self.items[index]:trigger(env, ctx)
+        end
+    end
+    
+    return menu
 end
 
 ---Shell 命令, 僅支持 Linux/Mac 系統, 其他平臺可通過下文提供的 eval 宏自行擴展
@@ -454,6 +484,84 @@ local function parse_conf_macro_list(env)
                         table.insert(cands, new_selector(selector, numbering))
                     end
                 end
+            elseif type == macro_types.menu then
+                -- {type: menu, items: [{type: switch/radio, ...}, ...]}
+                if key_map:has_key("items") then
+                    local items = {}
+                    local item_list = key_map:get("items"):get_list() or { size = 0 }
+                    for idx = 0, item_list.size - 1 do
+                        local item_map = item_list:get_at(idx):get_map()
+                        local item_type = item_map and item_map:has_key("type") and item_map:get_value("type"):get_string() or ""
+                        
+                        if item_type == macro_types.switch then
+                            -- switch item
+                            if item_map:has_key("name") and item_map:has_key("states") then
+                                local name = item_map:get_value("name"):get_string()
+                                local states = {}
+                                local state_list = item_map:get("states"):get_list() or { size = 0 }
+                                for s_idx = 0, state_list.size - 1 do
+                                    table.insert(states, state_list:get_value_at(s_idx):get_string())
+                                end
+                                if #name ~= 0 and #states > 1 then
+                                    table.insert(items, new_switch(name, states))
+                                end
+                            end
+                        elseif item_type == macro_types.radio then
+                            -- radio item
+                            if item_map:has_key("names") and item_map:has_key("states") then
+                                local names, states = {}, {}
+                                local name_list = item_map:get("names"):get_list() or { size = 0 }
+                                for n_idx = 0, name_list.size - 1 do
+                                    table.insert(names, name_list:get_value_at(n_idx):get_string())
+                                end
+                                local state_list = item_map:get("states"):get_list() or { size = 0 }
+                                for s_idx = 0, state_list.size - 1 do
+                                    table.insert(states, state_list:get_value_at(s_idx):get_string())
+                                end
+                                if #names > 1 and #names == #states then
+                                    local radio = {}
+                                    for r_idx, name in ipairs(names) do
+                                        if #name ~= 0 and #states[r_idx] ~= 0 then
+                                            table.insert(radio, { name = name, display = states[r_idx] })
+                                        end
+                                    end
+                                    table.insert(items, new_radio(radio))
+                                end
+                            end
+                        elseif item_type == macro_types.selector then
+                            -- selector item
+                            if item_map:has_key("names") and item_map:has_key("states") then
+                                local names, states, numbering = {}, {}, {}
+                                local name_list = item_map:get("names"):get_list() or { size = 0 }
+                                for n_idx = 0, name_list.size - 1 do
+                                    table.insert(names, name_list:get_value_at(n_idx):get_string())
+                                end
+                                local state_list = item_map:get("states"):get_list() or { size = 0 }
+                                for s_idx = 0, state_list.size - 1 do
+                                    table.insert(states, state_list:get_value_at(s_idx):get_string())
+                                end
+                                if item_map:has_key("numbering") then
+                                    local numbering_list = item_map:get("numbering"):get_list() or { size = 0 }
+                                    for num_idx = 0, numbering_list.size - 1 do
+                                        table.insert(numbering, numbering_list:get_value_at(num_idx):get_int())
+                                    end
+                                end
+                                if #names > 0 and #names == #states then
+                                    local selector = {}
+                                    for sel_idx, name in ipairs(names) do
+                                        if #name ~= 0 and #states[sel_idx] ~= 0 then
+                                            table.insert(selector, { name = name, display = states[sel_idx] })
+                                        end
+                                    end
+                                    table.insert(items, new_selector(selector, numbering))
+                                end
+                            end
+                        end
+                    end
+                    if #items > 0 then
+                        table.insert(cands, new_menu(items))
+                    end
+                end
             elseif type == macro_types.shell then
                 -- {type: shell, name: foo, cmd: "echo hello"}
                 if key_map:has_key("cmd") and (key_map:has_key("name") or key_map:has_key("text")) then
@@ -506,13 +614,11 @@ end
 -- 按命名空間歸類方案配置, 而不是按会話, 以减少内存佔用
 local namespaces = {}
 function namespaces:init(env)
-    -- 讀取配置項
-    if not namespaces:config(env) then
-        local config = {}
-        config.macros = parse_conf_macro_list(env)
-        config.funckeys = parse_conf_funckeys(env)
-        namespaces:set_config(env, config)
-    end
+    -- 每次都重新讀取配置項，以支持動態更新
+    local config = {}
+    config.macros = parse_conf_macro_list(env)
+    config.funckeys = parse_conf_funckeys(env)
+    namespaces:set_config(env, config)
 end
 function namespaces:set_config(env, config)
     namespaces[env.name_space] = namespaces[env.name_space] or {}
@@ -572,8 +678,25 @@ function yuhao_switch_proc.func(key_event, env)
                 ctx:push_input(string.char(ch))
                 return kAccepted
             else
+                -- 檢查第一個宏是否為 menu 類型
+                if macro[1] and macro[1].type == macro_types.menu then
+                    -- menu 類型，按數字切換對應行的選項
+                    local digit_pressed = nil
+                    if (ch >= 0x30 and ch <= 0x39) then
+                        digit_pressed = ch - 0x30  -- 0x30='0', 0x31='1', ..., 0x39='9'
+                        -- 0 映射到 10，1-9 映射到 1-9
+                        digit_pressed = (digit_pressed == 0) and 10 or digit_pressed
+                    elseif (ch >= 0xffb0 and ch <= 0xffb9) then
+                        digit_pressed = ch - 0xffb0  -- 小鍵盤數字
+                        digit_pressed = (digit_pressed == 0) and 10 or digit_pressed
+                    end
+                    if digit_pressed ~= nil and digit_pressed >= 1 and digit_pressed <= #macro[1].items then
+                        -- 觸發對應行的切換
+                        macro[1]:trigger(env, ctx, digit_pressed)
+                        return kAccepted
+                    end
                 -- 檢查第一個宏是否為 selector 類型
-                if macro[1] and macro[1].type == macro_types.selector then
+                elseif macro[1] and macro[1].type == macro_types.selector then
                     -- 如果是 selector，檢查是否按下數字鍵
                     local digit_pressed = nil
                     if (ch >= 0x30 and ch <= 0x39) then
@@ -586,7 +709,7 @@ function yuhao_switch_proc.func(key_event, env)
                         return proc_handle_macros(env, ctx, macro, args, 1, digit_pressed)
                     end
                 else
-                    -- 非 selector 類型，使用原有邏輯
+                    -- 非 menu/selector 類型，使用原有邏輯
                     local idx = select_index(key_event, env)
                     if idx >= 0 then
                         return proc_handle_macros(env, ctx, macro, args, idx + 1)
@@ -610,12 +733,28 @@ local function tr_handle_macros(env, ctx, seg, input)
     local name, args = get_macro_args(input, namespaces:config(env).funckeys.macro)
     local macro = namespaces:config(env).macros[name]
     if macro then
-        local text_list = {}
-        for i, m in ipairs(macro) do
-            table.insert(text_list, m:display(ctx, args) .. index_indicators[i])
+        -- 檢查是否為 menu 類型
+        if macro[1] and macro[1].type == macro_types.menu then
+            -- menu 類型，為每個項生成一個候選
+            for i, item in ipairs(macro[1].items) do
+                local display_text = item:display(ctx, args)
+                -- 構建顯示文本，加上數字前綴
+                local cand_text = "按" .. tostring(i) .. "切換: " .. display_text
+                -- 使用空的 text 參數（第4個），將顯示文本放在 comment（第5個）
+                local cand = Candidate("macro", seg.start, seg._end, cand_text, "")
+                cand.quality = 1000 - i  -- 確保順序
+                yield(cand)
+            end
+            return  -- 確保返回
+        else
+            -- 其他類型，生成單個候選
+            local text_list = {}
+            for i, m in ipairs(macro) do
+                table.insert(text_list, m:display(ctx, args) .. index_indicators[i])
+            end
+            local cand = Candidate("macro", seg.start, seg._end, "", table.concat(text_list, " "))
+            yield(cand)
         end
-        local cand = Candidate("macro", seg.start, seg._end, "", table.concat(text_list, " "))
-        yield(cand)
     end
 end
 
