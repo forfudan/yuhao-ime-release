@@ -152,10 +152,18 @@ local function parse_chaifen_data(raw_data, has_all_roots_code)
     return nil
   end
   
-  -- 按逗號分割（這裡假設字段內部不含逗號）
+  -- 按逗號分割，保留空字段
   local parts = {}
-  for part in content:gmatch('[^,]+') do
-    table.insert(parts, part)
+  local start = 1
+  while true do
+    local comma_pos = content:find(',', start, true)
+    if comma_pos then
+      table.insert(parts, content:sub(start, comma_pos - 1))
+      start = comma_pos + 1
+    else
+      table.insert(parts, content:sub(start))
+      break
+    end
   end
   
   -- 確保至少有基本字段
