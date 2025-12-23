@@ -3,7 +3,7 @@
 yuhao_chaifen_filter.lua
 宇浩拆分注解過濾器
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-版本: 20251222
+版本: 20251223
 作者: 朱宇浩 (forFudan) <dr.yuhao.zhu@outlook.com>
 Github: https://github.com/forFudan/
 版權聲明：
@@ -13,67 +13,72 @@ Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
     International
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 介紹:
-本過濾器為候選詞添加拆分注解，顯示漢字的拆分、編碼、拼音等信息。
+本過濾器為候選詞添加拆分注解, 顯示漢字的拆分、編碼、拼音等信息.
 
-數據格式說明（來自反查數據庫）：
-若 chaifen_code_for_all_roots 為 true，數據有 7 欄：
+數據格式說明(來自反查數據庫):
+若 chaifen_code_for_all_roots 為 true, 數據有 7 欄:
 呢	[口尸匕,DMTi,DoMsiTi,ne_ní_nǐ_nī,,CJK,5462]
-- 第一欄：拆分（口尸匕）
-- 第二欄：編碼（DMTi）
-- 第三欄：字根全編碼（DoMsiTi）
-- 第四欄：拼音（ne_ní_nǐ_nī）
-- 第五欄：注釋（可為空）
-- 第六欄：字符集（CJK）
-- 第七欄：Unicode 碼位（5462）
+- 第一欄: 拆分(口尸匕)
+- 第二欄: 編碼(DMTi)
+- 第三欄: 字根全編碼(DoMsiTi)
+- 第四欄: 拼音(ne_ní_nǐ_nī)
+- 第五欄: 注釋(可為空)
+- 第六欄: 字符集(CJK)
+- 第七欄: Unicode 碼位(5462)
 
-若 chaifen_code_for_all_roots 為 false，數據有 6 欄：
+若 chaifen_code_for_all_roots 為 false, 數據有 6 欄:
 呢	[口尸匕,DMTi,ne_ní_nǐ_nī,,CJK,5462]
-- 第一欄：拆分（口尸匕）
-- 第二欄：編碼（DMTi）
-- 第三欄：拼音（ne_ní_nǐ_nī）
-- 第四欄：注釋（可為空）
-- 第五欄：字符集（CJK）
-- 第六欄：Unicode 碼位（5462）
+- 第一欄: 拆分(口尸匕)
+- 第二欄: 編碼(DMTi)
+- 第三欄: 拼音(ne_ní_nǐ_nī)
+- 第四欄: 注釋(可為空)
+- 第五欄: 字符集(CJK)
+- 第六欄: Unicode 碼位(5462)
 
 Description:
 This filter adds character decomposition annotations to candidates,
 showing the breakdown, encoding, pinyin, and other information.
 
-顯示級別：
+顯示級別:
 - off:   關閉拆分功能
-- lv1:   一重注解 - 僅顯示拆分（僅單字）
-         例：〔口尸匕 · 🈩〕
-- lv2:   二重注解 - 顯示拆分 + 編碼
-         單字例：〔口尸匕 · DMTi · 🈔〕
-         詞語例：〔Fi · Rje · Hsa · NwPe〕
-- lv2d:  二重詳解 - 顯示拆分 + 編碼 + 字根全編碼（僅單字同時顯示 code 和 code_all_roots）
-         單字例：〔口尸匕 · DMTi · DoMsiTi 🈖〕
-         詞語例：〔Fi · Rje · Hsa · NwPe〕
-- lv3:   多重注解 - 顯示完整信息
-         單字例：〔口尸匕 · DMTi · ne ní nǐ nī · CJK · 5462 · 🈕〕
-         詞語例：〔Fi · Rje · Hsa · NwPe〕
+- lv1:   一重注解 - 僅顯示拆分(僅單字)
+         例: 〔口尸匕〕
+- lv2:   二重注解 - 顯示拆分 + 編碼(code)
+         單字例: 〔口尸匕 · DMTi〕
+         詞語例: 〔Fi · Rje · Hsa · NwPe〕
+- lv2d:  二重詳解 - 顯示拆分 + 字根全編碼(僅單字使用 code_all_roots, 詞語使用 code)
+         單字例: 〔口尸匕 · DoMsiTi〕
+         詞語例: 〔Fi · Rje · Hsa · NwPe〕
+- lv3:   多重注解 - 顯示完整信息(僅單字使用 code_all_roots, 詞語使用 code)
+         單字例: 〔口尸匕 · DoMsiTi · ne ní nǐ nī · CJK · 5462〕
+         詞語例: 〔Fi · Rje · Hsa · NwPe〕
 
-詞語編碼顯示規則：
-- 少於max_code_length個字：顯示所有字的編碼
-- max_code_length個或更多字：顯示前N-1個字和最後1個字的編碼，中間用 ... 表示省略
-  例（max_code_length=5）：〔Fi · Rje · Hsa · NwPe ... Dji〕
-- 字與字之間用 · 分隔（省略號兩側不加 ·）
-- 詞語編碼在 lv2、lv2d 和 lv3 級別顯示
-- 詞語任何模式下都使用普通編碼（code），不使用字根全編碼
+詞語編碼顯示規則:
+- 少於 max_code_length 個字: 顯示所有字的編碼
+- 等於 max_code_length 個字: 顯示所有字的編碼(無省略號)
+- 多於 max_code_length 個字: 顯示前 N-1 個字和最後 1 個字的編碼, 中間用 ... 表示省略
+  例(max_code_length=4):
+    - 四字詞: 〔XSu · Do · JHXF · Fvu〕
+    - 五字詞: 〔XSu · Do · JHXF ... Fvu〕
+- 字與字之間用 · 分隔(省略號兩側不加 ·)
+- 詞語編碼在 lv2, lv2d 和 lv3 級別顯示
+- 詞語任何模式下都使用普通編碼(code), 不使用字根全編碼(code_all_roots)
 
-格式化規則：
+格式化規則:
 - 使用 · 分隔不同類型的信息
 - 拼音中的下劃線 _ 轉換為空格
 - 多個連續的 · 合併為一個
 - 空括號會被移除
 
-版本：
-20251218:  初版,實現單字拆分注解功能.
-           添加詞語編碼注解功能,支持前4字和末字顯示.
-20251222:  添加字根全編碼支持,通過 chaifen_code_all_roots 配置控制數據格式(6欄/7欄).
-           新增 lv2d 模式(二重詳解),使用字根全編碼替代普通編碼.
-           為不同注解級別添加視覺標記(🈩/🈔/🈔🈖/🈕).
-           新增 max_code_length 配置,動態控制詞語顯示前N-1字和末1字編碼.
+版本歷史:
+20251218:  初版, 實現單字拆分注解功能.
+           添加詞語編碼注解功能, 支持前 4 字和末字顯示.
+20251222:  添加字根全編碼支持, 通過 chaifen_code_all_roots 配置控制數據格式(6 欄/7 欄).
+           新增 lv2d 模式(二重詳解), 同時顯示普通編碼和字根全編碼.
+           新增 max_code_length 配置, 動態控制詞語顯示前 N-1 字和末 1 字編碼.
+20251223:  修改 lv2d 和 lv3 模式, 單字僅顯示字根全編碼(code_all_roots), 不顯示普通編碼(code).
+           詞語保持使用普通編碼(code).
+           修正詞語省略號邏輯, 僅在字數大於 max_code_length 時顯示省略號.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ]]
 
@@ -106,7 +111,7 @@ end
 
 --[[
 格式化拆分信息字符串
-  將原始格式轉換為易讀格式：
+  將原始格式轉換為易讀格式:
   - 拼音中的 _ 轉換為空格
   - 多個 · 合併為一個
   - 移除空括號
@@ -129,12 +134,12 @@ end
 
 --[[
 解析反查數據庫返回的拆分數據
-  若 has_all_roots_code 為 true，數據格式: [拆分,編碼,字根全編碼,拼音,注釋,字符集,Unicode] (7欄)
-  若 has_all_roots_code 為 false，數據格式: [拆分,編碼,拼音,注釋,字符集,Unicode] (6欄)
+  若 has_all_roots_code 為 true, 數據格式: [拆分,編碼,字根全編碼,拼音,注釋,字符集,Unicode] (7欄)
+  若 has_all_roots_code 為 false, 數據格式: [拆分,編碼,拼音,注釋,字符集,Unicode] (6欄)
   
   @param raw_data: 反查數據庫返回的原始字符串
   @param has_all_roots_code: 是否包含字根全編碼欄位
-  @return: 包含各個字段的表，如果解析失敗則返回 nil
+  @return: 包含各個字段的表, 如果解析失敗則返回 nil
 ]]
 local function parse_chaifen_data(raw_data, has_all_roots_code)
   if not raw_data or raw_data == '' then
@@ -192,12 +197,12 @@ end
 
 --[[
 為單個漢字生成拆分注解
-  根據當前選中的注解級別，生成相應詳細程度的注解
+  根據當前選中的注解級別, 生成相應詳細程度的注解
   
   @param cand: 候選詞對象 (Candidate)
-  @param env: 環境對象，包含引擎和數據庫
+  @param env: 環境對象, 包含引擎和數據庫
   @param rvdb: 反查數據庫對象
-  @return: 生成的注解字符串，或 nil（如果無法生成）
+  @return: 生成的注解字符串, 或 nil(如果無法生成)
 ]]
 local function get_single_char_comment(cand, env, rvdb)
   local text = cand.text
@@ -234,18 +239,17 @@ local function get_single_char_comment(cand, env, rvdb)
     return format_string('〔' .. table.concat(parts, ' · ') .. '〕')
     
   elseif context:get_option('yuhao_chaifen.lv2d') then
-    -- 二重詳解：拆分 + 編碼 + 字根全編碼（同時顯示 code 和 code_all_roots）
+    -- 二重詳解：拆分 + 字根全編碼（僅顯示 code_all_roots）
     local parts = {}
     if data.chaifen ~= '' then table.insert(parts, data.chaifen) end
-    if data.code ~= '' then table.insert(parts, data.code) end
     if data.code_all_roots ~= '' then table.insert(parts, data.code_all_roots) end
-    return format_string('〔' .. table.concat(parts, ' · ') .. ' 🈖〕')
+    return format_string('〔' .. table.concat(parts, ' · ') .. '〕')
     
   elseif context:get_option('yuhao_chaifen.lv3') then
-    -- 多重注解：完整信息
+    -- 多重注解：拆分 + 字根全編碼 + 拼音 + 字符集 + Unicode（使用 code_all_roots）
     local parts = {}
     if data.chaifen ~= '' then table.insert(parts, data.chaifen) end
-    if data.code ~= '' then table.insert(parts, data.code) end
+    if data.code_all_roots ~= '' then table.insert(parts, data.code_all_roots) end
     if data.pinyin ~= '' then table.insert(parts, data.pinyin) end
     if data.charset ~= '' then table.insert(parts, data.charset) end
     if data.unicode ~= '' then table.insert(parts, data.unicode) end
@@ -257,19 +261,19 @@ end
 
 --[[
 為詞語生成編碼注解
-  顯示詞語中每個字的編碼：
-  - 少於max_code_length個字：顯示所有字的編碼
-  - max_code_length個或更多字：顯示前N-1個字和最後1個字的編碼，中間用 ... 表示省略
-  - 字與字之間用 · 分隔（省略號兩側不加 ·）
+  顯示詞語中每個字的編碼:
+  - 少於max_code_length個字: 顯示所有字的編碼
+  - max_code_length個或更多字: 顯示前N-1個字和最後1個字的編碼, 中間用 ... 表示省略
+  - 字與字之間用 · 分隔(省略號兩側不加 ·)
   
-  例如（max_code_length=5）：
+  例如(max_code_length=5):
   - "一二三四" → 〔Fi · Rje · Hsa · NwPe〕
   - "一二三四五六" → 〔Fi · Rje · Hsa · NwPe ... Dji〕
   
   @param cand: 候選詞對象 (Candidate)
-  @param env: 環境對象，包含引擎和數據庫
+  @param env: 環境對象, 包含引擎和數據庫
   @param rvdb: 反查數據庫對象
-  @return: 生成的注解字符串，或 nil（如果無法生成）
+  @return: 生成的注解字符串, 或 nil(如果無法生成)
 ]]
 local function get_phrase_comment(cand, env, rvdb)
   local text = cand.text
@@ -324,9 +328,8 @@ local function get_phrase_comment(cand, env, rvdb)
       return nil
     end
     
-    -- 在前N-1個字之後、最後一個字之前插入省略號
-    local max_len = env.max_code_length or 5
-    if char_count >= max_len and pos == max_len - 1 then
+    -- 在前N-1個字之後、最後一個字之前插入省略號（僅當字數大於max_code_length時）
+    if char_count > max_len and pos == max_len - 1 then
       table.insert(codes, '...')
     end
   end
@@ -365,17 +368,17 @@ end
 過濾器主函數 - 遍歷所有候選詞並添加拆分注解
   這是 Rime lua_filter 的實現函數
   
-  工作流程：
-  1. 檢查功能是否被關閉（yuhao_chaifen.off）
+  工作流程:
+  1. 檢查功能是否被關閉(yuhao_chaifen.off)
   2. 根據配置選擇使用大陸或臺灣標準的反查數據庫
-  3. 遍歷所有候選詞，根據類型添加相應的注解
+  3. 遍歷所有候選詞, 根據類型添加相應的注解
   4. 逐個 yield 修改後的候選詞
   
-  @param input: 翻譯結果流 (Translation)，包含所有候選詞
-  @param env: 環境對象，包含以下重要屬性：
+  @param input: 翻譯結果流 (Translation), 包含所有候選詞
+  @param env: 環境對象, 包含以下重要屬性:
     - engine: Rime 引擎對象
-    - rvdb: 反查數據庫對象（大陸標準）
-    - rvdb_tw: 反查數據庫對象（台灣標準）
+    - rvdb: 反查數據庫對象(大陸標準)
+    - rvdb_tw: 反查數據庫對象(台灣標準)
 ]]
 local function filter(input, env)
   local context = env.engine.context
@@ -426,15 +429,15 @@ end
 ]]
 
 --[[
-初始化環境，載入必要的數據庫和配置
-  這個函數在過濾器初始化時被調用（lua_filter 的 init 方法）
+初始化環境, 載入必要的數據庫和配置
+  這個函數在過濾器初始化時被調用(lua_filter 的 init 方法)
   
-  工作內容：
-  1. 從 schema 配置中讀取數據庫文件名（大陸標準和臺灣標準）
-  2. 載入反查數據庫（.reverse.bin 文件）
-  3. 讀取配置項目（chaifen_code_all_roots、max_code_length）
+  工作內容:
+  1. 從 schema 配置中讀取數據庫文件名(大陸標準和臺灣標準)
+  2. 載入反查數據庫(.reverse.bin 文件)
+  3. 讀取配置項目(chaifen_code_all_roots, max_code_length)
   
-  @param env: 環境對象，用於存儲初始化結果
+  @param env: 環境對象, 用於存儲初始化結果
 ]]
 local function init(env)
   -- 從 schema 配置中讀取數據庫文件名
@@ -472,7 +475,7 @@ end
 模塊導出
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-根據 librime-lua 的要求，返回一個包含過濾器對象的表：
+根據 librime-lua 的要求, 返回一個包含過濾器對象的表:
   - init: 初始化函數
   - func: 主邏輯函數
 ]]

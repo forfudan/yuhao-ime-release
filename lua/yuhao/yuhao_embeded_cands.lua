@@ -15,7 +15,7 @@ switches:
     reset: 1
 engine:
   filters:
-    - lua_filter@*smyh.embeded_cands@embeded_cands
+    - lua_filter@*yuhao.yuhao_embeded_cands@embeded_cands
 embeded_cands:
   option_name: embeded_cands                         # 開關
   index_indicators: [ ¹, ², ³, ⁴, ⁵, ⁶, ⁷, ⁸, ⁹, ⁰ ] # 嵌入候選的序號顯示格式
@@ -180,7 +180,7 @@ local function render_comment(comment)
         comment = ""
     elseif string.len(comment) ~= 0 then
         -- 自定義提示串格式
-        comment=comment:gsub("^[([〔]+", ""):gsub("[)%]〕]+$", ""):gsub(" · ", "·")
+        comment = comment:gsub("〔", ""):gsub("〕", ""):gsub(" · ", "·")
         comment = "["..comment.."]"
     end
     return comment
@@ -235,53 +235,48 @@ function embeded_cands_filter.func(input, env)
     end
 
     local hash = {}
-    local rank = 0
     -- 迭代器
     local iter, obj = input:iter()
     -- 迭代由翻譯器輸入的候選列表
     local next = iter(obj)
     while next do
-        -- 頁索引自增, 滿足 1 <= index <= page_size
-        index = index + 1
-
-        -- 當前遍歷候選項
-        local cand = next
-
         -- 去除重複項
-        if (not hash[cand.text]) then
-            hash[cand.text] = true
+        if not hash[next.text] then
+            hash[next.text] = true
+
+            -- 頁索引自增, 滿足 1 <= index <= page_size
+            index = index + 1
+
+            -- 當前遍歷候選項
+            local cand = Candidate(next.type, next.start, next._end, next.text, next.comment)
+            cand.quality = next.quality
+            cand.preedit = next.preedit
 
             if not first_cand then
                 -- 把首選捉出來
                 first_cand = cand
             end
 
-            rank = rank + 1
-
             -- 修改首選的預编輯文本, 這会作爲内嵌編碼顯示到輸入處
-            preedit = render_cand(env, rank, first_cand.preedit, cand.text, cand.comment)
+            preedit = render_cand(env, index, first_cand.preedit, cand.text, cand.comment)
 
             -- 存入候選
             table.insert(page_cands, cand)
             table.insert(page_rendered, preedit)
-        end
-        -- 遍歷完一頁候選後, 刷新預編輯文本
-        if index == page_size then
-            refresh_preedit()
-            rank = 0
+            -- 遍歷完一頁候選後, 刷新預編輯文本
+            if index == page_size then
+                refresh_preedit()
+                -- 下一頁, index歸零
+                index = 0
+            end
         end
 
         -- 當前候選處理完畢, 查詢下一個
         next = iter(obj)
-
-        -- 如果當前暫存候選不足page_size但没有更多候選, 則需要刷新預編輯並送出
-        if not next and index < page_size then
-            refresh_preedit()
-        end
-
-        -- 下一頁, index歸零
-        index = index % page_size
     end
+
+    -- 如果當前暫存候選不足page_size但没有更多候選, 則需要刷新預編輯並送出
+    refresh_preedit()
 end
 
 function embeded_cands_filter.fini(env)
