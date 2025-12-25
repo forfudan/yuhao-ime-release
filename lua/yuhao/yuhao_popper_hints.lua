@@ -86,6 +86,16 @@ local function is_one_code_and_is_vowel(cand, env)
     return is_one_code, is_vowel, vowel
 end
 
+---添加提示信息並提交候選
+---@param cand any
+---@param comment string
+local function yield_candidate_with_comment(cand, comment)
+    local c = Candidate(cand.type, cand.start, cand._end, cand.text, comment or cand.comment)
+    c.preedit = cand.preedit
+    c.quality = cand.quality
+    yield(c)
+end
+
 local function filter(input, env)
     local context = env.engine.context
     if not context:get_option("yuhao_popper_hints") then
@@ -104,10 +114,10 @@ local function filter(input, env)
             for cand in input:iter() do
                 if index_of_cand == 0 then
                     -- 如果是第一個候選項,則顯示"頂屏"
-                    yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                    yield_candidate_with_comment(cand, "頂屏")
                 elseif index_of_cand == 1 then
                     -- 如果是第二個候選項,則顯示"分號"
-                    yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
+                    yield_candidate_with_comment(cand, "分號")
                 else
                     yield(cand)
                 end
@@ -129,14 +139,14 @@ local function filter(input, env)
                         if index_of_cand == 0 then
                             if env.engine.context.input:match("[aeiou]$") then
                                 -- 如果輸入末碼是韻碼,則顯示"頂屏"
-                                yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                                yield_candidate_with_comment(cand, "頂屏")
                             else
                                 -- 如果是第一個候選項,則顯示"空格"
-                                yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                                yield_candidate_with_comment(cand, "空格")
                             end
                         elseif index_of_cand == 1 then
                             -- 如果是第二個候選項,則顯示"分號"
-                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
+                            yield_candidate_with_comment(cand, "分號")
                         else
                             yield(cand)
                         end
@@ -163,10 +173,10 @@ local function filter(input, env)
                 for cand in input:iter() do
                     if index_of_cand == 0 then
                         -- 如果是第一個候選項,則顯示"頂屏"
-                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                        yield_candidate_with_comment(cand, "頂屏")
                     elseif index_of_cand == 1 then
                         -- 如果是第二個候選項,則顯示"分號"
-                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
+                        yield_candidate_with_comment(cand, "分號")
                     else
                         yield(cand)
                     end
@@ -196,14 +206,14 @@ local function filter(input, env)
                     if index_of_cand == 0 then
                         if env.engine.context.input:match("[aeiou]$") then
                             -- 如果輸入末碼是韻碼,則顯示"頂屏"
-                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                            yield_candidate_with_comment(cand, "頂屏")
                         else
                             -- 如果是第一個候選項,則顯示"空格"
-                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                            yield_candidate_with_comment(cand, "空格")
                         end
                     elseif index_of_cand == 1 then
                         -- 如果是第二個候選項,則顯示"分號"
-                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
+                        yield_candidate_with_comment(cand, "分號")
                     else
                         yield(cand)
                     end
@@ -269,14 +279,14 @@ local function filter(input, env)
                     if index_of_cand == 0 then
                         if env.engine.context.input:match("[aeiou]$") then
                             -- 如果輸入末碼是韻碼,則顯示"頂屏"
-                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "頂屏"))
+                            yield_candidate_with_comment(cand, "頂屏")
                         else
                             -- 如果是第一個候選項,則顯示"空格"
-                            yield(Candidate(cand.type, cand.start, cand._end, cand.text, "空格"))
+                            yield_candidate_with_comment(cand, "空格")
                         end
                     elseif index_of_cand == 1 then
                         -- 如果是第二個候選項,則顯示"分號"
-                        yield(Candidate(cand.type, cand.start, cand._end, cand.text, "分號"))
+                        yield_candidate_with_comment(cand, "分號")
                     else
                         yield(cand)
                     end
@@ -310,7 +320,7 @@ local function filter(input, env)
                             return (order[a.vowel] or 0) < (order[b.vowel] or 0)
                         end)
                         for _, item in ipairs(table_vowel_poppers) do
-                            yield(Candidate(item.cand.type, item.cand.start, item.cand._end, item.cand.text, item.vowel))
+                            yield_candidate_with_comment(item.cand, item.vowel)
                         end
                         -- 再輸出其他收集的候選項
                         for _, _cand in ipairs(table_one_code_other_chars) do
@@ -332,7 +342,7 @@ local function filter(input, env)
                     return (order[a.vowel] or 0) < (order[b.vowel] or 0)
                 end)
                 for _, item in ipairs(table_vowel_poppers) do
-                    yield(Candidate(item.cand.type, item.cand.start, item.cand._end, item.cand.text, item.vowel))
+                    yield_candidate_with_comment(item.cand, item.vowel)
                 end
                 -- 再輸出其他收集的候選項
                 for _, _cand in ipairs(table_one_code_other_chars) do
