@@ -182,6 +182,7 @@ core.pan_cjk_blocks = {   -- 泛 CJK 區塊(非符號區)
 }
 
 core.cjk_punc_blocks = { -- CJK 核心標點符號區塊
+    { 0x2000, 0x206F },  -- 一般標點
     { 0x3000, 0x301F },  -- 中日韓符號和標點1
     { 0xFE50, 0xFE6F },  -- 小寫變體形式
     { 0xFE10, 0xFE1F },  -- 豎排形式

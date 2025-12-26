@@ -148,6 +148,8 @@ speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba/
   initials: zyxwvutsrqponmlkjihgfedcba/
   delimiter: "`"
+  algebra:
+    - derive/^([a-y])([a-y])/$1z/  # 第二碼用 z 通配（第二碼限定為 a-y）
   auto_select: true
   auto_select_pattern: "[qwrtypsdfghjklxcvbnm]{0,3}[aeiou]|[qwrtypsdfghjklxcvbnm]{4}"
 
