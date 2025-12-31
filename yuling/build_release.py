@@ -5,7 +5,7 @@ import shutil
 from distutils.dir_util import copy_tree, remove_tree
 from shutil import copyfile
 
-version = "v3.10.3-beta.20251226.175551"
+version = "v3.10.3-beta.20251230.163908"
 
 # %%
 try:
@@ -69,6 +69,18 @@ for file_name in [
 #     "yuling_tc.schema.yaml",
 # ]:
 #     os.remove(f"./dist/yuling/hotfix/{file_name}")
+
+# %%
+# 清除所有 .DS_Store 文件
+for root, dirs, files in os.walk("./dist/yuling"):
+    for file in files:
+        if file == ".DS_Store":
+            ds_store_path = os.path.join(root, file)
+            try:
+                os.remove(ds_store_path)
+                print(f"已删除: {ds_store_path}")
+            except Exception as e:
+                print(f"无法删除 {ds_store_path}: {e}")
 
 # %%
 shutil.make_archive(f"../dist/靈明輸入法_{version}", "zip", "./dist/yuling")

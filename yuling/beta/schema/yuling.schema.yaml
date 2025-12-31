@@ -37,7 +37,7 @@ switches:
     # Control+Shift+O
   - name: yuhao_single_char_only_for_full_code
     states: [字詞同出, 全碼出單]
-    reset: 0
+    reset: 1
     # Control+Shift+D
     # Tab
   - options:

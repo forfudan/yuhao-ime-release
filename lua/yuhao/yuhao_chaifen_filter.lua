@@ -17,21 +17,21 @@ Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
 
 數據格式說明(來自反查數據庫):
 若 chaifen_code_for_all_roots 為 true, 數據有 7 欄:
-呢	[口尸匕,DMTi,DoMsiTi,ne_ní_nǐ_nī,,CJK,5462]
+呢	[口尸匕,DMTi,DoMsiTi,ne_ní_nǐ_nī,注釋,CJK,5462]
 - 第一欄: 拆分(口尸匕)
 - 第二欄: 編碼(DMTi)
 - 第三欄: 字根全編碼(DoMsiTi)
 - 第四欄: 拼音(ne_ní_nǐ_nī)
-- 第五欄: 注釋(可為空)
+- 第五欄: 注釋
 - 第六欄: 字符集(CJK)
 - 第七欄: Unicode 碼位(5462)
 
 若 chaifen_code_for_all_roots 為 false, 數據有 6 欄:
-呢	[口尸匕,DMTi,ne_ní_nǐ_nī,,CJK,5462]
+呢	[口尸匕,DMTi,ne_ní_nǐ_nī,注釋,CJK,5462]
 - 第一欄: 拆分(口尸匕)
 - 第二欄: 編碼(DMTi)
 - 第三欄: 拼音(ne_ní_nǐ_nī)
-- 第四欄: 注釋(可為空)
+- 第四欄: 注釋
 - 第五欄: 字符集(CJK)
 - 第六欄: Unicode 碼位(5462)
 
@@ -50,7 +50,7 @@ showing the breakdown, encoding, pinyin, and other information.
          單字例: 〔口尸匕 · DoMsiTi〕
          詞語例: 〔Fi · Rje · Hsa · NwPe〕
 - lv3:   多重注解 - 顯示完整信息(僅單字使用 code_all_roots, 詞語使用 code)
-         單字例: 〔口尸匕 · DoMsiTi · ne ní nǐ nī · CJK · 5462〕
+         單字例: 〔口尸匕 · DoMsiTi · ne ní nǐ nī · 注釋 · CJK · 5462〕
          詞語例: 〔Fi · Rje · Hsa · NwPe〕
 
 詞語編碼顯示規則:
@@ -79,6 +79,8 @@ showing the breakdown, encoding, pinyin, and other information.
 20251223:  修改 lv2d 和 lv3 模式, 單字僅顯示字根全編碼(code_all_roots), 不顯示普通編碼(code).
            詞語保持使用普通編碼(code).
            修正詞語省略號邏輯, 僅在字數大於 max_code_length 時顯示省略號.
+20251230:  修正多重注解模式下不顯示注釋的的問題.
+20251231:  修正全字根編碼缺失時不顯示普通編碼的問題.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ]]
 
@@ -247,18 +249,29 @@ local function get_single_char_comment(cand, env, rvdb)
     return format_string('〔' .. table.concat(parts, ' · ') .. '〕')
     
   elseif context:get_option('yuhao_chaifen.lv2d') then
-    -- 二重詳解：拆分 + 字根全編碼（僅顯示 code_all_roots）
+    -- 二重詳解：拆分 + 字根全編碼（7欄）或編碼（6欄）
     local parts = {}
     if data.chaifen ~= '' then table.insert(parts, data.chaifen) end
-    if data.code_all_roots ~= '' then table.insert(parts, data.code_all_roots) end
+    -- 優先使用字根全編碼，若無則使用普通編碼
+    if data.code_all_roots ~= '' then
+      table.insert(parts, data.code_all_roots)
+    elseif data.code ~= '' then
+      table.insert(parts, data.code)
+    end
     return format_string('〔' .. table.concat(parts, ' · ') .. '〕')
     
   elseif context:get_option('yuhao_chaifen.lv3') then
-    -- 多重注解：拆分 + 字根全編碼 + 拼音 + 字符集 + Unicode（使用 code_all_roots）
+    -- 多重注解：拆分 + 字根全編碼（7欄）或編碼（6欄） + 拼音 + 注釋 + 字符集 + Unicode
     local parts = {}
     if data.chaifen ~= '' then table.insert(parts, data.chaifen) end
-    if data.code_all_roots ~= '' then table.insert(parts, data.code_all_roots) end
+    -- 優先使用字根全編碼，若無則使用普通編碼
+    if data.code_all_roots ~= '' then
+      table.insert(parts, data.code_all_roots)
+    elseif data.code ~= '' then
+      table.insert(parts, data.code)
+    end
     if data.pinyin ~= '' then table.insert(parts, data.pinyin) end
+    if data.comment ~= '' then table.insert(parts, data.comment) end
     if data.charset ~= '' then table.insert(parts, data.charset) end
     if data.unicode ~= '' then table.insert(parts, data.unicode) end
     return format_string('〔' .. table.concat(parts, ' · ') .. '〕')
