@@ -318,6 +318,7 @@ key_binder:
     - { when: has_menu, accept: apostrophe, send: 3 } # 引号三选
     - { when: has_menu, accept: minus, send: Page_Up } # 減號上翻頁
     - { when: has_menu, accept: equal, send: Page_Down } # 等號下翻頁
+    - { when: always, accept: "Control+Shift+N", select: yuling_pop } # 切換靈明頂屏版
 
 recognizer:
   import_preset: default

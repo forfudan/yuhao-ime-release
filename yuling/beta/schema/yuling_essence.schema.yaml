@@ -1,0 +1,121 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: yuling_essence
+  name: 靈明·真
+  version: 乙巳冬至
+  author:
+    - 作者 朱宇浩
+    - 官方網站 <https://shurufa.app>
+    - 官方QQ群 735728797
+  description: |
+    靈明輸入法之簡約版,不使用任何腳本,无字詞過濾,无拆分提示,不自動上屏.
+    適用於終端編輯器配合 rime-ls 使用.
+  dependencies:
+    - yuhao_pinyin
+
+switches:
+  - name: ascii_mode
+    states: [中文, 西文]
+    reset: 0
+  - name: full_shape
+    states: ["半角", "全角"]
+    reset: 0
+  - name: ascii_punct
+    states: [。，, ．，]
+    reset: 0
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - script_translator
+  filters:
+    - uniquifier
+
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba/
+  initials: zyxwvutsrqponmlkjihgfedcba/
+  delimiter: "`"
+  auto_select: true
+
+translator:
+  dictionary: yuling_essence
+  prism: yuling_essence
+  db_class: tabledb
+  enable_completion: true
+  enable_sentence: false
+  enable_user_dict: false
+  enable_encoder: false
+  encode_commit_history: false # 对连续上屏的词自动成词
+  max_phrase_length: 4 # 自动成词的最大词长
+  preedit_format:
+    - "xlit|`|·|"
+  comment_format:
+    - "xform/^~/ /"
+  disable_user_dict_for_patterns:
+    - "^z.*$"
+  initial_quality: 1000
+
+reverse_lookup:
+  dictionary: yuhao_pinyin
+  prefix: "z"
+  tips: 〔全拼簡拼輸入〕
+  closing_tips: 〔全拼簡拼輸入關閉〕
+  preedit_format:
+    - xform/([nl])v/$1ü/
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+
+punctuator:
+  import_preset: symbols
+  half_shape:
+    "`": "`"
+    "@": "@"
+    "#": "#"
+    "%": "%"
+    "*": "*"
+    "\\": "、"
+    "[": "「"
+    "]": "」"
+    "{": "『"
+    "}": "』"
+    "/": "/"
+    "|": "|"
+
+key_binder:
+  bindings:
+    - { when: always, accept: "Control+period", toggle: ascii_punct }
+    - { when: always, accept: "Control+Shift+period", toggle: ascii_punct }
+    - { when: has_menu, accept: semicolon, send: 2 } # 分号次选
+    - { when: has_menu, accept: apostrophe, send: 3 } # 引号三选
+    - { when: has_menu, accept: minus, send: Page_Up } # 減號上翻頁
+    - { when: has_menu, accept: equal, send: Page_Down } # 等號下翻頁
+    - { when: composing, accept: Escape, send: "Shift+BackSpace" } # 逐字删除
+
+recognizer:
+  import_preset: default
+  patterns:
+    uppercase: "^(?![`;]).*[A-Z][-_+.'0-9A-Za-z]*$"
+    reverse_lookup: "^z([a-z]+?)*$"
+    punct: "^/([0-9]0?|[A-Za-z]+)?$"
+
+style:
+  horizontal: true  # Windows 橫排候選欄
+  candidate_list_layout: linear  # MacOS 橫排候選欄

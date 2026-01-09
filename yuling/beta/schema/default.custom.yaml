@@ -1,3 +1,5 @@
 patch:
   schema_list:
     - schema: yuling          # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
+    - schema: yuling_pop      # 延時頂屏模式
+    - schema: yuling_essence  # 簡約模式、整句模式

@@ -1,0 +1,26 @@
+# Rime schema settings
+# encoding: utf-8
+
+__include: yuling.schema:/
+
+schema:
+  schema_id: yuling_pop
+  name: 靈明·頂
+  version: 乙巳冬至
+  author:
+    - 作者 朱宇浩
+    - 官方網站 <https://shurufa.app>
+    - 官方QQ群 735728797
+  description: |
+    靈明輸入法之延時頂屏版,候選項唯一時不自動上屏,需要下一擊頂出候選項.
+  dependencies:
+    - yuhao_pinyin
+    - yuling_chaifen
+    - yuling_chaifen_tw
+
+speller/+:
+  auto_select: false  # 自動選擇唯一候選項(true)或否(false)
+
+key_binder/+:
+  bindings/+:
+    - { when: always, accept: Control+Shift+N, select: yuling } # 切換靈明標準版

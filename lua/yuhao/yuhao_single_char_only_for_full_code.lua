@@ -31,6 +31,7 @@ states: [字词同出, 全码出单]
 20250602: 將四碼改爲四碼及以上.
 20250819: 重構代碼.用户每次輸入編碼時,都會搜索碼表,確認是否是簡碼詞.
 20251220: 使用 core.is_single_char 函數處理單字判斷,正確支持變體選擇器.
+20260109: 修改邏輯:碼長爲1或2時,直接認定爲簡碼,無需檢查是否存在更長的碼.
 ---------------------------
 ]]
 
@@ -44,9 +45,14 @@ local function init(env)
 end
 
 -- 檢查候選項是否是簡碼
--- 如果該候選項存在一個更長的碼，則認爲它是簡碼
+-- 如果輸入碼長爲1或2，則直接認爲是簡碼
+-- 否則，如果該候選項存在一個更長的碼，則認爲它是簡碼
 local function is_short_code(cand, env)
     local length_of_input = string.len(env.engine.context.input)
+    -- 如果輸入碼長祇有1或2，直接認定爲簡碼
+    if length_of_input <= 2 then
+        return true
+    end
     local codes_of_candidates = env.code_rvdb:lookup(cand.text)
     local is_short = false
     for code in codes_of_candidates:gmatch("%S+") do
