@@ -4,22 +4,31 @@ import re
 import shutil
 from distutils.dir_util import copy_tree, remove_tree
 from shutil import copyfile
+from datetime import datetime
 
-version = "v3.10.3-beta.20251218"
+date = datetime.now().strftime("%Y%m%d")
+time = datetime.now().strftime("%H%M%S")
+
+version = f"v3.11.0-beta.{date}.{time}"
+
+SCHEMA_NAME = "yuming"
+CHINESE_NAME = "日月"
 
 # %%
 try:
-    remove_tree("./dist/yuming")
+    remove_tree(f"./dist/{SCHEMA_NAME}")
 except:
-    print("Cannot remove dist/yuming folder!")
+    print(f"Cannot remove dist/{SCHEMA_NAME} folder!")
 
 try:
-    os.makedirs("./dist/yuming")
+    os.makedirs(f"./dist/{SCHEMA_NAME}")
 except:
-    print("Cannot create dist/yuming folder!")
+    print(f"Cannot create dist/{SCHEMA_NAME} folder!")
 
 if re.match(r"^v\d+.\d+.\d+$", version):
-    shutil.copyfile("./dist/宇浩日月單字全碼.txt", "./dist/yuming.full.dict.yaml")
+    shutil.copyfile(
+        "./dist/宇浩日月單字全碼.txt", f"./dist/{SCHEMA_NAME}.full.dict.yaml"
+    )
 
 # %%
 # shutil.copyfile("./yuming.pdf", f"./dist/yuming/yuming_{version}.pdf")
@@ -40,8 +49,17 @@ copy_tree("./beta/trime/", "./dist/yuming/trime/")
 copy_tree("./beta/fonts/", "./dist/yuming/fonts/")
 
 # %%
-# copy yuhao
-copy_tree("../lua/", "./dist/yuming/schema/lua/")
+# copy yuhao lua files (only top level, no subdirectories)
+os.makedirs(f"./dist/{SCHEMA_NAME}/schema/lua/yuhao/", exist_ok=True)
+for file_name in os.listdir("../lua/yuhao/"):
+    if file_name.endswith(".lua") and os.path.isfile(
+        os.path.join("../lua/yuhao/", file_name)
+    ):
+        copyfile(
+            f"../lua/yuhao/{file_name}",
+            f"./dist/{SCHEMA_NAME}/schema/lua/yuhao/{file_name}",
+        )
+
 for file_name in [
     "yuhao_pinyin.dict.yaml",
     "yuhao_pinyin.schema.yaml",
@@ -50,19 +68,13 @@ for file_name in [
     "yuhao/yuhao.symbols.dict.yaml",
     "yuhao/yuhao.symbols_inline.dict.yaml",
 ]:
-    copyfile(f"../yulight/beta/schema/{file_name}", f"./dist/yuming/schema/{file_name}")
-
-# copyfile(
-#     "../yulight/beta/schema/yuhao/yulight.roots.dict.yaml",
-#     "./dist/yuming/schema/yuhao/yulight.roots.dict.yaml",
-# )
-# copyfile(
-#     "../yustar/beta/schema/yuhao/yustar.roots.dict.yaml",
-#     "./dist/yuming/schema/yuhao/yustar.roots.dict.yaml",
-# )
+    copyfile(
+        f"../yulight/beta/schema/{file_name}",
+        f"./dist/{SCHEMA_NAME}/schema/{file_name}",
+    )
 
 for file_name in [
-    "yuhao/yuming_sc.words_tbtu.dict.yaml"
+    f"yuhao/{SCHEMA_NAME}_sc.words_tbtu.dict.yaml"
     # "yuming_tc.schema.yaml",
     # "yuming_tc.dict.yaml",
     # "yuhao/yuming_tc.quick.dict.yaml",
@@ -70,18 +82,13 @@ for file_name in [
     # "yuhao/yuming_tc.words.dict.yaml",
 ]:
     try:
-        os.remove(f"./dist/yuming/schema/{file_name}")
+        os.remove(f"./dist/{SCHEMA_NAME}/schema/{file_name}")
     except:
         print(f"{file_name} does not exist. It is not deleted.")
 
-# for file_name in [
-#     "yuming_tc.schema.yaml",
-# ]:
-#     os.remove(f"./dist/yuming/hotfix/{file_name}")
-
 # %%
 # 清除所有 .DS_Store 文件
-for root, dirs, files in os.walk("./dist/yuming"):
+for root, dirs, files in os.walk(f"./dist/{SCHEMA_NAME}"):
     for file in files:
         if file == ".DS_Store":
             ds_store_path = os.path.join(root, file)
@@ -92,12 +99,16 @@ for root, dirs, files in os.walk("./dist/yuming"):
                 print(f"无法删除 {ds_store_path}: {e}")
 
 # %%
-shutil.make_archive(f"../dist/日月輸入法_{version}", "zip", "./dist/yuming")
 shutil.make_archive(
-    f"../dist/hamster/日月輸入法_{version}", "zip", "./dist/yuming/schema"
+    f"../dist/{CHINESE_NAME}輸入法_{version}", "zip", f"./dist/{SCHEMA_NAME}"
+)
+shutil.make_archive(
+    f"../dist/hamster/{CHINESE_NAME}輸入法_{version}",
+    "zip",
+    f"./dist/{SCHEMA_NAME}/schema",
 )
 
 # %%
-print(f"成功發佈日月輸入法 {version}！")
+print(f"成功發佈{CHINESE_NAME}輸入法 {version}！")
 
 # %%
