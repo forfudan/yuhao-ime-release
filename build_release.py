@@ -34,7 +34,7 @@ SCHEMES = {
     "yuling": {
         "name": "yuling",
         "chinese": "靈明",
-        "copy_essay": False,
+        "copy_essay": True,
     },
 }
 

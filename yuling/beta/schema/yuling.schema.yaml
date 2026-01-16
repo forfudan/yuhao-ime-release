@@ -17,6 +17,7 @@ schema:
     - yuhao_pinyin
     - yuling_chaifen
     - yuling_chaifen_tw
+    - yuling_pop
 
 switches:
   - options:

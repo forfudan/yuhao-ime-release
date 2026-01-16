@@ -2,16 +2,17 @@
 # encoding: utf-8
 
 schema:
-  schema_id: yuling_essence
-  name: 靈明·純淨
+  schema_id: yuling_fluency
+  name: 靈明·語流
   version: 乙巳冬至
   author:
     - 作者 朱宇浩
     - 官方網站 <https://shurufa.app>
     - 官方QQ群 735728797
   description: |
-    靈明輸入法之簡約版,不使用任何腳本,无字詞過濾,无拆分提示,不自動上屏.
-    適用於終端編輯器配合 rime-ls 使用.
+    靈明輸入法之語流版,重碼漢字會根據相鄰漢字和詞語自動調整候選項.
+    由於靈明的無空格自分割屬性,本模式不用解決任何分割歧義問題.
+    本模式又可稱爲「靈明一二三四碼混着打」.
   dependencies:
     - yuhao_quanpin
 
@@ -53,24 +54,13 @@ speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba/
   initials: zyxwvutsrqponmlkjihgfedcba/
   delimiter: "`"
-  auto_select: true
 
 translator:
-  dictionary: yuling_essence
-  prism: yuling_essence
-  db_class: tabledb
-  enable_completion: true
-  enable_sentence: false
-  enable_user_dict: false
-  enable_encoder: false
-  encode_commit_history: false # 对连续上屏的词自动成词
-  max_phrase_length: 4 # 自动成词的最大词长
+  dictionary: yuling_fluency
   preedit_format:
     - "xlit|`|·|"
   comment_format:
     - "xform/^~/ /"
-  disable_user_dict_for_patterns:
-    - "^z.*$"
   initial_quality: 1000
 
 pinyin:
@@ -113,7 +103,3 @@ recognizer:
   patterns:
     uppercase: "^(?![`;]).*[A-Z][-_+.'0-9A-Za-z]*$"
     punct: "^/([0-9]0?|[A-Za-z]+)?$"
-
-# style:
-#   horizontal: true  # Windows 橫排候選欄
-#   candidate_list_layout: linear  # MacOS 橫排候選欄

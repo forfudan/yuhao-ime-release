@@ -1,0 +1,25 @@
+# Rime schema
+# encoding: utf-8
+
+__include: yuhao_pinyin.schema:/
+
+schema:
+  schema_id: yuhao_quanpin
+  name: 宇浩·繁簡通·全拼
+  version: 20230418
+  author:
+    - 佛振 <chen.sst@gmail.com>
+    - 佚名
+  description: |
+    基於朙月拼音和袖珍簡化拼音詞庫製作
+    用於宇浩輸入法的拼音反查
+    兼容大陸簡體、大陸古籍繁體、臺灣繁體、香港繁體
+    繁簡漢字相同權重
+
+speller/+:
+  algebra:
+    - derive/^([nl])ue$/$1ve/
+    - derive/^([jqxy])u/$1v/
+
+translator/+:
+  dictionary: yuhao_quanpin

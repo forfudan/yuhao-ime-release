@@ -1,0 +1,29 @@
+# Rime schema settings
+# encoding: utf-8
+
+__include: yuling.schema:/
+
+schema:
+  schema_id: yuling_extreme
+  name: 靈明·五行
+  version: 乙巳冬至
+  author:
+    - 作者 朱宇浩
+    - 官方網站 <https://shurufa.app>
+    - 官方QQ群 735728797
+  description: |
+    靈明輸入法之極致版,使用日月大明編碼規則,最長五碼,不跳過第三根.
+  dependencies:
+    - yuhao_pinyin
+    - yuling_chaifen
+    - yuling_chaifen_tw
+
+schema_name/+:
+  max_code_length: 5
+
+speller/+:
+  auto_select_pattern: "[qwrtypsdfghjklxcvbnm]{0,4}[aeiou]|[qwrtypsdfghjklxcvbnm]{5}"
+
+translator/+:
+  dictionary: yuling_extreme
+  prism: yuling_extreme
