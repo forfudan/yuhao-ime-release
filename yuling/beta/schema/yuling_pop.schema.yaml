@@ -23,4 +23,5 @@ speller/+:
 
 key_binder/+:
   bindings/+:
-    - { when: always, accept: Control+Shift+N, select: yuling } # 切換靈明標準版
+    - { when: always, accept: "Control+Shift+N", select: yuling_fluency } # 切換靈明語流版
+    - { when: always, accept: "Control+Shift+B", select: yuling } # 切換靈明標準版

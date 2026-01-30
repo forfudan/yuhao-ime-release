@@ -45,6 +45,7 @@ engine:
     - fallback_segmentor
   translators:
     - punct_translator
+    - history_translator@history
     - script_translator
     - script_translator@pinyin
   filters:
@@ -72,6 +73,11 @@ pinyin:
     - xform/([jqxy])v/$1u/
   initial_quality: 1
 
+history:
+  input: z
+  size: 9
+  initial_quality: 1
+
 punctuator:
   import_preset: symbols
   half_shape:
@@ -97,6 +103,8 @@ key_binder:
     - { when: has_menu, accept: minus, send: Page_Up } # 減號上翻頁
     - { when: has_menu, accept: equal, send: Page_Down } # 等號下翻頁
     - { when: composing, accept: Escape, send: "Shift+BackSpace" } # 逐字删除
+    - { when: always, accept: "Control+Shift+N", select: yuling } # 切換靈明標準版
+    - { when: always, accept: "Control+Shift+B", select: yuling_pop } # 切換靈明頂屏版
 
 recognizer:
   import_preset: default
