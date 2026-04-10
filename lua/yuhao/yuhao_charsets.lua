@@ -1,7 +1,7 @@
 --[[
 Name: yuhao_charsets.lua
 名称: 常用漢字字符集
-Version: 2024512
+Version: 20240512
 Author: 朱宇浩 (forFudan) <dr.yuhao.zhu@outlook.com>
 Github: https://github.com/forFudan/
 Purpose: 列舉常用漢字字符集

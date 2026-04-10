@@ -304,8 +304,7 @@ local function filter(input, env)
                                 else
                                     table.insert(table_one_code_other_chars, cand)
                                 end
-                            end
-                            if not core.is_single_char(cand.text) then
+                            else
                                 -- 簡碼詞，收集起來按韻碼排序
                                 table.insert(table_vowel_poppers, {cand = cand, vowel = vowel})
                             end

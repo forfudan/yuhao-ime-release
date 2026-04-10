@@ -1,5 +1,4 @@
 patch:
   schema_list:
-    - schema: yuling          # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
-    - schema: yuling_fluency  # 語流模式：整句連打、自動成詞
-    - schema: yuling_extreme  # 五行模式：全碼五碼，日月規則
+    - schema: yuming          # 大陸簡化字、大陸繁體字、臺灣傳統字、香港傳統字通打
+    - schema: yuming_tw       # 臺灣字形優先

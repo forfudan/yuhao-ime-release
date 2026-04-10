@@ -120,6 +120,7 @@ engine:
     - lua_filter@*yuhao.yuhao_charset_prioritizer_tonggui
     - lua_filter@*yuhao.yuhao_charset_prioritizer_harmonic
     - lua_filter@*yuhao.yuhao_popper_hints
+    - lua_filter@*yuhao.yuhao_short_code_hint
     - lua_filter@*yuhao.yuhao_compatible_chaifen_filter
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - uniquifier
@@ -149,6 +150,7 @@ schema_name:
   chaifen_tw: yuling_chaifen_tw
   chaifen_code_all_roots: true
   max_code_length: 4
+  words: yuling
 
 speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba/

@@ -33,6 +33,10 @@ states: [字词同出, 全码出单]
 20251220: 使用 core.is_single_char 函數處理單字判斷,正確支持變體選擇器.
 20260109: 修改邏輯:碼長爲1或2時,直接認定爲簡碼,無需檢查是否存在更長的碼.
 20260126: 修改邏輯:碼長小於4時,直接認定爲簡碼,無需檢查是否存在更長的碼.
+20260210: 允許預測候選項顯示簡碼詞.
+20260212: 修改預測候選項的簡碼判斷邏輯:如果輸入碼長+預測碼長小於等於3,
+          則認定爲簡碼.
+20260303: 增加常用詞語白名單功能.如果候選詞在白名單中,則永遠顯示.
 ---------------------------
 ]]
 
@@ -43,26 +47,55 @@ local function init(env)
     local code_rvdb = config:get_string("schema_name/code")
     env.code_rvdb = ReverseDb("build/" .. code_rvdb .. ".reverse.bin")
     env.mem = Memory(env.engine, Schema(code_rvdb))
+
+    -- 讀取 schema_name/words，加載對應的常用詞語白名單
+    env.words_whitelist = nil
+    local words_key = config:get_string("schema_name/words")
+    if words_key and words_key ~= "" then
+        local ok, yuhao_words = pcall(require, "yuhao.yuhao_words")
+        if ok and yuhao_words[words_key] then
+            env.words_whitelist = {}
+            for word in yuhao_words[words_key]:gmatch("%S+") do
+                env.words_whitelist[word] = true
+            end
+        end
+    end
 end
 
--- 檢查候選項是否是簡碼
--- 如果輸入碼長小於4，則直接認爲是簡碼
--- 否則，如果該候選項存在一個更長的碼，則認爲它是簡碼
-local function is_short_code(cand, env)
+-- 檢查精確匹配候選項是否是簡碼
+-- 1. 如果該候選項的長度（輸入碼長）小於等於閾值，則認爲它是簡碼。
+-- 2. 如果該候選項存在一個更長的編碼，則認爲它是簡碼
+local function is_short_code(cand, env, threshold)
     local length_of_input = string.len(env.engine.context.input)
-    -- 如果輸入碼長祇小於4，直接認定爲簡碼
-    if length_of_input < 4 then
-        return true
-    end
     local codes_of_candidates = env.code_rvdb:lookup(cand.text)
     local is_short = false
+    -- 如果輸入碼長小於等於閾值，直接認定爲簡碼
+    if length_of_input <= threshold then
+        return true
+    end
     for code in codes_of_candidates:gmatch("%S+") do
+        -- 如果該候選項存在一個更長的碼，則認爲它是簡碼
         if string.len(code) > length_of_input then
             is_short = true
             break
         end
     end
     return is_short
+end
+
+-- 檢查預測候選項是否是簡碼
+-- 如果該候選項的長度（輸入碼長 + 預測碼長）小於等於閾值，則認爲它是簡碼。
+local function is_auto_completion_short_code(cand, env, threshold)
+    local length_of_input = string.len(env.engine.context.input)
+    local length_of_auto_completion = string.len(cand.comment)
+    -- 如果輸入碼長 + 預測碼長小於等於閾值，直接認定爲簡碼
+    -- 朱按：這個地方減1是因爲提示區域似乎會顯示一個空格，佔用一個字符位置，
+    -- 所以實際上預測碼長要減去1才能得到真正的預測碼長。
+    if length_of_input + length_of_auto_completion - 1 <= threshold then
+        return true
+    else
+        return false
+    end
 end
 
 local function filter(input, env)
@@ -78,16 +111,23 @@ local function filter(input, env)
         end
     else
         for cand in input:iter() do
-            local cand_genuine = cand:get_genuine()
-            if cand_genuine.type == 'completion' then
-                -- 預測候選項不顯示詞語
-                if core.is_single_char(cand.text) then
-                    yield(cand)
-                end
+            -- 白名單詞語永遠顯示
+            if env.words_whitelist and env.words_whitelist[cand.text] then
+                yield(cand)
             else
-                -- 精確匹配顯示簡詞
-                if core.is_single_char(cand.text) or is_short_code(cand, env) then
-                    yield(cand)
+                local cand_genuine = cand:get_genuine()
+                if cand_genuine.type == 'completion' then
+                    -- 預測候選項允許簡詞
+                    -- 編碼長小於等於3的候選項直接顯示
+                    if core.is_single_char(cand.text) or is_auto_completion_short_code(cand, env, 3) then
+                        yield(cand)
+                    end
+                else
+                    -- 精確匹配允許簡詞
+                    -- 編碼長小於等於3的候選項直接認定爲簡碼
+                    if core.is_single_char(cand.text) or is_short_code(cand, env, 3) then
+                        yield(cand)
+                    end
                 end
             end
         end

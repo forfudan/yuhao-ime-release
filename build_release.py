@@ -10,7 +10,7 @@ from datetime import datetime
 PRESET_VERSION = "v3.11.0"
 
 # 方案配置
-SCHEMES = {
+SCHEMES: dict[str, dict[str, str | bool]] = {
     "yulight": {
         "name": "yulight",
         "chinese": "光華",
@@ -40,8 +40,8 @@ SCHEMES = {
 
 # %%
 # 手動輸入版本號（如果不輸入則使用自動生成的版本號）
-manual_version = input("請輸入版本號 (如 v3.11.0，留空則自動生成): ").strip()
-is_official_version = (
+manual_version: str = input("請輸入版本號 (如 v3.11.0，留空則自動生成): ").strip()
+is_official_version: str = (
     input("是否為測試版本？(輸入official，留空則為beta): ").strip().lower()
 )
 
@@ -62,12 +62,12 @@ print(f"版本號: {version}")
 # %%
 # 選擇要打包的方案
 print("\n可用的方案:")
-scheme_list = list(SCHEMES.keys())
+scheme_list: list[str] = list(SCHEMES.keys())
 for i, key in enumerate(scheme_list, 1):
     print(f"  {i}. {SCHEMES[key]['chinese']}輸入法 ({key})")
 print("  0. 打包全部方案")
 
-scheme_input = input("\n請輸入數字 (0-{0}): ".format(len(scheme_list))).strip()
+scheme_input: str = input("\n請輸入數字 (0-{0}): ".format(len(scheme_list))).strip()
 
 # 驗證輸入
 if (
@@ -92,7 +92,7 @@ else:
 
 
 # %%
-def build_scheme(scheme_key, version):
+def build_scheme(scheme_key: str, version: str) -> str:
     """打包單個方案"""
     SCHEMA_NAME = SCHEMES[scheme_key]["name"]
     CHINESE_NAME = SCHEMES[scheme_key]["chinese"]
