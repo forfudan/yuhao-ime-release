@@ -19,13 +19,15 @@ switches:
   - options:
       - original
       - yuhao_charset_prioritizer_common
-    states: [原始排序, 常用字優先]
+      - yuhao_charset_prioritizer_harmonic
+    states: [原始排序, 常用字先, 傳統字先]
     reset: 1
     # Control+Shift+M
   - options:
       - cjk
       - yuhao_charset_filter_common
-    states: [全漢字, 常用字]
+      - yuhao_charset_filter_harmonic
+    states: [全漢字, 常用字, 傳統字]
     reset: 0
     # Control+Shift+O
   - name: yuhao_single_char_only_for_full_code
@@ -64,9 +66,6 @@ switches:
   - name: ascii_punct
     states: [。，, ．，]
     reset: 0
-  - name: yuhao_tw_first
-    reset: 0
-    states: [繁簡混頻, 正體優先]
 
 engine:
   processors:
@@ -98,12 +97,13 @@ engine:
     - lua_filter@*yuhao.yuhao_autocompletion_filter
     - lua_filter@*yuhao.yuhao_single_char_only_for_full_code
     - lua_filter@*yuhao.yuhao_charset_filter_common
+    - lua_filter@*yuhao.yuhao_charset_filter_harmonic
     - simplifier@traditionalize
     - simplifier@simplify
     - lua_filter@*yuhao.yuhao_chaifen_filter
     - lua_filter@*yuhao.yuhao_postpone_full_code
     - lua_filter@*yuhao.yuhao_charset_prioritizer_common
-    - lua_filter@*yuhao.yuhao_tw_first
+    - lua_filter@*yuhao.yuhao_charset_prioritizer_harmonic
     - uniquifier
 
 traditionalize:

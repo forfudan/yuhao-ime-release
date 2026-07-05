@@ -1,7 +1,7 @@
 --[[
 -- Name: yuhao_popper_hints.lua
 -- 名稱: 提示韻碼上屏字
--- Version: 20251220
+-- Version: 20260609
 -- Author: 朱宇浩 <dr.yuhao.zhu@outlook.com>
 -- Github: https://github.com/forFudan/
 -- Purpose: 提示韻碼上屏字
@@ -45,6 +45,8 @@
           還會在後方繼續顯示其他所有的預測候選項,而非之前的完全過濾.
           韻碼提示更加明顯,備註「韻碼」+ 字母.
 20251225: @lost-melody. 在韻碼提示中保留候選項的預編輯信息.
+20260609: 當首選項爲非預測候選且輸入末碼非韻碼時,若該候選還存在韻碼結尾的編碼,
+          則在「空格」備註後追加可用韻碼字母(如: 空格 a).
 ---------------------------
 --]]
 
@@ -97,6 +99,46 @@ local function yield_candidate_with_comment(cand, comment)
     yield(c)
 end
 
+---若候選文本還有下一碼是結尾韻碼的編碼,返回該韻碼字符串(按 aeiou 順序),否則返回空串
+---@param cand any
+---@param env any
+---@return string
+local function get_vowel_extensions(cand, env)
+    local input = env.engine.context.input
+    local input_len = string.len(input)
+    local codes = env.code_rvdb:lookup(cand.text)
+    if not codes or codes == "" then
+        return ""
+    end
+    local found = {a = false, e = false, i = false, o = false, u = false}
+    for code in codes:gmatch("%S+") do
+        if string.len(code) == input_len + 1 and code:sub(1, input_len) == input then
+            local last = code:sub(-1)
+            if found[last] ~= nil then
+                found[last] = true
+            end
+        end
+    end
+    local result = ""
+    for _, v in ipairs({"a", "e", "i", "o", "u"}) do
+        if found[v] then result = result .. v end
+    end
+    return result
+end
+
+---生成「空格」備註,若有另外的韻碼結尾編碼,則附加之
+---@param cand any
+---@param env any
+---@return string
+local function build_space_comment(cand, env)
+    local exts = get_vowel_extensions(cand, env)
+    if exts ~= "" then
+        return "空格 " .. exts
+    else
+        return "空格"
+    end
+end
+
 local function filter(input, env)
     local context = env.engine.context
     if not context:get_option("yuhao_popper_hints") then
@@ -114,10 +156,10 @@ local function filter(input, env)
             local index_of_cand = 0
             for cand in input:iter() do
                 if index_of_cand == 0 then
-                    -- 如果是第一個候選項,則顯示"頂屏"
+                    -- 如果是第一個候選項,則顯示「頂屏」
                     yield_candidate_with_comment(cand, "頂屏")
                 elseif index_of_cand == 1 then
-                    -- 如果是第二個候選項,則顯示"分號"
+                    -- 如果是第二個候選項,則顯示「分號」
                     yield_candidate_with_comment(cand, "分號")
                 else
                     yield(cand)
@@ -139,14 +181,15 @@ local function filter(input, env)
                         -- 非預測候選項,直接顯示
                         if index_of_cand == 0 then
                             if env.engine.context.input:match("[aeiou]$") then
-                                -- 如果輸入末碼是韻碼,則顯示"頂屏"
+                                -- 如果輸入末碼是韻碼,則顯示「頂屏」
                                 yield_candidate_with_comment(cand, "頂屏")
                             else
-                                -- 如果是第一個候選項,則顯示"空格"
-                                yield_candidate_with_comment(cand, "空格")
+                                -- 如果是第一個候選項,則顯示「空格」
+                                -- 若有另外的韻碼結尾編碼則附加之
+                                yield_candidate_with_comment(cand, build_space_comment(cand, env))
                             end
                         elseif index_of_cand == 1 then
-                            -- 如果是第二個候選項,則顯示"分號"
+                            -- 如果是第二個候選項,則顯示「分號」
                             yield_candidate_with_comment(cand, "分號")
                         else
                             yield(cand)
@@ -173,10 +216,10 @@ local function filter(input, env)
                 local index_of_cand = 0
                 for cand in input:iter() do
                     if index_of_cand == 0 then
-                        -- 如果是第一個候選項,則顯示"頂屏"
+                        -- 如果是第一個候選項,則顯示「頂屏」
                         yield_candidate_with_comment(cand, "頂屏")
                     elseif index_of_cand == 1 then
-                        -- 如果是第二個候選項,則顯示"分號"
+                        -- 如果是第二個候選項,則顯示「分號」
                         yield_candidate_with_comment(cand, "分號")
                     else
                         yield(cand)
@@ -206,11 +249,12 @@ local function filter(input, env)
                     -- 非預測候選項,直接顯示
                     if index_of_cand == 0 then
                         if env.engine.context.input:match("[aeiou]$") then
-                            -- 如果輸入末碼是韻碼,則顯示"頂屏"
+                            -- 如果輸入末碼是韻碼,則顯示「頂屏」
                             yield_candidate_with_comment(cand, "頂屏")
                         else
-                            -- 如果是第一個候選項,則顯示"空格"
-                            yield_candidate_with_comment(cand, "空格")
+                            -- 如果是第一個候選項,則顯示「空格」
+                            -- 若有另外的韻碼結尾編碼則附加之
+                            yield_candidate_with_comment(cand, build_space_comment(cand, env))
                         end
                     elseif index_of_cand == 1 then
                         -- 如果是第二個候選項,則顯示"分號"
@@ -279,14 +323,15 @@ local function filter(input, env)
                     -- 非預測候選項,直接顯示
                     if index_of_cand == 0 then
                         if env.engine.context.input:match("[aeiou]$") then
-                            -- 如果輸入末碼是韻碼,則顯示"頂屏"
+                            -- 如果輸入末碼是韻碼,則顯示「頂屏」
                             yield_candidate_with_comment(cand, "頂屏")
                         else
-                            -- 如果是第一個候選項,則顯示"空格"
-                            yield_candidate_with_comment(cand, "空格")
+                            -- 如果是第一個候選項,則顯示「空格」
+                            -- 若有另外的韻碼結尾編碼則附加之
+                            yield_candidate_with_comment(cand, build_space_comment(cand, env))
                         end
                     elseif index_of_cand == 1 then
-                        -- 如果是第二個候選項,則顯示"分號"
+                        -- 如果是第二個候選項,則顯示「分號」
                         yield_candidate_with_comment(cand, "分號")
                     else
                         yield(cand)
