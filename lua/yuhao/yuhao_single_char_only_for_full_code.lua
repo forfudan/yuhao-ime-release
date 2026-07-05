@@ -37,6 +37,7 @@ states: [字词同出, 全码出单]
 20260212: 修改預測候選項的簡碼判斷邏輯:如果輸入碼長+預測碼長小於等於3,
           則認定爲簡碼.
 20260303: 增加常用詞語白名單功能.如果候選詞在白名單中,則永遠顯示.
+20260608: 四字以上的詞語永遠直接顯示.
 ---------------------------
 ]]
 
@@ -119,13 +120,14 @@ local function filter(input, env)
                 if cand_genuine.type == 'completion' then
                     -- 預測候選項允許簡詞
                     -- 編碼長小於等於3的候選項直接顯示
-                    if core.is_single_char(cand.text) or is_auto_completion_short_code(cand, env, 3) then
+                    if core.is_single_char(cand.text) or utf8.len(cand.text) >= 4 or is_auto_completion_short_code(cand, env, 3) then
                         yield(cand)
                     end
                 else
                     -- 精確匹配允許簡詞
                     -- 編碼長小於等於3的候選項直接認定爲簡碼
-                    if core.is_single_char(cand.text) or is_short_code(cand, env, 3) then
+                    -- 單字和四字以上的詞語直接顯示
+                    if core.is_single_char(cand.text) or utf8.len(cand.text) >= 4 or is_short_code(cand, env, 3) then
                         yield(cand)
                     end
                 end

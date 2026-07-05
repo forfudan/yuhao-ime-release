@@ -46,6 +46,7 @@ engine:
   translators:
     - punct_translator
     - history_translator@history
+    - table_translator@yuling
     - script_translator
     - script_translator@pinyin
   filters:
@@ -58,11 +59,23 @@ speller:
 
 translator:
   dictionary: yuling_fluency
+  db_class: tabledb
   preedit_format:
     - "xlit|`|·|"
   comment_format:
     - "xform/^~/ /"
-  initial_quality: 1000
+  initial_quality: 8
+
+yuling:
+  dictionary: yuling
+  db_class: tabledb
+  enable_completion: false
+  enable_sentence: false
+  enable_user_dict: false
+  enable_encoder: false
+  encode_commit_history: false # 对连续上屏的词自动成词
+  max_phrase_length: 4 # 自动成词的最大词长
+  initial_quality: 16
 
 pinyin:
   dictionary: yuhao_quanpin

@@ -7,7 +7,7 @@ from shutil import copyfile
 from datetime import datetime
 
 # 參數設定
-PRESET_VERSION = "v3.11.0"
+PRESET_VERSION = "v3.12.0"
 
 # 方案配置
 SCHEMES: dict[str, dict[str, str | bool]] = {
@@ -39,23 +39,22 @@ SCHEMES: dict[str, dict[str, str | bool]] = {
 }
 
 # %%
-# 手動輸入版本號（如果不輸入則使用自動生成的版本號）
-manual_version: str = input("請輸入版本號 (如 v3.11.0，留空則自動生成): ").strip()
+# 手動輸入版本號（留空則使用 PRESET_VERSION）
+manual_version: str = input(
+    f"請輸入版本號 (如 {PRESET_VERSION}，留空則使用預設版本): "
+).strip()
 is_official_version: str = (
-    input("是否為測試版本？(輸入official，留空則為beta): ").strip().lower()
+    input("版本類型 (輸入 official 為正式版，留空為 beta): ").strip().lower()
 )
 
-if manual_version:
-    if is_official_version == "official":
-        version = manual_version
-    else:
-        date = datetime.now().strftime("%Y%m%d")
-        time = datetime.now().strftime("%H%M%S")
-        version = f"{manual_version}-beta.{date}.{time}"
+base_version = manual_version or PRESET_VERSION
+
+if is_official_version == "official":
+    version = base_version
 else:
     date = datetime.now().strftime("%Y%m%d")
     time = datetime.now().strftime("%H%M%S")
-    version = f"{PRESET_VERSION}-beta.{date}.{time}"
+    version = f"{base_version}-beta.{date}.{time}"
 
 print(f"版本號: {version}")
 
