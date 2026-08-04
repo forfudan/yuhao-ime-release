@@ -7,7 +7,7 @@ from shutil import copyfile
 from datetime import datetime
 
 # 參數設定
-PRESET_VERSION = "v3.12.0"
+PRESET_VERSION = "v3.13.0"
 
 # 方案配置
 SCHEMES: dict[str, dict[str, str | bool]] = {
@@ -45,6 +45,11 @@ manual_version: str = input(
 ).strip()
 is_official_version: str = (
     input("版本類型 (輸入 official 為正式版，留空為 beta): ").strip().lower()
+)
+only_copy_to_dist_folder: str = (
+    input("是否只複製到 dist 資料夾而不打包 (輸入 yes / y 為只複製，留空為打包): ")
+    .strip()
+    .lower()
 )
 
 base_version = manual_version or PRESET_VERSION
@@ -91,7 +96,7 @@ else:
 
 
 # %%
-def build_scheme(scheme_key: str, version: str) -> str:
+def build_scheme(scheme_key: str, version: str, copy_only: bool = False) -> str:
     """打包單個方案"""
     SCHEMA_NAME = SCHEMES[scheme_key]["name"]
     CHINESE_NAME = SCHEMES[scheme_key]["chinese"]
@@ -225,30 +230,34 @@ def build_scheme(scheme_key: str, version: str) -> str:
     os.makedirs("./dist/hamster", exist_ok=True)
 
     # 打包zip文件
-    print("打包zip文件...")
+    if copy_only:
+        print(f"✓ 已複製{CHINESE_NAME}輸入法 {version} 到 dist 資料夾（未打包）！")
+    else:
+        print("打包zip文件...")
 
-    shutil.make_archive(
-        f"./dist/{CHINESE_NAME}輸入法_{version}",
-        "zip",
-        f"./{SCHEMA_NAME}/dist/{SCHEMA_NAME}",
-    )
+        shutil.make_archive(
+            f"./dist/{CHINESE_NAME}輸入法_{version}",
+            "zip",
+            f"./{SCHEMA_NAME}/dist/{SCHEMA_NAME}",
+        )
 
-    shutil.make_archive(
-        f"./dist/hamster/{CHINESE_NAME}輸入法_{version}",
-        "zip",
-        f"./{SCHEMA_NAME}/dist/{SCHEMA_NAME}/schema",
-    )
+        shutil.make_archive(
+            f"./dist/hamster/{CHINESE_NAME}輸入法_{version}",
+            "zip",
+            f"./{SCHEMA_NAME}/dist/{SCHEMA_NAME}/schema",
+        )
 
-    print(f"✓ 成功發佈{CHINESE_NAME}輸入法 {version}！")
+        print(f"✓ 成功發佈{CHINESE_NAME}輸入法 {version}！")
     return CHINESE_NAME
 
 
 # %%
 # 執行打包
+copy_only = only_copy_to_dist_folder in ("yes", "y")
 built_schemes = []
 for scheme_key in schemes_to_build:
     try:
-        chinese_name = build_scheme(scheme_key, version)
+        chinese_name = build_scheme(scheme_key, version, copy_only=copy_only)
         built_schemes.append(chinese_name)
     except Exception as e:
         print(f"\n✗ 打包 {scheme_key} 時發生錯誤: {e}")
@@ -259,11 +268,14 @@ for scheme_key in schemes_to_build:
 # %%
 # 顯示最終結果
 print(f"\n{'=' * 60}")
-print("打包完成！")
+print("複製完成！" if copy_only else "打包完成！")
 print(f"{'=' * 60}")
 print(f"版本號: {version}")
-print(f"成功打包的方案: {', '.join(built_schemes)}")
+print(f"成功{'複製' if copy_only else '打包'}的方案: {', '.join(built_schemes)}")
 print(f"檔案位於: {os.path.abspath('./dist/')}")
 for name in built_schemes:
-    print(f"  - {name}輸入法_{version}.zip")
-    print(f"  - hamster/{name}輸入法_{version}.zip")
+    if copy_only:
+        print(f"  - {name}輸入法_{version}/ (dist 資料夾)")
+    else:
+        print(f"  - {name}輸入法_{version}.zip")
+        print(f"  - hamster/{name}輸入法_{version}.zip")

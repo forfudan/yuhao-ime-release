@@ -23,6 +23,7 @@ Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
 20250906: 增加 CJK 擴展 J 區的定義.
 20251220: 增加 `is_single_char` 函數, 檢查文本是否為單個字符 (考慮變體選擇器).
 20260126: 將棋類符號加入 CJK 區塊和泛 CJK 區塊的定義中.
+20260716: 增加函數判斷一個 Unicode 碼位是否爲延展字符.
 --------------------------------------------------------------------------------
 ]]
 
@@ -193,6 +194,18 @@ core.cjk_punc_blocks = { -- CJK 核心標點符號區塊
     { 0x0000, 0x007f },  -- ASCII 字符
 }
 
+--- 判斷一個 Unicode 碼位是否爲延展字符（變體選擇器、組合附加符號、零寬連接符）
+--- 延展字符附加在基礎字符之上, 對區塊歸屬透明: 基礎 CJK 字符加變體選擇器仍算 CJK.
+--- 與 candidate_filter.rs 中的 is_extending 保持一致.
+---@param cp integer
+---@return boolean
+local function is_extending_codepoint(cp)
+    return (cp >= 0x0300 and cp <= 0x036F)    -- 組合附加符號
+        or (cp >= 0xFE00 and cp <= 0xFE0F)    -- 變體選擇器
+        or (cp >= 0xE0100 and cp <= 0xE01EF)  -- 變體選擇器補充
+        or cp == 0x200D                        -- 零寬連接符
+end
+
 --- 判斷一個字符是不是在一組 Unicode 區位中
 ---@param unicode_of_char integer
 ---@param unicode_blocks table
@@ -207,13 +220,16 @@ function core.char_is_in_unicode_blocks(unicode_of_char, unicode_blocks)
 end
 
 --- 判斷一個字符串的所有字符是否都在一組 Unicode 區位中
+--- 延展字符（變體選擇器等）會被忽略, 以基礎字符的碼位進行判斷.
 ---@param text string
 ---@param unicode_blocks table
 ---@return boolean
 function core.string_is_in_unicode_blocks(text, unicode_blocks)
     for p, unicode_of_char in utf8.codes(text) do
-        if not core.char_is_in_unicode_blocks(unicode_of_char, unicode_blocks) then
-            return false
+        if not is_extending_codepoint(unicode_of_char) then
+            if not core.char_is_in_unicode_blocks(unicode_of_char, unicode_blocks) then
+                return false
+            end
         end
     end
     return true
